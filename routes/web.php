@@ -15,6 +15,9 @@ use Inertia\Inertia;
 |
 */
 
+require __DIR__ . '/user_auth.php';
+require __DIR__ . '/admin_auth.php';
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -28,6 +31,11 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+Route::group(['prefix' => 'Admin', 'namespace' => 'Admins', 'as' => 'admin.'], function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+});
+
 
 
