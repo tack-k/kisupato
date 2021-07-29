@@ -28,7 +28,7 @@
             </inertia-link>
 
             <breeze-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Register
+                Register【admin】
             </breeze-button>
         </div>
     </form>
@@ -65,7 +65,7 @@
 
         methods: {
             submit() {
-                this.form.post(this.route('register'), {
+                this.form.post(this.route('admin.register'), {
                     onFinish: () => this.form.reset('password', 'password_confirmation'),
                 })
             }
