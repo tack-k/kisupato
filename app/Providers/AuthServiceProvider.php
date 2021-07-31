@@ -28,15 +28,5 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        ResetPassword::createUrlUsing(function ($user, string $token) {
-            if (Request::is('admin/forgot-password')) {
-                $route = 'admin.password.reset';
-            } else {
-                $route = 'password.reset';
-            }
-
-            return url(route($route, ['token' => $token, 'email' => $user->getEmailForPasswordReset()], false));
-
-        });
     }
 }
