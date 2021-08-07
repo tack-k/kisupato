@@ -38,9 +38,9 @@
 <script>
     import BreezeButton from '@/Components/Button'
     import BreezeGuestLayout from "@/Layouts/Guest"
-    import BreezeInput from '@/Components/Input'
+    import BreezeInput from '@/Components/Atoms/Input'
     import BreezeCheckbox from '@/Components/Checkbox'
-    import BreezeLabel from '@/Components/Label'
+    import BreezeLabel from '@/Components/Atoms/Label'
     import BreezeValidationErrors from '@/Components/ValidationErrors'
 
     export default {
