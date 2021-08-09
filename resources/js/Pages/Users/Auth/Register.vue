@@ -5,48 +5,48 @@
         <div class="flex">
             <div class="mr-2">
             <label-required for="last_name_kana" value="姓（カナ）"/>
-            <breeze-input id="last_name_kana" type="text" class="mt-1 block w-full" placeholder="ヤマダ" v-model="form.last_name_kana" required autofocus />
+            <breeze-input id="last_name_kana" type="text" class="mt-1 block w-full" placeholder="ヤマダ" v-model="form.last_name_kana" autofocus />
             </div>
             <div>
             <label-required for="first_name_kana" value="名（カナ）" />
-            <breeze-input id="first_name_kana" type="text" class="mt-1 block w-full" placeholder="タロウ" v-model="form.first_name_kana" required autofocus />
+            <breeze-input id="first_name_kana" type="text" class="mt-1 block w-full" placeholder="タロウ" v-model="form.first_name_kana" autofocus />
             </div>
         </div>
 
         <div class="mt-4 flex">
             <div class="mr-2">
             <label-required for="last_name" value="姓" />
-            <breeze-input id="last_name" type="text" class="mt-1 block w-full" placeholder="山田" v-model="form.last_name" required autofocus autocoplete="family-name"/>
+            <breeze-input id="last_name" type="text" class="mt-1 block w-full" placeholder="山田" v-model="form.last_name" autofocus autocoplete="family-name"/>
             </div>
             <div>
                 <label-required for="first_name" value="名" />
-                <breeze-input id="first_name" type="text" class="mt-1 block w-full" placeholder="太郎" v-model="form.first_name" required autofocus autocomplete="given-name" />
+                <breeze-input id="first_name" type="text" class="mt-1 block w-full" placeholder="太郎" v-model="form.first_name" autofocus autocomplete="given-name" />
             </div>
         </div>
 
         <div class="mt-4">
             <label-required for="email" value="電話番号" />
-            <breeze-input id="tel" type="tel" class="mt-1 block w-full" placeholder="09012341234" v-model="form.tel" required autocomplete="tel-national" />
+            <breeze-input id="tel" type="tel" class="mt-1 block w-full" placeholder="09012341234" v-model="form.tel" autocomplete="tel-national" />
         </div>
 
         <div class="mt-4">
             <label-required for="postal_code" value="郵便番号" />
-            <breeze-input id="postal_code" type="text" class="mt-1 block w-1/3" placeholder="2330987" v-model="form.postal_code" required autocomplete="postal_code" />
+            <breeze-input id="postal_code" type="text" class="mt-1 block w-1/3" placeholder="2330987" v-model="form.postal_code" autocomplete="postal_code" />
         </div>
 
         <div class="mt-4">
             <label-required for="region" value="都道府県" />
-            <breeze-input id="region" type="text" class="mt-1 block w-1/3" placeholder="東京都" v-model="form.region" required autocomplete="address-level1" />
+            <breeze-input id="region" type="text" class="mt-1 block w-1/3" placeholder="東京都" v-model="form.region" autocomplete="address-level1" />
         </div>
 
         <div class="mt-4">
             <label-required for="city" value="市区町村" />
-            <breeze-input id="city" type="text" class="mt-1 block w-1/3" placeholder="杉並区" v-model="form.city" required autocomplete="address-level2" />
+            <breeze-input id="city" type="text" class="mt-1 block w-1/3" placeholder="杉並区" v-model="form.city" autocomplete="address-level2" />
         </div>
 
         <div class="mt-4">
             <label-required for="street" value="番地" />
-            <breeze-input id="street" type="text" class="mt-1 block w-full" placeholder="3-55-123" v-model="form.street" required autocomplete="address-line1" />
+            <breeze-input id="street" type="text" class="mt-1 block w-full" placeholder="3-55-123" v-model="form.street" autocomplete="address-line1" />
         </div>
 
         <div class="mt-4">
@@ -66,28 +66,23 @@
 
         <div class="mt-4">
             <label-required for="birthday" value="生年月日" />
-            <div class="flex">
-            <breeze-input id="year" type="text" class="mt-1 block w-1/4 mr-4" placeholder="2000" v-model="form.year" required autocomplete="new-password" />
-            <breeze-input id="month" type="text" class="mt-1 block w-1/6 mr-4" placeholder="04" v-model="form.month" required autocomplete="new-password" />
-            <breeze-input id="day" type="text" class="mt-1 block w-1/6" v-model="form.day" placeholder="25" required autocomplete="new-password" />
-            </div>
+            <breeze-input id="birthday" type="date" class="mt-1 block w-1/2" placeholder="taro.yamada@gmail.com" v-model="form.birthday" autocomplete="bday" />
         </div>
 
         <div class="mt-4">
             <label-required for="email" value="メールアドレス" />
-            <breeze-input id="email" type="email" class="mt-1 block w-full" placeholder="taro.yamada@gmail.com" v-model="form.email" required autocomplete="email" />
+            <breeze-input id="email" type="email" class="mt-1 block w-full" placeholder="taro.yamada@gmail.com" v-model="form.email" autocomplete="email" />
         </div>
 
         <div class="mt-4">
             <label-required for="password" value="パスワード" />
-            <breeze-input id="password" type="password" class="mt-1 block w-full" placeholder="半角英数字８文字以上" v-model="form.password" required autocomplete="new-password" />
+            <breeze-input id="password" type="password" class="mt-1 block w-full" placeholder="半角英数字８文字以上" v-model="form.password" autocomplete="new-password" />
         </div>
 
         <div class="mt-4">
             <label-required for="password_confirmation" value="パスワード（確認）" />
-            <breeze-input id="password_confirmation" type="password" class="mt-1 block w-full" placeholder="もう一度入力してください" v-model="form.password_confirmation" required autocomplete="new-password" />
+            <breeze-input id="password_confirmation" type="password" class="mt-1 block w-full" placeholder="もう一度入力してください" v-model="form.password_confirmation" autocomplete="new-password" />
         </div>
-
         <div class="flex items-center justify-end mt-4">
             <inertia-link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
                 登録済みの場合はこちら
