@@ -3,6 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Consts;
+use \App\Http\Controllers\Users\UserController;
+use \App\Http\Controllers\Admins\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,7 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 require __DIR__ . '/user_auth.php';
 require __DIR__ . '/admin_auth.php';
@@ -27,17 +31,26 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-
+Route::group(['prefix' => 'user', 'namespace' => 'Users', 'as' => 'user.'], function() {
+//    Route::resources(['users', UserController::class]);
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Users/Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admins', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
+
+
+
+
     Route::get('/dashboard', function () {
-        return Inertia::render('Admins/Dashboard');
+        return Inertia::render('Admin/Dashboard');
     })->middleware(['auth:admin', 'verified'])->name('dashboard');
+    Route::get('/sidebar', function() {
+       return Inertia::render('Admin/SideBar', ['sideBarLists' => Consts\SideBarConst::SIDEBAR_LISTS]);
+    });
 });
 
 
-
+Route::resource('admin', AdminController::class)->only('index');
