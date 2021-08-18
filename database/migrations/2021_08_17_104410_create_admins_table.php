@@ -15,6 +15,9 @@ class CreateAdminsTable extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('authority_id')->constrained();
+            $table->foreignId('department_id')->constrained();
+            $table->string('staff_number', 10)->unique();
             $table->string('last_name', 20)->index();
             $table->string('first_name', 20)->index();
             $table->string('last_name_kana', 20)->index();
