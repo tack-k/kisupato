@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
 use App\Consts\SideBarConst;
+use App\Models\Admins\Authority;
+use App\Models\Admins\Department;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,7 +18,15 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admins/Admin/Index', ['sideBarLists' => SideBarConst::SIDEBAR_LISTS]);
+        $authorities = Authority::all();
+        $departments = Department::all();
+        return Inertia::render('Admins/Admin/Index',
+            [
+                'sideBarLists' => SideBarConst::SIDEBAR_LISTS,
+                'authorities' => $authorities,
+                'departments' => $departments,
+            ]
+        );
     }
 
     /**
