@@ -1,4 +1,5 @@
 <template>
+
     <div class="bg-gray-200 font-sans">
             <div class="w-64 h-screen bg-white">
                 <div class="flex items-center justify-center pt-10">
@@ -41,27 +42,35 @@
 </template>
 
 <script>
+import { inject, ref, computed } from "vue";
+
 export default {
     name: "SideBar",
-
-    data() {
-        return {
-            open: [],
-        }
-    },
 
     props: {
         sideBarLists: Object,
     },
 
-    computed: {
-        setOpen() {
-            for (const sideBarList in this.sideBarLists) {
-                this.open.push(false);
+    setup(props) {
+        const open = ref([])
+        const showMenu = ref(false)
+
+        const sideBarLists = props.sideBarLists
+        const setOpen = computed(() => {
+            for (const sideBarList in sideBarLists) {
+                open.value.push(false);
             }
-            return console.log(this.open)
+        })
+
+        return {
+            sideBarLists,
+            open,
+            showMenu,
+            setOpen,
         }
-    }
+    },
+
+
 
 }
 
