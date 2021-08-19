@@ -4,6 +4,7 @@
 
 <script>
     export default {
+        name: 'Input',
         props: ['modelValue'],
 
         emits: ['update:modelValue'],
