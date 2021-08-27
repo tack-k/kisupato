@@ -53,4 +53,4 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
 });
 
 
-Route::resource('admin', AdminController::class)->only('index');
+Route::resource('admin', AdminController::class)->only(['index', 'store']);
