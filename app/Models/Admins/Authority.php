@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Authority extends Model
 {
     use HasFactory;
+
+    public function admins()
+    {
+        $this->hasMany(Admin::class);
+    }
 }

@@ -164,6 +164,9 @@ return [
         'birthday' => '生年月日',
         'password' => 'パスワード',
         'terms' => '規約',
+        'staff_number' => '職員番号',
+        'department_id' => '部署',
+        'authority_id' => '権限',
     ],
 
 ];

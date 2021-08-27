@@ -3,28 +3,41 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
-use App\Consts\SideBarConst;
+use App\Models\Admins\Admin;
+use App\Http\Requests\AdminRequest;
 use App\Models\Admins\Authority;
 use App\Models\Admins\Department;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return
      */
-    public function index()
+    public function index(Request $request)
     {
         $authorities = Authority::all();
         $departments = Department::all();
+
+        $keyword = $request->keyword;
+        $admins = new Admin();
+        $admins = $admins->searchAdmins($keyword);
+
+
         return Inertia::render('Admins/Admin/Index',
             [
-                'sideBarLists' => SideBarConst::SIDEBAR_LISTS,
                 'authorities' => $authorities,
                 'departments' => $departments,
+                'admins' => $admins,
             ]
         );
     }
@@ -42,12 +55,20 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param AdminRequest $request
+     * @return
      */
-    public function store(Request $request)
+    public function store(AdminRequest $request)
     {
-        //
+
+        $params = $request->validated();
+        $password = Str::random(10);
+        $params['password'] = Hash::make($password);
+
+        $admin = Admin::create($params);
+
+        return Inertia::location(route('admin.index', ['page' => 1]));
+
     }
 
     /**
