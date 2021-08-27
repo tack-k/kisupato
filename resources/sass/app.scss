@@ -2,3 +2,13 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@import "variable";
+
+
+//基本設定
+@layer base {
+    body {
+        @apply text-gray-600 text-sm bg-gray-50
+    }
+
+}
