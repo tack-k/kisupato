@@ -1,5 +1,5 @@
 <template>
-    <select v-model="modelValue" class="block border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" @change="updateValue" >
+    <select v-model="modelValue" class="base-form rounded-sm" @change="updateValue" >
         <option v-for="(option, index) in options" :value="option.id" :selected="modelValue === '2'" :key="index" >{{ option.name }}</option>
     </select>
 </template>

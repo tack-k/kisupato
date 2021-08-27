@@ -1,17 +1,16 @@
 <template>
 
-    <div class="bg-gray-200 font-sans">
-            <div class="w-64 h-screen bg-white">
-                <div class="flex items-center justify-center pt-10">
-                    <img class="h-6" src="https://premium-tailwindcomponents.netlify.app/assets/svg/tailwindcomponent-dark.svg">
+    <div class="bg-gray-200">
+            <div class="w-64 h-screen admin-bg-white ">
+                <div class="flex items-start justify-end p-2 hover:cursor-pointer">
+                   <Fa :icon="faAlignJustify" size="2x" />
                 </div>
                 <nav class="mt-10">
-                    <div x-data="{ open: false }" v-for="sideBarList in sideBarLists" key="sideBarList.title">
-                        <button @click="open[sideBarList.id] = !open[sideBarList.id]" class="w-full flex justify-between items-center py-3 px-6 text-gray-600 cursor-pointer hover:bg-gray-100 hover:text-gray-700 focus:outline-none">
+                    <div x-data="{ open: false }" v-for="sideBarList in sideBar" key="sideBarList.title">
+                        <button @click="open[sideBarList.id] = !open[sideBarList.id]" class="w-full flex justify-between items-center py-3 px-6 text-gray-600 admin-hover-white focus:outline-none">
                         <span class="flex items-center">
-                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
+                            <Fa :icon="sideBarList.icon" />
+
 
                             <span class="mx-4 font-medium">{{sideBarList.title}}</span>
                         </span>
@@ -43,6 +42,10 @@
 
 <script>
 import { inject, ref, computed } from "vue";
+import Fa from 'vue-fa';
+import { faUser, faDatabase, faDesktop, faQuestionCircle, faInfoCircle, faAlignJustify} from '@fortawesome/free-solid-svg-icons';
+
+
 
 export default {
     name: "SideBar",
@@ -50,8 +53,127 @@ export default {
     props: {
         sideBarLists: Object,
     },
+    components: {
+        Fa
+    },
 
     setup(props) {
+        //
+        // const sideBar =
+        //   [
+        //     {
+        //         'user_management': [
+        //             {'id': 0},
+        //             {'title': 'ユーザー管理'},
+        //             {'icon': faUser},
+        //             {
+        //                 'subtitle': [
+        //                     {'admin': '職員'},
+        //                     {'user': 'ユーザー'},
+        //                     {'expert': '専門人材'},
+        //                 ]
+        //             },
+        //         ],
+        //         'data_management': [
+        //             {'id': 1},
+        //             {'icon': faDatabase},
+        //             {'title': 'データ管理'},
+        //             {
+        //                 'subtitle': [
+        //                     {'expert_position': '専門人材肩書'},
+        //                     {'expert_tag': '専門人材タグ'},
+        //                     {'department': '部署'},
+        //                     {'authority': '権限'},
+        //                     {'user_contact_title': 'ユーザー問い合わせ項目'},
+        //                     {'expert_contact_title': '専門人材問い合わせ項目'},
+        //                 ]
+        //             },
+        //         ],
+        //         'utilization_status': [
+        //             {'id': 2},
+        //             {'icon': faDesktop},
+        //             {'title': 'サイト活用状況'},
+        //             {'subtitle': null},
+        //         ],
+        //         'contact_management': [
+        //             {'id': 3},
+        //             {'icon': faQuestionCircle},
+        //             {'title': '問い合わせ管理'},
+        //             {
+        //                 'subtitle': [
+        //                     {'user': 'ユーザー'},
+        //                     {'expert': '専門人材'},
+        //                 ]
+        //             },
+        //         ],
+        //         'notification_function': [
+        //             {'id': 4},
+        //             {'icon': faInfoCircle},
+        //             {'title': 'お知らせ機能'},
+        //             {
+        //                 'subtitle': [
+        //                     {'mail_magazine': 'メルマガ'},
+        //                     {'information_site': 'サイトからのお知らせ'},
+        //                 ]
+        //             },
+        //         ],
+        //     }
+        // ]
+
+        const sideBar = {
+            "user_management": {
+                "id": 0,
+                'icon': faUser,
+                "title": "ユーザー管理",
+                "subtitle": {
+                    "admin": "職員",
+                    "user": "ユーザー",
+                    "expert": "専門人材"
+                }
+            },
+            "data_management": {
+                "id": 1,
+                'icon': faDatabase,
+                "title": "データ管理",
+                "subtitle": {
+                    "expert_position": "専門人材肩書",
+                    "expert_tag": "専門人材タグ",
+                    "department": "部署",
+                    "authority": "権限",
+                    "user_contact_title": "ユーザー問い合わせ項目",
+                    "expert_contact_title": "専門人材問い合わせ項目"
+                }
+            },
+            "utilization_status": {
+                "id": 2,
+                'icon': faDesktop,
+                "title": "サイト活用状況",
+                "subtitle": null
+            },
+            "contact_management": {
+                "id": 3,
+                'icon': faQuestionCircle,
+                "title": "問い合わせ管理",
+                "subtitle": {
+                    "user": "ユーザー",
+                    "expert": "専門人材"
+                }
+            },
+            "notification_function": {
+                "id": 4,
+                'icon': faInfoCircle,
+                "title": "お知らせ機能",
+                "subtitle": {
+                    "mail_magazine": "メルマガ",
+                    "information_site": "サイトからのお知らせ"
+                }
+            }
+        }
+
+
+
+
+
         const open = ref([])
         const showMenu = ref(false)
 
@@ -62,11 +184,22 @@ export default {
             }
         })
 
+        const icons = [
+            faUser,
+            faDatabase,
+            faDesktop,
+            faQuestionCircle,
+            faInfoCircle,
+        ]
+
         return {
             sideBarLists,
             open,
             showMenu,
             setOpen,
+            icons,
+            sideBar,
+            faAlignJustify,
         }
     },
 
