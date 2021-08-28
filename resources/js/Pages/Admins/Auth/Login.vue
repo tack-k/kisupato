@@ -39,7 +39,7 @@
     import BreezeButton from '@/Components/Button'
     import BreezeGuestLayout from "@/Layouts/Guest"
     import BreezeInput from '@/Components/Forms/Input'
-    import BreezeCheckbox from '@/Components/Checkbox'
+    import BreezeCheckbox from '@/Components/Forms/Checkbox'
     import BreezeLabel from '@/Components/Labels/Label'
     import BreezeValidationErrors from '@/Components/ValidationErrors'
 
