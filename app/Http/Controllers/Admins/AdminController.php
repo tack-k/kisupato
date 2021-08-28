@@ -7,11 +7,13 @@ use App\Models\Admins\Admin;
 use App\Http\Requests\AdminRequest;
 use App\Models\Admins\Authority;
 use App\Models\Admins\Department;
+use App\Mail\CreateAdmin;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
@@ -67,6 +69,9 @@ class AdminController extends Controller
 
         $admin = Admin::create($params);
 
+        Mail::to($admin->email)->send(new CreateAdmin($admin->email, $password));
+
+        $request->session()->flash('message', 'ご登録いただいたメールアドレスにアカウント発行のメールを送信しました。');
         return Inertia::location(route('admin.index', ['page' => 1]));
 
     }

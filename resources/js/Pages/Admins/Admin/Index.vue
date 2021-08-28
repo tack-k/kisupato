@@ -4,6 +4,8 @@
         <sideBar :sideBarLists="sideBarLists"/>
         <div class="container p-4 lg:p-40">
 
+            <FlashMessage />
+
             <form @submit.prevent="submitKeyword">
                 <RoundSearch v-model="form.keyword" placeholder="全体検索"/>
             </form>
@@ -75,11 +77,13 @@ import {ref, reactive, computed} from "vue";
 import RoundSearch from "@/Components/Forms/RoundSearch";
 import SquareSearch from "@/Components/Forms/SquareSearch";
 import {useForm} from "@inertiajs/inertia-vue3"
+import FlashMessage from "@/Components/Messages/FlashMessage";
 
 export default {
     name: "Index",
 
     components: {
+        FlashMessage,
         SquareSearch,
         RoundSearch,
         AdminAuthenticated,
