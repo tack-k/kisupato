@@ -40,6 +40,7 @@ class AdminController extends Controller
                 'authorities' => $authorities,
                 'departments' => $departments,
                 'admins' => $admins,
+                'keyword' => $keyword,
             ]
         );
     }
@@ -120,4 +121,16 @@ class AdminController extends Controller
     {
         //
     }
+
+    public function  delete(Request $request) {
+
+        $ids = $request->checked;
+        $page = $request->page;
+        $keyword = $request->keyword;
+        Admin::destroy($ids);
+
+        return Inertia::location(route('admin.index', ['page' => $page, 'keyword' => $keyword]));
+
+    }
+
 }

@@ -7,13 +7,12 @@
             <FlashMessage />
 
             <form @submit.prevent="submitKeyword">
-                <RoundSearch v-model="form.keyword" placeholder="全体検索"/>
+                <RoundSearch v-model="formKeyword.keyword" placeholder="全体検索"/>
             </form>
             <admin-register-modal :authorities="authorities" :departments="departments"></admin-register-modal>
-
             <div class="container mx-auto pt-4 py-16 ">
                 <div class="container">
-                    <div style="overflow-x:auto;">
+                            <form @submit.prevent="submitDelete(formDelete.checked)">
                         <table class="w-full shadow-lg rounded admin-bg-white table">
                             <thead>
                             <tr class="text-left border-b border-grey uppercase table-row">
@@ -25,7 +24,14 @@
                                 </th>
                             </tr>
                             <tr class="text-left border-b border-grey uppercase text-gray-50 bg-blue-800 table-row">
-                                <th class="px-2 py-6 table-cell"></th>
+                                <th class="px-3 py-5 table-cell">
+                                    <div class="flex items-center">
+                                        <checkbox v-model="allChecked" :checked="allChecked" />
+                                        <button type="submit" :class="{ 'opacity-25': formDelete.processing }" :disabled="formDelete.processing">
+                                        <Fa :icon="faTrashAlt" class="ml-3 hover:cursor-pointer" size="lg" />
+                                        </button>
+                                    </div>
+                                </th>
                                 <th class="table-cell">職員番号</th>
                                 <th class="table-cell">氏名</th>
                                 <th class="table-cell">部署</th>
@@ -36,8 +42,7 @@
                             <tr v-for="(admin, index) in searchAdmins" :key="index"
                                 class="accordion border-b border-grey-light admin-hover-white table-row">
                                 <td class="px-3 py-4 table-cell">
-                                    <input type="checkbox"
-                                           class="border-1 ml-1 w-5 h-5 flex flex-shrink-0">
+                                    <checkbox :value="admin.id" v-model:checked="formDelete.checked"/>
                                 </td>
                                 <td class="table-cell">
                                     <p class="">{{ admin.staff_number }}</p>
@@ -55,15 +60,14 @@
 
                             </tbody>
                         </table>
-                    </div>
+                            </form>
+                </div>
 
                     <Pagination :paginations="paginations"/>
 
                 </div>
             </div>
-
         </div>
-    </div>
 </template>
 
 
@@ -73,16 +77,20 @@ import Header from "@/Layouts/Admins/Header";
 import AdminRegisterModal from "@/Layouts/Admins/AdminRegisterModal";
 import AdminAuthenticated from "@/Layouts/AdminAuthenticated";
 import Pagination from "@/Components/Paginations/Pagination";
-import {ref, reactive, computed} from "vue";
+import {ref, reactive, computed, watch} from "vue";
 import RoundSearch from "@/Components/Forms/RoundSearch";
 import SquareSearch from "@/Components/Forms/SquareSearch";
 import {useForm} from "@inertiajs/inertia-vue3"
 import FlashMessage from "@/Components/Messages/FlashMessage";
+import Checkbox from "@/Components/Forms/Checkbox";
+import Fa from "vue-fa";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default {
     name: "Index",
 
     components: {
+        Checkbox,
         FlashMessage,
         SquareSearch,
         RoundSearch,
@@ -91,6 +99,7 @@ export default {
         SideBar,
         AdminRegisterModal,
         Pagination,
+        Fa,
     },
 
     props: {
@@ -98,57 +107,110 @@ export default {
         authorities: Object,
         departments: Object,
         admins: Object,
+        keyword: String,
     },
 
     setup(props) {
         const sideBarLists = props.sideBarLists
         const authorities = props.authorities
         const departments = props.departments
-        const NORESULTS = -1
+        const keyword = props.keyword
+        const NO_RESULTS = -1
+        const NEXT = '次 &raquo'
         let admins = props.admins['data']
         let paginations = props.admins['links']
 
 
         //テーブル内検索
         let tableKeyword = ref('')
+
         const searchAdmins = computed(() => {
             let filteredAdmins = reactive([])
 
             for (const i in admins) {
                 let admin = admins[i]
-
+console.log(tableKeyword.value)
                 if (
-                    admin.last_name.indexOf(tableKeyword.value) !== NORESULTS ||
-                    admin.first_name.indexOf(tableKeyword.value) !== NORESULTS ||
-                    admin.staff_number.indexOf(tableKeyword.value) !== NORESULTS ||
-                    admin.department_name.indexOf(tableKeyword.value) !== NORESULTS ||
-                    admin.authority_name.indexOf(tableKeyword.value) !== NORESULTS
+                    admin.last_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
+                    admin.first_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
+                    admin.staff_number.indexOf(tableKeyword.value) !== NO_RESULTS ||
+                    admin.department_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
+                    admin.authority_name.indexOf(tableKeyword.value) !== NO_RESULTS
                 ) {
                     filteredAdmins.push(admin)
+                    console.log(2)
+                    formDelete.checked = []
                 }
             }
             return filteredAdmins
         })
 
-        const form = useForm({
+
+        //キーワード検索
+        const formKeyword = useForm({
             keyword: '',
         })
 
         const submitKeyword = () => {
-            form.get(route('admin.index'), {
+            formKeyword.get(route('admin.index'), {
                 onSuccess: () => {
-                    form.reset()
+                    formKeyword.reset()
                 }
             })
         }
+
+
+        //選択削除
+        const formDelete = useForm({
+            checked: [],
+            page: null,
+            keyword: keyword
+        })
+
+        const getAfterDeletePageParam = () => {
+            paginations.forEach((index) => {
+                if(index.active) {
+                     formDelete.page = index.label
+                }
+                if(index.url === null && index.label === NEXT && formDelete.checked.length === admins.length) {
+                    formDelete.page -= 1
+                }
+            })
+        }
+
+        const submitDelete = () => {
+            getAfterDeletePageParam()
+            formDelete.post(route('admin.delete'),{
+                onBefore: () => confirm('選択したユーザーを本当に削除しますか？')
+            })
+        }
+
+        //全選択
+        const allChecked = computed({
+            get: () => {
+              return formDelete.checked.length === searchAdmins.value.length
+            },
+            set: (val) => {
+                if (val) {
+                    formDelete.checked = searchAdmins.value.map((admin) => admin.id);
+                } else {
+                    formDelete.checked = [];
+                }
+            }
+        });
 
         return {
             sideBarLists,
             paginations,
             tableKeyword,
             searchAdmins,
-            form,
+            formKeyword,
             submitKeyword,
+            faTrashAlt,
+            formDelete,
+            submitDelete,
+            getAfterDeletePageParam,
+            allChecked,
         }
     },
 
