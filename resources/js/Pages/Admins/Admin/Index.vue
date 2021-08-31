@@ -120,7 +120,6 @@ export default {
         let admins = props.admins['data']
         let paginations = props.admins['links']
 
-
         //テーブル内検索
         let tableKeyword = ref('')
 
@@ -129,7 +128,6 @@ export default {
 
             for (const i in admins) {
                 let admin = admins[i]
-console.log(tableKeyword.value)
                 if (
                     admin.last_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
                     admin.first_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
@@ -138,11 +136,20 @@ console.log(tableKeyword.value)
                     admin.authority_name.indexOf(tableKeyword.value) !== NO_RESULTS
                 ) {
                     filteredAdmins.push(admin)
-                    console.log(2)
-                    formDelete.checked = []
                 }
             }
             return filteredAdmins
+        })
+
+        //テーブル内検索時にチェックボックス選択結果を検索結果と一致させる
+        watch(searchAdmins, (newval, oldval) => {
+            const adminIds = newval.map(admin => admin.id)
+            const deleteIds = formDelete.checked.map(deleteId => deleteId)
+            const allValues = [...adminIds, ...deleteIds]
+            const duplicatedValues = allValues.filter(allValue => adminIds.includes(allValue) && deleteIds.includes(allValue))
+
+            formDelete.checked = [...new Set(duplicatedValues)];
+
         })
 
 
