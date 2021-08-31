@@ -174,11 +174,13 @@ export default {
             keyword: keyword
         })
 
+        //選択削除後の画面遷移先の設定
         const getAfterDeletePageParam = () => {
             paginations.forEach((index) => {
                 if(index.active) {
                      formDelete.page = index.label
                 }
+                //最終ページを全削除した場合、最後の前のページに遷移
                 if(index.url === null && index.label === NEXT && formDelete.checked.length === admins.length) {
                     formDelete.page -= 1
                 }
