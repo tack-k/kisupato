@@ -6,7 +6,7 @@
                    <Fa :icon="faAlignJustify" size="2x" />
                 </div>
                 <nav class="mt-10">
-                    <div x-data="{ open: false }" v-for="sideBarList in sideBar" key="sideBarList.title">
+                    <div x-data="{ open: false }" v-for="sideBarList in sideBarLists" key="sideBarList.title">
                         <button @click="open[sideBarList.id] = !open[sideBarList.id]" class="w-full flex justify-between items-center py-3 px-6 text-gray-600 admin-hover-white focus:outline-none">
                         <span class="flex items-center">
                             <Fa :icon="sideBarList.icon" />
@@ -49,10 +49,6 @@ import { faUser, faDatabase, faDesktop, faQuestionCircle, faInfoCircle, faAlignJ
 
 export default {
     name: "SideBar",
-
-    props: {
-        sideBarLists: Object,
-    },
     components: {
         Fa
     },
@@ -120,7 +116,7 @@ export default {
         //     }
         // ]
 
-        const sideBar = {
+        const sideBarLists = {
             "user_management": {
                 "id": 0,
                 'icon': faUser,
@@ -177,7 +173,6 @@ export default {
         const open = ref([])
         const showMenu = ref(false)
 
-        const sideBarLists = props.sideBarLists
         const setOpen = computed(() => {
             for (const sideBarList in sideBarLists) {
                 open.value.push(false);
@@ -198,7 +193,6 @@ export default {
             showMenu,
             setOpen,
             icons,
-            sideBar,
             faAlignJustify,
         }
     },
