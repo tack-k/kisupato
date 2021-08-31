@@ -188,7 +188,7 @@ console.log(tableKeyword.value)
         //全選択
         const allChecked = computed({
             get: () => {
-              return formDelete.checked.length === searchAdmins.value.length
+              return formDelete.checked.length === searchAdmins.value.length && searchAdmins.value.length !== 0
             },
             set: (val) => {
                 if (val) {
