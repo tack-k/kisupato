@@ -116,6 +116,7 @@ export default {
         const departments = props.departments
         const keyword = props.keyword
         const NO_RESULTS = -1
+        const NO_VALUE = 0
         const NEXT = '次 &raquo'
         let admins = props.admins['data']
         let paginations = props.admins['links']
@@ -187,7 +188,11 @@ export default {
             })
         }
 
+        //選択削除のデータ送信
         const submitDelete = () => {
+            if(formDelete.checked.length === NO_VALUE ) {
+               return confirm('削除するユーザーを選択してください')
+            }
             getAfterDeletePageParam()
             formDelete.post(route('admin.delete'),{
                 onBefore: () => confirm('選択したユーザーを本当に削除しますか？')
