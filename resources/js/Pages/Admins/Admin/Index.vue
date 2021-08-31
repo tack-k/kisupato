@@ -12,7 +12,6 @@
             <admin-register-modal :authorities="authorities" :departments="departments"></admin-register-modal>
             <div class="container mx-auto pt-4 py-16 ">
                 <div class="container">
-                            <form @submit.prevent="submitDelete(formDelete.checked)">
                         <table class="w-full shadow-lg rounded admin-bg-white table">
                             <thead>
                             <tr class="text-left border-b border-grey uppercase table-row">
@@ -25,12 +24,14 @@
                             </tr>
                             <tr class="text-left border-b border-grey uppercase text-gray-50 bg-blue-800 table-row">
                                 <th class="px-3 py-5 table-cell">
+                            <form @submit.prevent="submitDelete(formDelete.checked)">
                                     <div class="flex items-center">
                                         <checkbox v-model="allChecked" :checked="allChecked" />
                                         <button type="submit" :class="{ 'opacity-25': formDelete.processing }" :disabled="formDelete.processing">
                                         <Fa :icon="faTrashAlt" class="ml-3 hover:cursor-pointer" size="lg" />
                                         </button>
                                     </div>
+                            </form>
                                 </th>
                                 <th class="table-cell">職員番号</th>
                                 <th class="table-cell">氏名</th>
@@ -60,7 +61,6 @@
 
                             </tbody>
                         </table>
-                            </form>
                 </div>
 
                     <Pagination :paginations="paginations"/>
