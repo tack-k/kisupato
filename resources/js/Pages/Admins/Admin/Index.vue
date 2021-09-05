@@ -7,18 +7,18 @@
             <admin-register-modal :authorities="authorities" :departments="departments"></admin-register-modal>
             <div class="container mx-auto pt-4 py-16 ">
                 <div class="container">
-                    <table class="w-full shadow-lg rounded admin-bg-white table">
+                    <table class="base-table">
                         <thead>
-                        <tr class="text-left border-b border-grey uppercase table-row">
-                            <th colspan="4" class="p-1 table-cell">
+                        <tr class="base-th-tr-search">
+                            <th colspan="5" class="p-1 table-cell">
+                                <div class="flex items-center flex-col-reverse md:justify-between md:flex-row md:mr-6">
                                 <square-search v-model="tableKeyword" placeholder="テーブル内検索"/>
-                            </th>
-                            <th class="table-cell">
                                 <p class="text-center">職員一覧</p>
+                                </div>
                             </th>
                         </tr>
-                        <tr class="text-left border-b border-grey uppercase text-gray-50 bg-blue-800 table-row">
-                            <th class="px-3 py-5 table-cell">
+                        <tr class="base-th-tr">
+                            <th class="px-3 py-5 base-th-th">
                                 <form @submit.prevent="submitDelete(formDelete.checked)">
                                     <div class="flex items-center">
                                         <checkbox v-model="allChecked" :checked="allChecked" />
@@ -28,28 +28,28 @@
                                     </div>
                                 </form>
                             </th>
-                            <th class="table-cell">職員番号</th>
-                            <th class="table-cell">氏名</th>
-                            <th class="table-cell">部署</th>
-                            <th class="table-cell">権限</th>
+                            <th class="base-th-th">職員番号</th>
+                            <th class="base-th-th">氏名</th>
+                            <th class="base-th-th">部署</th>
+                            <th class="base-th-th">権限</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="(admin, index) in searchAdmins" :key="index"
-                            class="accordion border-b border-grey-light admin-hover-white table-row">
-                            <td class="px-3 py-4 table-cell">
+                            class="base-tb-tr">
+                            <td class="px-3 py-4 base-tb-td">
                                 <checkbox :value="admin.id" v-model:checked="formDelete.checked"/>
                             </td>
-                            <td class="table-cell">
+                            <td class="base-tb-td">
                                 <p class="">{{ admin.staff_number }}</p>
                             </td>
-                            <td class="table-cell">
+                            <td class="base-tb-td">
                                 <p class="">{{ admin.last_name }}{{ admin.first_name }}</p>
                             </td>
-                            <td class="table-cell">
+                            <td class="base-tb-td">
                                 <p class="">{{ admin.department_name }}</p>
                             </td>
-                            <td class="table-cell">
+                            <td class="base-tb-td">
                                 <p class="">{{ admin.authority_name }}</p>
                             </td>
                         </tr>

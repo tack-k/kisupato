@@ -9,6 +9,30 @@
     @apply border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm block
 }
 
+//テーブル
+.base-table {
+    @apply w-full shadow-lg rounded bg-white table
+}
+
+.base-th-tr-search {
+    @apply text-left border-b uppercase table-row
+}
+
+.base-th-tr {
+    @apply text-left border-b uppercase text-gray-50 bg-blue-800 table-row
+}
+
+.base-th-th {
+    @apply table-cell
+}
+
+.base-tb-tr {
+    @apply border-b hover:bg-gray-100 cursor-pointer table-row
+}
+
+.base-tb-td {
+    @apply table-cell
+}
 
 
 /**** 管理者 ****/

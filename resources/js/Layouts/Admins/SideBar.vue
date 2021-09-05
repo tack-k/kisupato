@@ -1,50 +1,64 @@
 <template>
-
-    <div class="bg-gray-200">
+    <transition name="fade">
+        <div class="bg-gray-200">
             <div class="w-64 h-screen admin-bg-white ">
-                <div class="flex items-start justify-end p-2 hover:cursor-pointer">
-                   <Fa :icon="faAlignJustify" size="2x" />
+                <div class="flex items-start justify-end p-2 hover:cursor-pointer" @click="show = !show">
+                    <Fa :icon="faAlignJustify" size="2x"/>
                 </div>
                 <nav class="mt-10">
                     <div x-data="{ open: false }" v-for="sideBarList in sideBarLists" key="sideBarList.title">
-                        <button @click="open[sideBarList.id] = !open[sideBarList.id]" class="w-full flex justify-between items-center py-3 px-6 text-gray-600 admin-hover-white focus:outline-none">
+                        <button @click="open[sideBarList.id] = !open[sideBarList.id]"
+                                class="w-full flex justify-between items-center py-3 px-6 text-gray-600 admin-hover-white focus:outline-none">
                         <span class="flex items-center">
-                            <Fa :icon="sideBarList.icon" />
+                            <Fa :icon="sideBarList.icon"/>
 
 
-                            <span class="mx-4 font-medium">{{sideBarList.title}}</span>
+                            <span class="mx-4 font-medium">{{ sideBarList.title }}</span>
                         </span>
 
                             <span>
 
-                            <svg v-if="sideBarList.subtitle !== null" class="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path v-show="!open[sideBarList.id]" d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path v-show="open[sideBarList.id]" d="M19 9L12 16L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <svg v-if="sideBarList.subtitle !== null" class="h-4 w-4" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path v-show="!open[sideBarList.id]" d="M9 5L16 12L9 19" stroke="currentColor"
+                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path v-show="open[sideBarList.id]" d="M19 9L12 16L5 9" stroke="currentColor"
+                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                             </svg>
                         </span>
                         </button>
 
                         <div v-show="open[sideBarList.id]" class="bg-gray-100" v-for="item in sideBarList.subtitle">
-                            <a class="py-2 px-16 block text-sm text-gray-600 hover:bg-blue-500 hover:text-white" href="#">{{item}}</a>
+                            <a class="py-2 px-16 block text-sm text-gray-600 hover:bg-blue-500 hover:text-white"
+                               href="#">{{ item }}</a>
                         </div>
                     </div>
                 </nav>
 
                 <div class="absolute bottom-0 my-8">
                     <a class="flex items-center py-2 px-8 text-gray-700 hover:text-gray-600" href="#">
-                        <img class="h-6 w-6 rounded-full mr-3 object-cover" src="https://lh3.googleusercontent.com/a-/AOh14Gi0DgItGDTATTFV6lPiVrqtja6RZ_qrY91zg42o-g" alt="avatar">
+                        <img class="h-6 w-6 rounded-full mr-3 object-cover"
+                             src="https://lh3.googleusercontent.com/a-/AOh14Gi0DgItGDTATTFV6lPiVrqtja6RZ_qrY91zg42o-g"
+                             alt="avatar">
                         <span>Khatabwedaa</span>
                     </a>
                 </div>
             </div>
         </div>
+    </transition>
 </template>
 
 <script>
-import { inject, ref, computed } from "vue";
+import {inject, ref, computed} from "vue";
 import Fa from 'vue-fa';
-import { faUser, faDatabase, faDesktop, faQuestionCircle, faInfoCircle, faAlignJustify} from '@fortawesome/free-solid-svg-icons';
-
+import {
+    faUser,
+    faDatabase,
+    faDesktop,
+    faQuestionCircle,
+    faInfoCircle,
+    faAlignJustify
+} from '@fortawesome/free-solid-svg-icons';
 
 
 export default {
@@ -54,68 +68,6 @@ export default {
     },
 
     setup(props) {
-        //
-        // const sideBar =
-        //   [
-        //     {
-        //         'user_management': [
-        //             {'id': 0},
-        //             {'title': 'ユーザー管理'},
-        //             {'icon': faUser},
-        //             {
-        //                 'subtitle': [
-        //                     {'admin': '職員'},
-        //                     {'user': 'ユーザー'},
-        //                     {'expert': '専門人材'},
-        //                 ]
-        //             },
-        //         ],
-        //         'data_management': [
-        //             {'id': 1},
-        //             {'icon': faDatabase},
-        //             {'title': 'データ管理'},
-        //             {
-        //                 'subtitle': [
-        //                     {'expert_position': '専門人材肩書'},
-        //                     {'expert_tag': '専門人材タグ'},
-        //                     {'department': '部署'},
-        //                     {'authority': '権限'},
-        //                     {'user_contact_title': 'ユーザー問い合わせ項目'},
-        //                     {'expert_contact_title': '専門人材問い合わせ項目'},
-        //                 ]
-        //             },
-        //         ],
-        //         'utilization_status': [
-        //             {'id': 2},
-        //             {'icon': faDesktop},
-        //             {'title': 'サイト活用状況'},
-        //             {'subtitle': null},
-        //         ],
-        //         'contact_management': [
-        //             {'id': 3},
-        //             {'icon': faQuestionCircle},
-        //             {'title': '問い合わせ管理'},
-        //             {
-        //                 'subtitle': [
-        //                     {'user': 'ユーザー'},
-        //                     {'expert': '専門人材'},
-        //                 ]
-        //             },
-        //         ],
-        //         'notification_function': [
-        //             {'id': 4},
-        //             {'icon': faInfoCircle},
-        //             {'title': 'お知らせ機能'},
-        //             {
-        //                 'subtitle': [
-        //                     {'mail_magazine': 'メルマガ'},
-        //                     {'information_site': 'サイトからのお知らせ'},
-        //                 ]
-        //             },
-        //         ],
-        //     }
-        // ]
-
         const sideBarLists = {
             "user_management": {
                 "id": 0,
@@ -167,9 +119,6 @@ export default {
         }
 
 
-
-
-
         const open = ref([])
         const showMenu = ref(false)
 
@@ -187,6 +136,8 @@ export default {
             faInfoCircle,
         ]
 
+        let show = ref(true)
+
         return {
             sideBarLists,
             open,
@@ -194,9 +145,9 @@ export default {
             setOpen,
             icons,
             faAlignJustify,
+            show,
         }
     },
-
 
 
 }
@@ -204,6 +155,31 @@ export default {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.fade {
+    &-enter {
+        transform: translateX(0rem);
 
+        &-to {
+            transform: translateX(16rem);
+
+        }
+        &-active {
+            transition: all 1s;
+
+        }
+    }
+
+    &-leave {
+transform: translateX(16rem);
+        //display: block;
+        &-to {
+            transform: translateX(0rem);
+            //display: none;
+        }
+        &-active {
+transition: transform 1s;
+        }
+    }
+}
 </style>
