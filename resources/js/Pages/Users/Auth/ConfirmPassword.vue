@@ -24,7 +24,7 @@
     import BreezeGuestLayout from "@/Layouts/Guest"
     import BreezeInput from '@/Components/Forms/Input'
     import BreezeLabel from '@/Components/Labels/Label'
-    import BreezeValidationErrors from '@/Components/ValidationErrors'
+    import BreezeValidationErrors from '@/Components/Validations/ValidationErrors'
 
     export default {
         layout: BreezeGuestLayout,

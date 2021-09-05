@@ -97,7 +97,7 @@
 
 <script>
 import {ref, reactive} from "vue";
-import BreezeValidationErrors from '@/Components/ValidationErrors'
+import BreezeValidationErrors from '@/Components/Validations/ValidationErrors'
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import RegularButton from "@/Components/Buttons/RegularButton";
 import LabelRequired from "@/Components/Labels/LabelRequired";
