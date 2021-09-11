@@ -17,13 +17,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#pablo">
-                            <i class="fab fa-twitter text-lg leading-lg text-white opacity-75" /><span class="ml-2">Tweet</span>
-                        </a>
+                        <Link :href="route('admin.logout')" method="post" as="button" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
+                            ログアウト
+                        </Link>
                     </li>
                     <li class="nav-item">
                         <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#pablo">
-                            <i class="fab fa-pinterest text-lg leading-lg text-white opacity-75" /><span class="ml-2">Pin</span>
+                            <Fa :icon="faUser" class="text-lg leading-lg text-white opacity-7"/><span class="ml-2">{{ $page.props.auth.admin.last_name }}{{ $page.props.auth.admin.first_name }}</span>
                         </a>
                     </li>
                 </ul>
@@ -34,17 +34,26 @@
 
 <script>
 import { ref } from "vue";
+import Fa from "vue-fa";
+import { Link } from "@inertiajs/inertia-vue3"
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 export default {
     name: "Header",
+    components: {
+      Fa,
+      Link,
+    },
 
     setup() {
       let showMenu = ref(false)
       const toggleNavbar = () => showMenu.value = !showMenu.value
 
+
       return {
           showMenu,
           toggleNavbar,
+          faUser,
       }
     },
 }
