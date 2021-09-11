@@ -1,9 +1,8 @@
 <template>
-    <transition name="fade">
-        <div class="bg-gray-200">
+        <div class="bg-gray-200" v-show="show">
             <div class="w-64 h-screen admin-bg-white ">
-                <div class="flex items-start justify-end p-2 hover:cursor-pointer" @click="show = !show">
-                    <Fa :icon="faAlignJustify" size="2x"/>
+                <div class="flex items-start justify-end p-2">
+                    <Fa class="hover:cursor-pointer" @click="show = !show" :icon="faAlignJustify" size="2x"/>
                 </div>
                 <nav class="mt-10">
                     <div x-data="{ open: false }" v-for="sideBarList in sideBarLists" key="sideBarList.title">
@@ -45,7 +44,9 @@
                 </div>
             </div>
         </div>
-    </transition>
+    <div v-show="!show" @click="show = !show" class="flex items-start justify-end p-2 hover:cursor-pointer">
+        <Fa :icon="faAlignJustify" size="2x"/>
+    </div>
 </template>
 
 <script>
@@ -156,30 +157,28 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.fade {
-    &-enter {
-        transform: translateX(0rem);
 
-        &-to {
-            transform: translateX(16rem);
 
-        }
-        &-active {
-            transition: all 1s;
-
-        }
-    }
-
-    &-leave {
-transform: translateX(16rem);
-        //display: block;
-        &-to {
-            transform: translateX(0rem);
-            //display: none;
-        }
-        &-active {
-transition: transform 1s;
-        }
-    }
-}
+//.fade {
+//    &-enter {
+//        transform: translateX(-100%);
+//        &-to {
+//            transform: translateX(0);
+//        }
+//        &-active {
+//            transition: all 1s;
+//
+//        }
+//    }
+//
+//    &-leave {
+//transform: translateX(0);
+//        &-to {
+//            transform: translateX(-100%);
+//        }
+//        &-active {
+//transition: all 1s;
+//        }
+//    }
+//}
 </style>
