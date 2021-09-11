@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Admins\Admin;
+use App\Policies\AdminPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+       // Admin::class => AdminPolicy::class,
     ];
 
     /**
