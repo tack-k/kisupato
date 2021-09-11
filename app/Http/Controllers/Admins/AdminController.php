@@ -8,6 +8,7 @@ use App\Http\Requests\AdminRequest;
 use App\Models\Admins\Authority;
 use App\Models\Admins\Department;
 use App\Mail\CreateAdmin;
+use App\Rules\AdminStatusRule;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\InvalidOrderException;
 
 class AdminController extends Controller
 {
@@ -68,6 +70,10 @@ class AdminController extends Controller
     public function store(AdminRequest $request)
     {
 
+        if(Auth::guard('admin')->user()->cannot('create', Admin::class)) {
+            session()->flash('message', '作成権限がありません。');
+            return Inertia::location(route('admin.index'));
+        }
         $params = $request->validated();
         $password = Str::random(10);
         $params['password'] = Hash::make($password);
@@ -128,10 +134,20 @@ class AdminController extends Controller
 
     public function  delete(Request $request) {
 
+
         $ids = $request->checked;
-        $page = $request->page;
-        $keyword = $request->keyword;
-        Admin::destroy($ids);
+        $params = $request->validate([
+           'checked' => [new AdminStatusRule($ids)]
+        ]);
+        try {
+            $page = $request->page;
+            $keyword = $request->keyword;
+            Admin::destroy($ids);
+            session()->flash('message', '削除しました');
+        } catch (Throwable $e) {
+            report($e);
+            session()->flash('message', '削除できませんでした');
+        }
 
         return Inertia::location(route('admin.index', ['page' => $page, 'keyword' => $keyword]));
 
