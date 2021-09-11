@@ -53,5 +53,5 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
 });
 
 
-Route::resource('admin', AdminController::class)->only(['index', 'store']);
+Route::resource('admin', AdminController::class)->only(['index', 'store'])->middleware('auth:admin');
 Route::post('/admin/deleteMultiple', [AdminController::class, 'delete'])->name('admin.delete');
