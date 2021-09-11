@@ -34,6 +34,8 @@ class AdminController extends Controller
         $admins = new Admin();
         $admins = $admins->searchAdmins($keyword);
 
+        $canCreate = Auth::guard('admin')->user()->can('create', Admin::class);
+        $canDelete = Auth::guard('admin')->user()->can('delete', Admin::class);
 
         return Inertia::render('Admins/Admin/Index',
             [
@@ -41,6 +43,8 @@ class AdminController extends Controller
                 'departments' => $departments,
                 'admins' => $admins,
                 'keyword' => $keyword,
+                'canCreate' => $canCreate,
+                'canDelete' => $canDelete,
             ]
         );
     }

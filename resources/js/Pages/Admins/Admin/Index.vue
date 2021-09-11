@@ -4,7 +4,7 @@
             <form @submit.prevent="submitKeyword">
                 <RoundSearch v-model="formKeyword.keyword" placeholder="全体検索"/>
             </form>
-            <admin-register-modal :authorities="authorities" :departments="departments"></admin-register-modal>
+            <admin-register-modal v-if="canCreate" :authorities="authorities" :departments="departments"></admin-register-modal>
             <div class="container mx-auto pt-4 py-16 ">
                 <div class="container">
                     <table class="base-table">
@@ -18,7 +18,7 @@
                             </th>
                         </tr>
                         <tr class="base-th-tr">
-                            <th class="px-3 py-5 base-th-th">
+                            <th v-if="canDelete" class="base-th-th">
                                 <form @submit.prevent="submitDelete(formDelete.checked)">
                                     <div class="flex items-center">
                                         <checkbox v-model="allChecked" :checked="allChecked" />
@@ -28,7 +28,7 @@
                                     </div>
                                 </form>
                             </th>
-                            <th class="base-th-th">職員番号</th>
+                            <th class="base-th-th ">職員番号</th>
                             <th class="base-th-th">氏名</th>
                             <th class="base-th-th">部署</th>
                             <th class="base-th-th">権限</th>
@@ -37,7 +37,7 @@
                         <tbody>
                         <tr v-for="(admin, index) in searchAdmins" :key="index"
                             class="base-tb-tr">
-                            <td class="px-3 py-4 base-tb-td">
+                            <td v-if="canDelete" class="base-tb-td">
                                 <checkbox :value="admin.id" v-model:checked="formDelete.checked"/>
                             </td>
                             <td class="base-tb-td">
@@ -106,6 +106,8 @@ export default {
         departments: Object,
         admins: Object,
         keyword: String,
+        canCreate: Boolean,
+        canDelete: Boolean,
     },
 
     setup(props) {
