@@ -12,8 +12,8 @@ class AuthorObserver
      * @param Model $model
      * @return void
      */
-    public function created(Model $model){
-        if(Auth::check()) {
+    public function creating(Model $model){
+        if(Auth::guard('user')->check()) {
         $model->created_by = 'user:' . Auth::id();
         } elseif (Auth::guard('admin')->check()) {
         $model->created_by = 'admin:' . Auth::id();
@@ -26,7 +26,7 @@ class AuthorObserver
      * @return void
      */
     public function saving(Model $model){
-        if(Auth::check()) {
+        if(Auth::guard('user')->check()) {
             $model->updated_by = 'user:' . Auth::id();
         } elseif (Auth::guard('admin')->check()) {
             $model->updated_by = 'admin:' . Auth::id();
@@ -39,7 +39,7 @@ class AuthorObserver
      * @return void
      */
     public function deleting(Model $model){
-        if(Auth::check()) {
+        if(Auth::guard('user')->check()) {
             $model->deleted_by = 'user:' . Auth::id();
         } elseif (Auth::guard('admin')->check()) {
             $model->deleted_by = 'admin:' . Auth::id();
