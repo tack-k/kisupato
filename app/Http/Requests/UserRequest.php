@@ -45,5 +45,11 @@ class UserRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'birthday.before_or_equal' => ':attributeには本日以降の日付を入力してください。',
+        ];
+    }
 
 }

@@ -22,6 +22,11 @@ use \App\Http\Controllers\Admins\AdminController;
 require __DIR__ . '/user_auth.php';
 require __DIR__ . '/admin_auth.php';
 
+//仮置き
+Route::get('/dashboard', function () {
+    return Inertia::render('Users/Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -31,37 +36,30 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::group(['prefix' => 'user', 'namespace' => 'Users', 'as' => 'user.'], function() {
-//    Route::resources(['users', UserController::class]);
+
+//ユーザー:認証なし
+Route::group(['middleware' => 'guest'], function() {
+    Route::get('/register', [UserController::class, 'create'])->name('create');
+    Route::post('/register', [UserController::class, 'store'])->name('store');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Users/Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
 
 
+//ユーザー:認証あり
+Route::group(['middleware' => 'auth:user'], function() {
 
-
-    Route::get('/dashboard', function () {
-        return Inertia::render('Admin/Dashboard');
-    })->middleware(['auth:admin', 'verified'])->name('dashboard');
-    Route::get('/sidebar', function() {
-       return Inertia::render('Admin/SideBar', ['sideBarLists' => Consts\SideBarConst::SIDEBAR_LISTS]);
-    });
 });
 
 //管理者:認証なし
 Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'guest'], function() {
    Route::get('/init_password', [AdminController::class, 'inputInitPassword'])->name('.inputInitPassword');
-   Route::post('/initialize_password', [AdminController::class, 'initializePassword'])->name('.initializePassword');
+   Route::post('/init_password', [AdminController::class, 'initializePassword'])->name('.initializePassword');
 });
-Route::post('/admin/deleteMultiple', [AdminController::class, 'delete'])->name('admin.delete');
 
 //管理者:認証あり
 Route::resource('admin', AdminController::class)->only(['index', 'store'])->middleware('auth:admin');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'auth:admin'], function() {
+    Route::post('/delete', [AdminController::class, 'delete'])->name('.delete');
 
 });
