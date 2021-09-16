@@ -14,9 +14,9 @@ class AuthorObserver
      */
     public function creating(Model $model){
         if(Auth::guard('user')->check()) {
-        $model->created_by = 'user:' . Auth::id();
+        $model->created_by = 'user:' . Auth::guard('user')->id();
         } elseif (Auth::guard('admin')->check()) {
-        $model->created_by = 'admin:' . Auth::id();
+        $model->created_by = 'admin:' . Auth::guard('admin')->id();
         }
     }
 
@@ -27,9 +27,9 @@ class AuthorObserver
      */
     public function saving(Model $model){
         if(Auth::guard('user')->check()) {
-            $model->updated_by = 'user:' . Auth::id();
+            $model->updated_by = 'user:' . Auth::guard('user')->id();
         } elseif (Auth::guard('admin')->check()) {
-            $model->updated_by = 'admin:' . Auth::id();
+            $model->updated_by = 'admin:' . Auth::guard('admin')->id();
         }
     }
 
@@ -40,9 +40,9 @@ class AuthorObserver
      */
     public function deleting(Model $model){
         if(Auth::guard('user')->check()) {
-            $model->deleted_by = 'user:' . Auth::id();
+            $model->deleted_by = 'user:' . Auth::guard('user')->id();
         } elseif (Auth::guard('admin')->check()) {
-            $model->deleted_by = 'admin:' . Auth::id();
+            $model->deleted_by = 'admin:' . Auth::guard('admin')->id();
         }
     }
 }
