@@ -4,6 +4,21 @@
     @apply font-bold
 }
 
+//見出し大
+.base-font-l {
+    @apply text-4xl
+}
+
+//見出し中
+.base-font-m {
+    @apply text-2xl
+}
+
+見出し小
+.base-font-s {
+    @apply text-lg
+}
+
 //入力フォーム
 .base-form {
     @apply border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm block

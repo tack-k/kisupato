@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admins\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use App\Consts\AdminConst;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -37,8 +38,13 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        $loginAdminPasswordInitFlag = Auth::guard('admin')->user()->password_init_flag;
+        if($loginAdminPasswordInitFlag === AdminConst::INITIALIZED) {
+             return redirect()->intended(RouteServiceProvider::ADMIN_HOME);
+        } else {
+            return redirect()->intended('/admin/init_password');
 
-        return redirect()->intended(RouteServiceProvider::ADMIN_HOME);
+        }
     }
 
 
@@ -56,6 +62,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect(route('admin.login'));
     }
 }

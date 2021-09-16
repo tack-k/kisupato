@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admins;
 
+use App\Consts\AdminConst;
 use App\Http\Controllers\Controller;
 use App\Models\Admins\Admin;
 use App\Http\Requests\AdminRequest;
 use App\Models\Admins\Authority;
 use App\Models\Admins\Department;
 use App\Mail\CreateAdmin;
+use App\Http\Requests\InitializePasswordRequest;
 use App\Rules\AdminStatusRule;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -150,6 +152,23 @@ class AdminController extends Controller
         }
 
         return Inertia::location(route('admin.index', ['page' => $page, 'keyword' => $keyword]));
+
+    }
+
+    public function inputInitPassword() {
+        return Inertia::render('Admins/Auth/InputInitPassword');
+    }
+
+    public function initializePassword(InitializePasswordRequest $request) {
+        $params = $request->validated();
+        $newPassword = Hash::make($params['password']);
+
+        $admin = Auth::guard('admin')->user();
+        $admin->password = $newPassword;
+        $admin->password_init_flag = AdminConst::INITIALIZED;
+        $admin->save();
+        session()->flash('message', '初期パスワードを変更しました。');
+        return Inertia::location(route('admin.index'));
 
     }
 

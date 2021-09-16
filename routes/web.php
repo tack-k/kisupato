@@ -52,6 +52,16 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
     });
 });
 
-
-Route::resource('admin', AdminController::class)->only(['index', 'store'])->middleware('auth:admin');
+//管理者:認証なし
+Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'guest'], function() {
+   Route::get('/init_password', [AdminController::class, 'inputInitPassword'])->name('.inputInitPassword');
+   Route::post('/initialize_password', [AdminController::class, 'initializePassword'])->name('.initializePassword');
+});
 Route::post('/admin/deleteMultiple', [AdminController::class, 'delete'])->name('admin.delete');
+
+//管理者:認証あり
+Route::resource('admin', AdminController::class)->only(['index', 'store'])->middleware('auth:admin');
+
+Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'auth:admin'], function() {
+
+});

@@ -167,6 +167,7 @@ return [
         'staff_number' => '職員番号',
         'department_id' => '部署',
         'authority_id' => '権限',
+        'current_password' => '現在のパスワード',
     ],
 
 ];

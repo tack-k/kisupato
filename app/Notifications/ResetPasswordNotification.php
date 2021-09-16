@@ -41,9 +41,9 @@ class ResetPasswordNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('パスワード再設定')
+                    ->subject('【キスパト】パスワード再設定のお知らせ')
                     ->line('下のボタンをクリックしてパスワードを再設定してください。')
-                    ->action('【キスパト】パスワード再設定', url($this->url))
+                    ->action('パスワード再設定', url($this->url))
                     ->line('もし心当たりがない場合は、本メッセージは破棄してください。');
     }
 
