@@ -1,8 +1,7 @@
 <template>
     <div class="mb-4 text-sm text-gray-600">
-        パスワードをお忘れの方は、以下の項目を入力してください。
-        登録されているメールアドレスに送信します。<br>
-        送付されたURLからパスワードの再設定ができます。
+        パスワードをお忘れの方は、以下の項目を入力してください。<br>
+        登録されているメールアドレスにパスワード再設定のリンクURLを送信します。
     </div>
 
     <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
