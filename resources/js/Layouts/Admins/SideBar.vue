@@ -28,8 +28,8 @@
                         </button>
 
                         <div v-show="open[sideBarList.id]" class="bg-gray-100" v-for="item in sideBarList.subtitle">
-                            <a class="py-2 px-16 block text-sm text-gray-600 hover:bg-blue-500 hover:text-white"
-                               href="#">{{ item }}</a>
+                            <Link class="py-2 px-16 block text-sm text-gray-600 hover:bg-blue-500 hover:text-white"
+                               :href="route(sideBarList.link)">{{ item }}</Link>
                         </div>
                     </div>
                 </nav>
@@ -60,12 +60,14 @@ import {
     faInfoCircle,
     faAlignJustify
 } from '@fortawesome/free-solid-svg-icons';
+import { Link } from "@inertiajs/inertia-vue3"
 
 
 export default {
     name: "SideBar",
     components: {
-        Fa
+        Fa,
+        Link,
     },
 
     setup(props) {
@@ -78,7 +80,8 @@ export default {
                     "admin": "職員",
                     "user": "ユーザー",
                     "expert": "専門人材"
-                }
+                },
+                "link": "admin.index"
             },
             "data_management": {
                 "id": 1,
@@ -91,13 +94,15 @@ export default {
                     "authority": "権限",
                     "user_contact_title": "ユーザー問い合わせ項目",
                     "expert_contact_title": "専門人材問い合わせ項目"
-                }
+                },
+                "link": "admin.index"
             },
             "utilization_status": {
                 "id": 2,
                 'icon': faDesktop,
                 "title": "サイト活用状況",
-                "subtitle": null
+                "subtitle": null,
+                "link": "admin.index"
             },
             "contact_management": {
                 "id": 3,
@@ -106,7 +111,8 @@ export default {
                 "subtitle": {
                     "user": "ユーザー",
                     "expert": "専門人材"
-                }
+                },
+                "link": "admin.index"
             },
             "notification_function": {
                 "id": 4,
@@ -115,7 +121,8 @@ export default {
                 "subtitle": {
                     "mail_magazine": "メルマガ",
                     "information_site": "サイトからのお知らせ"
-                }
+                },
+                "link": "admin.index"
             }
         }
 
