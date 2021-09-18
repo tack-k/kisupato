@@ -2,12 +2,12 @@
         <div class="bg-gray-200" v-show="show">
             <div class="w-64 h-screen admin-bg-white ">
                 <div class="flex items-start justify-end p-2">
-                    <Fa class="hover:cursor-pointer" @click="show = !show" :icon="faAlignJustify" size="2x"/>
+                    <Fa class="admin-hover" @click="show = !show" :icon="faAlignJustify" size="2x"/>
                 </div>
                 <nav class="mt-10">
                     <div x-data="{ open: false }" v-for="sideBarList in sideBarLists" key="sideBarList.title">
                         <button @click="open[sideBarList.id] = !open[sideBarList.id]"
-                                class="w-full flex justify-between items-center py-3 px-6 text-gray-600 admin-hover-white focus:outline-none">
+                                class="w-full flex justify-between items-center py-3 px-6 text-gray-600 hover:bg-gray-100 hover:cursor-pointer focus:outline-none">
                         <span class="flex items-center">
                             <Fa :icon="sideBarList.icon"/>
 

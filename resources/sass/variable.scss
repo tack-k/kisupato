@@ -74,8 +74,8 @@
 }
 
 /** hover **/
-.admin-hover-white {
-    @apply hover:bg-gray-100 cursor-pointer
+.admin-hover {
+    @apply hover:opacity-75 hover:cursor-pointer
 }
 
 /** focus **/
