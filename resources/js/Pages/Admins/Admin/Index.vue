@@ -23,15 +23,39 @@
                                     <div class="flex items-center">
                                         <checkbox v-model="allChecked" :checked="allChecked" />
                                         <button type="submit" :class="{ 'opacity-25': formDelete.processing }" :disabled="formDelete.processing">
-                                            <Fa :icon="faTrashAlt" class="ml-3 hover:cursor-pointer" size="lg" />
+                                            <Fa :icon="faTrashAlt" class="ml-3 admin-hover" size="lg" />
                                         </button>
                                     </div>
                                 </form>
                             </th>
-                            <th class="base-th-th ">職員番号</th>
-                            <th class="base-th-th">氏名</th>
-                            <th class="base-th-th">部署</th>
-                            <th class="base-th-th">権限</th>
+                            <th class="base-th-th" >
+                                <div class="flex items-center">
+                                    <p class="mr-2">職員番号</p>
+                                    <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortStaffUp" :class="{ 'admin-text-active': sortStatus.staffUp }"/>
+                                    <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortStaffDown" :class="{ 'admin-text-active': sortStatus.staffDown }"/>
+                                </div>
+                            </th>
+                            <th class="base-th-th" >
+                                <div class="flex items-center">
+                                    <p class="mr-2">氏名</p>
+                                        <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortNameUp" :class="{ 'admin-text-active': sortStatus.nameUp }"/>
+                                        <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortNameDown" :class="{ 'admin-text-active': sortStatus.nameDown }"/>
+                                </div>
+                            </th>
+                            <th class="base-th-th" >
+                                <div class="flex items-center">
+                                    <p class="mr-2">部署</p>
+                                    <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortDepartmentUp" :class="{ 'admin-text-active': sortStatus.departmentUp }"/>
+                                    <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortDepartmentDown" :class="{ 'admin-text-active': sortStatus.departmentDown }"/>
+                                </div>
+                            </th>
+                            <th class="base-th-th" >
+                                <div class="flex items-center">
+                                    <p class="mr-2">権限</p>
+                                    <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortAuthorityUp" :class="{ 'admin-text-active': sortStatus.authorityUp }"/>
+                                    <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortAuthorityDown" :class="{ 'admin-text-active': sortStatus.authorityDown }"/>
+                                </div>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -80,7 +104,7 @@ import {useForm} from "@inertiajs/inertia-vue3"
 import FlashMessage from "@/Components/Messages/FlashMessage";
 import Checkbox from "@/Components/Forms/Checkbox";
 import Fa from "vue-fa";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faCaretSquareUp, faCaretSquareDown } from "@fortawesome/free-solid-svg-icons";
 import MainLayout from "@/Layouts/Admins/MainLayout";
 
 export default {
@@ -213,6 +237,208 @@ export default {
             }
         });
 
+        //ソート
+        let sortStatus = reactive({
+            staffUp: false,
+            staffDown: false,
+            nameUp: false,
+            nameDown: false,
+            departmentUp: false,
+            departmentDown: false,
+            authorityUp: false,
+            authorityDown: false,
+        })
+
+        const resetSortStatus = () => {
+            sortStatus.staffUp = false
+            sortStatus.staffDown = false
+            sortStatus.nameUp = false
+            sortStatus.nameDown = false
+            sortStatus.departmentUp = false
+            sortStatus.departmentDown = false
+            sortStatus.authorityUp = false
+            sortStatus.authorityDown = false
+        }
+
+        // データ取得時の作成日順にソート
+        const sortDefault = () => {
+            searchAdmins.value.sort((a, b) => {
+                if(a.created_at < b.created_at) {
+                    return 1
+                } else if (a.created_at > b.created_at){
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+        }
+
+
+        const sortStaffUp = () => {
+            if(sortStatus.staffUp) {
+                sortDefault()
+                sortStatus.staffUp = false
+                return
+            }
+
+            searchAdmins.value.sort((a, b) => {
+                if(a.staff_number > b.staff_number) {
+                    return 1
+                } else if (a.staff_number < b.staff_number){
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+
+            resetSortStatus()
+            sortStatus.staffUp = true
+        }
+
+        const sortStaffDown = () => {
+            if(sortStatus.staffDown) {
+                sortDefault()
+                sortStatus.staffDown = false
+                return
+            }
+
+            searchAdmins.value.sort((a, b) => {
+                if(a.staff_number < b.staff_number) {
+                    return 1
+                } else if (a.staff_number > b.staff_number){
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+            resetSortStatus()
+            sortStatus.staffDown = true
+        }
+
+        const sortNameUp = () => {
+            if(sortStatus.nameUp) {
+                sortDefault()
+                sortStatus.nameUp = false
+                return
+            }
+
+            searchAdmins.value.sort((a, b) => {
+                if(a.name_kana > b.name_kana) {
+                    return 1
+                } else if (a.name_kana < b.name_kana){
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+
+            resetSortStatus()
+            sortStatus.nameUp = true
+        }
+
+        const sortNameDown = () => {
+            if(sortStatus.nameDown) {
+                sortDefault()
+                sortStatus.nameDown = false
+                return
+            }
+
+            searchAdmins.value.sort((a, b) => {
+                if(a.name_kana < b.name_kana) {
+                    return 1
+                } else if (a.name_kana > b.name_kana){
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+            resetSortStatus()
+            sortStatus.nameDown = true
+        }
+
+        const sortDepartmentUp = () => {
+            if(sortStatus.departmentUp) {
+                sortDefault()
+                sortStatus.departmentUp = false
+                return
+            }
+
+            searchAdmins.value.sort((a, b) => {
+                if(a.department_name > b.department_name) {
+                    return 1
+                } else if (a.department_name < b.department_name){
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+
+            resetSortStatus()
+            sortStatus.departmentUp = true
+        }
+
+        const sortDepartmentDown = () => {
+            if(sortStatus.departmentDown) {
+                sortDefault()
+                sortStatus.departmentDown = false
+                return
+            }
+
+            searchAdmins.value.sort((a, b) => {
+                if(a.department_name < b.department_name) {
+                    return 1
+                } else if (a.department_name > b.department_name){
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+            resetSortStatus()
+            sortStatus.departmentDown = true
+        }
+
+        const sortAuthorityUp = () => {
+            if(sortStatus.authorityUp) {
+                sortDefault()
+                sortStatus.authorityUp = false
+                return
+            }
+
+            searchAdmins.value.sort((a, b) => {
+                if(a.authority_name > b.authority_name) {
+                    return 1
+                } else if (a.authority_name < b.authority_name){
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+
+            resetSortStatus()
+            sortStatus.authorityUp = true
+        }
+
+        const sortAuthorityDown = () => {
+            if(sortStatus.authorityDown) {
+                sortDefault()
+                sortStatus.authorityDown = false
+                return
+            }
+
+            searchAdmins.value.sort((a, b) => {
+                if(a.authority_name < b.authority_name) {
+                    return 1
+                } else if (a.authority_name > b.authority_name){
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+            resetSortStatus()
+            sortStatus.authorityDown = true
+        }
+
+
         return {
             sideBarLists,
             paginations,
@@ -225,6 +451,18 @@ export default {
             submitDelete,
             getAfterDeletePageParam,
             allChecked,
+            faCaretSquareUp,
+            faCaretSquareDown,
+            sortStatus,
+            sortNameUp,
+            sortNameDown,
+            sortStaffUp,
+            sortStaffDown,
+            sortDepartmentUp,
+            sortDepartmentDown,
+            sortAuthorityUp,
+            sortAuthorityDown,
+
         }
     },
 
