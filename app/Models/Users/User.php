@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Users;
 
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\AuthorObservable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes, AuthorObservable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,9 +20,23 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'last_name',
+        'first_name',
+        'last_name_kana',
+        'first_name_kana',
         'email',
+        'tel',
+        'postal_code',
+        'region',
+        'city',
+        'street',
+        'building',
+        'gender',
+        'birthday',
         'password',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     /**
@@ -40,4 +57,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = url(route('password.reset', ['token' => $token], false));
+
+        $this->notify(new ResetPasswordNotification($url));
+    }
 }

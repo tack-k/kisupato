@@ -1,0 +1,86 @@
+/**** 共通利用 ****/
+//強調文字の太さ
+.base-font-bold {
+    @apply font-bold
+}
+
+//見出し大
+.base-font-l {
+    @apply text-4xl
+}
+
+//見出し中
+.base-font-m {
+    @apply text-2xl
+}
+
+見出し小
+.base-font-s {
+    @apply text-lg
+}
+
+//入力フォーム
+.base-form {
+    @apply border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm block
+}
+
+//テーブル
+.base-table {
+    @apply w-full shadow-lg rounded bg-white table
+}
+
+.base-th-tr-search {
+    @apply text-left border-b uppercase table-row
+}
+
+.base-th-tr {
+    @apply text-left border-b uppercase text-gray-50 bg-blue-800 table-row
+}
+
+.base-th-th {
+    @apply table-cell px-3 py-5
+}
+
+.base-tb-tr {
+    @apply border-b hover:bg-gray-100 cursor-pointer table-row
+}
+
+.base-tb-td {
+    @apply table-cell px-3 py-4
+}
+
+
+/**** 管理者 ****/
+/** color **/
+
+//白背景色
+.admin-bg-white {
+    @apply bg-white;
+}
+
+//強調背景色
+.admin-bg-active {
+    @apply bg-yellow-500
+}
+
+//白抜き文字色
+.admin-text-white {
+    @apply text-white
+ }
+
+//強調文字色
+.admin-text-active {
+    @apply text-yellow-500
+}
+
+/** hover **/
+.admin-hover {
+    @apply hover:opacity-75 hover:cursor-pointer
+}
+
+/** focus **/
+.admin-focus {
+    @apply focus:bg-yellow-100 focus:outline-none
+}
+
+

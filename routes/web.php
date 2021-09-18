@@ -1,6 +1,11 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use App\Consts;
+use \App\Http\Controllers\Users\UserController;
+use \App\Http\Controllers\Admins\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +18,48 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+require __DIR__ . '/user_auth.php';
+require __DIR__ . '/admin_auth.php';
+
+//仮置き
+Route::get('/dashboard', function () {
+    return Inertia::render('Users/Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+})->name('home');
+
+
+//ユーザー:認証なし
+Route::group(['middleware' => 'guest'], function() {
+    Route::get('/register', [UserController::class, 'create'])->name('create');
+    Route::post('/register', [UserController::class, 'store'])->name('store');
+});
+
+
+
+//ユーザー:認証あり
+Route::group(['middleware' => 'auth:user'], function() {
+
+});
+
+//管理者:認証なし
+Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'guest'], function() {
+   Route::get('/init_password', [AdminController::class, 'inputInitPassword'])->name('.inputInitPassword');
+   Route::post('/init_password', [AdminController::class, 'initializePassword'])->name('.initializePassword');
+});
+
+//管理者:認証あり
+Route::resource('admin', AdminController::class)->only(['index', 'store'])->middleware('auth:admin');
+
+Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'auth:admin'], function() {
+    Route::post('/delete', [AdminController::class, 'delete'])->name('.delete');
+
 });
