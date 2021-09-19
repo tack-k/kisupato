@@ -62,7 +62,7 @@ class Admin extends Authenticatable
 
     public function searchAdmins($keyword) {
         if (isset($keyword)) {
-            $admins = Admin::select('admins.staff_number', 'admins.last_name', 'admins.first_name', DB::raw('CONCAT(last_name_kana, first_name_kana) AS name_kana') , 'authorities.name AS authority_name', 'departments.name AS department_name', 'admins.created_at')
+            $admins = Admin::select('admins.id', 'admins.staff_number', 'admins.last_name', 'admins.first_name', DB::raw('CONCAT(last_name_kana, first_name_kana) AS name_kana') , 'authorities.name AS authority_name', 'departments.name AS department_name', 'admins.created_at')
                 ->leftJoin('authorities', 'admins.authority_id', '=', 'authorities.id')
                 ->leftJoin('departments', 'admins.department_id', '=', 'departments.id')
                 ->where('admins.deleted_at', '=', null)
@@ -77,7 +77,7 @@ class Admin extends Authenticatable
                 ->appends(['keyword' => $keyword]);
 
         } else {
-            $admins = Admin::select('admins.staff_number', 'admins.last_name', 'admins.first_name', DB::raw('CONCAT(last_name_kana, first_name_kana) AS name_kana') , 'authorities.name AS authority_name', 'departments.name AS department_name', 'admins.created_at')
+            $admins = Admin::select('admins.id', 'admins.staff_number', 'admins.last_name', 'admins.first_name', DB::raw('CONCAT(last_name_kana, first_name_kana) AS name_kana') , 'authorities.name AS authority_name', 'departments.name AS department_name', 'admins.created_at')
                 ->leftJoin('authorities', 'admins.authority_id', '=', 'authorities.id')
                 ->leftJoin('departments', 'admins.department_id', '=', 'departments.id')
                 ->where('admins.deleted_at', '=', null)
