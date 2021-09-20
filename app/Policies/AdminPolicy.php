@@ -11,6 +11,22 @@ class AdminPolicy
     use HandlesAuthorization;
 
     /**
+     * 共通ポリシー
+     * @var commonPolicy
+     */
+    private $_commonPolicy;
+
+    /**
+     * Create a new policy instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->_commonPolicy = new commonPolicy();
+    }
+
+    /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\Admins\Admin  $admin
@@ -18,19 +34,19 @@ class AdminPolicy
      */
     public function create(Admin $admin)
     {
-        return $admin->authority_id === AuthorityConst::ALL_MANAGEMENT;
+        return $this->_commonPolicy->_allManagement($admin);
     }
 
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\Admin  $admin
+     * @param  \App\Models\Admins\Admin  $admin
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(Admin $admin)
     {
-        return $admin->authority_id === AuthorityConst::ALL_MANAGEMENT;
+        return $this->_commonPolicy->_allManagement($admin);
     }
 
 
