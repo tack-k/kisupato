@@ -11,6 +11,7 @@ use App\Models\Admins\Department;
 use App\Mail\CreateAdmin;
 use App\Http\Requests\InitializePasswordRequest;
 use App\Rules\AdminStatusRule;
+use App\Consts\MessageConst;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -73,7 +74,7 @@ class AdminController extends Controller
     {
 
         if(Auth::guard('admin')->user()->cannot('create', Admin::class)) {
-            session()->flash('message', '作成権限がありません。');
+            session()->flash('message', MessageConst::E_01001);
             return Inertia::location(route('admin.index'));
         }
         $params = $request->validated();
@@ -84,7 +85,7 @@ class AdminController extends Controller
 
         Mail::to($admin->email)->send(new CreateAdmin($admin->email, $password));
 
-        $request->session()->flash('message', 'ご登録いただいたメールアドレスにアカウント発行のメールを送信しました。');
+        $request->session()->flash('message', MessageConst::I_01001);
         return Inertia::location(route('admin.index', ['page' => 1]));
 
     }
@@ -145,10 +146,10 @@ class AdminController extends Controller
             $page = $request->page;
             $keyword = $request->keyword;
             Admin::destroy($ids);
-            session()->flash('message', '削除しました');
+            session()->flash('message', MessageConst::ADMIN . MessageConst::I_00003);
         } catch (Throwable $e) {
             report($e);
-            session()->flash('message', '削除できませんでした');
+            session()->flash('message', MessageConst::ADMIN . MessageConst::E_00003);
         }
 
         return Inertia::location(route('admin.index', ['page' => $page, 'keyword' => $keyword]));
@@ -167,7 +168,7 @@ class AdminController extends Controller
         $admin->password = $newPassword;
         $admin->password_init_flag = AdminConst::INITIALIZED;
         $admin->save();
-        session()->flash('message', '初期パスワードを変更しました。');
+        session()->flash('message', MessageConst::INIT_PASSWORD . MessageConst::I_00002);
         return Inertia::location(route('admin.index'));
 
     }
