@@ -6,6 +6,8 @@ use Inertia\Inertia;
 use App\Consts;
 use \App\Http\Controllers\Users\UserController;
 use \App\Http\Controllers\Admins\AdminController;
+use \App\Http\Controllers\Admins\DepartmentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,15 +53,16 @@ Route::group(['middleware' => 'auth:user'], function() {
 });
 
 //管理者:認証なし
-Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'guest'], function() {
-   Route::get('/init_password', [AdminController::class, 'inputInitPassword'])->name('.inputInitPassword');
-   Route::post('/init_password', [AdminController::class, 'initializePassword'])->name('.initializePassword');
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'guest'], function() {
+   Route::get('/init_password', [AdminController::class, 'inputInitPassword'])->name('inputInitPassword');
+   Route::post('/init_password', [AdminController::class, 'initializePassword'])->name('initializePassword');
 });
 
 //管理者:認証あり
 Route::resource('admin', AdminController::class)->only(['index', 'store'])->middleware('auth:admin');
-
-Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'auth:admin'], function() {
-    Route::post('/delete', [AdminController::class, 'delete'])->name('.delete');
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin'], function() {
+    Route::post('/delete', [AdminController::class, 'delete'])->name('delete');
+    Route::resource('department', DepartmentController::class)->only(['index', 'store'])->middleware('auth:admin');
+    Route::post('/department/delete', [DepartmentController::class, 'delete'])->name('department.delete');
 
 });
