@@ -29,7 +29,7 @@
 
                         <div v-show="open[sideBarList.id]" class="bg-gray-100" v-for="item in sideBarList.subtitle">
                             <Link class="py-2 px-16 block text-sm text-gray-600 hover:bg-blue-500 hover:text-white"
-                               :href="route(sideBarList.link)">{{ item }}</Link>
+                               :href="route(item.link)">{{ item.title }}</Link>
                         </div>
                     </div>
                 </nav>
@@ -77,25 +77,50 @@ export default {
                 'icon': faUser,
                 "title": "ユーザー管理",
                 "subtitle": {
-                    "admin": "職員",
-                    "user": "ユーザー",
-                    "expert": "専門人材"
+                    "admin": {
+                        "title": "職員",
+                        "link" : "admin.index"
+                    },
+                    "user": {
+                        "title": "ユーザー",
+                        "link" : "admin.index"
+                    },
+                    "expert": {
+                        "title": "専門人材",
+                        "link" : "admin.index"
+                    },
                 },
-                "link": "admin.index"
             },
             "data_management": {
                 "id": 1,
                 'icon': faDatabase,
                 "title": "データ管理",
                 "subtitle": {
-                    "expert_position": "専門人材肩書",
-                    "expert_tag": "専門人材タグ",
-                    "department": "部署",
-                    "authority": "権限",
-                    "user_contact_title": "ユーザー問い合わせ項目",
-                    "expert_contact_title": "専門人材問い合わせ項目"
+                    "expert_position": {
+                        "title": "専門人材肩書",
+                        "link" : "admin.index"
+                    },
+                    "expert_tag": {
+                        "title": "専門人材タグ",
+                        "link" : "admin.index"
+                    },
+                    "department": {
+                        "title": "部署",
+                        "link" : "admin.department.index"
+                    },
+                    "authority": {
+                        "title": "権限",
+                        "link" : "admin.index"
+                    },
+                    "user_contact_title": {
+                        "title": "ユーザー問い合わせ項目",
+                        "link" : "admin.index"
+                    },
+                    "expert_contact_title": {
+                        "title": "専門人材問い合わせ項目",
+                        "link" : "admin.index"
+                    },
                 },
-                "link": "admin.index"
             },
             "utilization_status": {
                 "id": 2,
@@ -109,20 +134,30 @@ export default {
                 'icon': faQuestionCircle,
                 "title": "問い合わせ管理",
                 "subtitle": {
-                    "user": "ユーザー",
-                    "expert": "専門人材"
+                    "user": {
+                        "title": "ユーザー",
+                        "link" : "admin.index"
+                    },
+                    "expert": {
+                        "title": "専門人材",
+                        "link" : "admin.index"
+                    },
                 },
-                "link": "admin.index"
             },
             "notification_function": {
                 "id": 4,
                 'icon': faInfoCircle,
                 "title": "お知らせ機能",
                 "subtitle": {
-                    "mail_magazine": "メルマガ",
-                    "information_site": "サイトからのお知らせ"
+                    "mail_magazine": {
+                        "title": "メルマガ",
+                        "link" : "admin.index"
+                    },
+                    "information_site": {
+                        "title": "サイトからのお知らせ",
+                        "link" : "admin.index"
+                    },
                 },
-                "link": "admin.index"
             }
         }
 
