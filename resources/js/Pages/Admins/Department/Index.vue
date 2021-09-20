@@ -96,6 +96,8 @@ import Fa from "vue-fa";
 import { faTrashAlt, faCaretSquareUp, faCaretSquareDown } from "@fortawesome/free-solid-svg-icons";
 import MainLayout from "@/Layouts/Admins/MainLayout";
 import moment from "moment";
+import useTableAction from "@/Composables/useTableAction"
+
 
 export default {
     name: "Index",
@@ -126,7 +128,6 @@ export default {
         const keyword = props.keyword
         const NO_RESULTS = -1
         const NO_VALUE = 0
-        const NEXT = '次 &raquo'
         let departments = props.departments['data']
         let paginations = props.departments['links']
 
@@ -180,19 +181,6 @@ export default {
             keyword: keyword
         })
 
-        //選択削除後の画面遷移先の設定
-        const getAfterDeletePageParam = () => {
-            paginations.forEach((index) => {
-                if(index.active) {
-                    formDelete.page = index.label
-                }
-                //最終ページを全削除した場合、最後の前のページに遷移
-                if(index.url === null && index.label === NEXT && formDelete.checked.length === departments.length) {
-                    formDelete.page -= 1
-                }
-            })
-        }
-
         //選択削除のデータ送信
         const submitDelete = () => {
             if(formDelete.checked.length === NO_VALUE ) {
@@ -203,20 +191,6 @@ export default {
                 onBefore: () => confirm('選択した部署を本当に削除しますか？')
             })
         }
-
-        //全選択
-        const allChecked = computed({
-            get: () => {
-                return formDelete.checked.length === searchDepartments.value.length && searchDepartments.value.length !== 0
-            },
-            set: (val) => {
-                if (val) {
-                    formDelete.checked = searchDepartments.value.map((department) => department.id);
-                } else {
-                    formDelete.checked = [];
-                }
-            }
-        });
 
         //ソート
         let sortStatus = reactive({
@@ -235,19 +209,6 @@ export default {
             sortStatus.createdAtDown = false
             sortStatus.updatedAtUp = false
             sortStatus.updatedAtDown = false
-        }
-
-        // データ取得時の作成日順にソート
-        const sortDefault = () => {
-            searchDepartments.value.sort((a, b) => {
-                if(a.created_at < b.created_at) {
-                    return 1
-                } else if (a.created_at > b.created_at){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
         }
 
         const sortNameUp = () => {
@@ -378,6 +339,7 @@ export default {
             return moment(date).format('YYYY年MM月DD日')
         }
 
+        const { allChecked, sortDefault ,getAfterDeletePageParam } = useTableAction(formDelete, searchDepartments, paginations, departments)
 
         return {
             sideBarLists,
