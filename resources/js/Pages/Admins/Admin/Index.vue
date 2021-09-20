@@ -106,6 +106,7 @@ import Checkbox from "@/Components/Forms/Checkbox";
 import Fa from "vue-fa";
 import { faTrashAlt, faCaretSquareUp, faCaretSquareDown } from "@fortawesome/free-solid-svg-icons";
 import MainLayout from "@/Layouts/Admins/MainLayout";
+import useTableAction from "@/Composables/useTableAction"
 
 export default {
     name: "Index",
@@ -141,7 +142,6 @@ export default {
         const keyword = props.keyword
         const NO_RESULTS = -1
         const NO_VALUE = 0
-        const NEXT = '次 &raquo'
         let admins = props.admins['data']
         let paginations = props.admins['links']
 
@@ -166,18 +166,6 @@ export default {
             return filteredAdmins
         })
 
-        //テーブル内検索時にチェックボックス選択結果を検索結果と一致させる
-        watch(searchAdmins, (newval, oldval) => {
-            const adminIds = newval.map(admin => admin.id)
-            const deleteIds = formDelete.checked.map(deleteId => deleteId)
-            const allValues = [...adminIds, ...deleteIds]
-            const duplicatedValues = allValues.filter(allValue => adminIds.includes(allValue) && deleteIds.includes(allValue))
-
-            formDelete.checked = [...new Set(duplicatedValues)];
-
-        })
-
-
         //キーワード検索
         const formKeyword = useForm({
             keyword: '',
@@ -200,17 +188,7 @@ export default {
         })
 
         //選択削除後の画面遷移先の設定
-        const getAfterDeletePageParam = () => {
-            paginations.forEach((index) => {
-                if(index.active) {
-                     formDelete.page = index.label
-                }
-                //最終ページを全削除した場合、最後の前のページに遷移
-                if(index.url === null && index.label === NEXT && formDelete.checked.length === admins.length) {
-                    formDelete.page -= 1
-                }
-            })
-        }
+
 
         //選択削除のデータ送信
         const submitDelete = () => {
@@ -222,20 +200,6 @@ export default {
                 onBefore: () => confirm('選択したユーザーを本当に削除しますか？')
             })
         }
-
-        //全選択
-        const allChecked = computed({
-            get: () => {
-              return formDelete.checked.length === searchAdmins.value.length && searchAdmins.value.length !== 0
-            },
-            set: (val) => {
-                if (val) {
-                    formDelete.checked = searchAdmins.value.map((admin) => admin.id);
-                } else {
-                    formDelete.checked = [];
-                }
-            }
-        });
 
         //ソート
         let sortStatus = reactive({
@@ -259,20 +223,6 @@ export default {
             sortStatus.authorityUp = false
             sortStatus.authorityDown = false
         }
-
-        // データ取得時の作成日順にソート
-        const sortDefault = () => {
-            searchAdmins.value.sort((a, b) => {
-                if(a.created_at < b.created_at) {
-                    return 1
-                } else if (a.created_at > b.created_at){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-        }
-
 
         const sortStaffUp = () => {
             if(sortStatus.staffUp) {
@@ -438,6 +388,7 @@ export default {
             sortStatus.authorityDown = true
         }
 
+        const { allChecked, sortDefault ,getAfterDeletePageParam } = useTableAction(formDelete, searchAdmins, paginations, admins)
 
         return {
             sideBarLists,
