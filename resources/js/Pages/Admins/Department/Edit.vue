@@ -61,7 +61,7 @@ export default {
         })
 
         const department = props.department
-console.log(department)
+
         const submit = () => {
             form.put(route('admin.department.update', {'id': department.id}), {
                 onSuccess: () => {
