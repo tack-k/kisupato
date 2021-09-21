@@ -36,6 +36,11 @@ class DepartmentPolicy
         return $this->_commonPolicy->_allManagement($admin);
     }
 
+
+    public function update(Admin $admin) {
+        return $this->_commonPolicy->_allManagement($admin);
+    }
+
     /**
      * 部署を削除できる権限設定
      * @param Admin $admin

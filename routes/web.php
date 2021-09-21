@@ -62,7 +62,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'guest'], f
 Route::resource('admin', AdminController::class)->only(['index', 'store'])->middleware('auth:admin');
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin'], function() {
     Route::post('/delete', [AdminController::class, 'delete'])->name('delete');
-    Route::resource('department', DepartmentController::class)->only(['index', 'store'])->middleware('auth:admin');
+    Route::resource('department', DepartmentController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
     Route::post('/department/delete', [DepartmentController::class, 'delete'])->name('department.delete');
 
 });

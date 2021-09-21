@@ -49,6 +49,9 @@
                                     <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortCreatedAtDown" :class="{ 'admin-text-active': sortStatus.createdAtDown }"/>
                                 </div>
                             </th>
+                            <th class="base-th-th" >
+                                <p class="text-center">編集</p>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -65,6 +68,12 @@
                             </td>
                             <td class="base-tb-td">
                                 <p class="">{{ formatDate(department.created_at) }}</p>
+                            </td>
+
+                            <td class="base-tb-td">
+                                <div class="flex justify-center">
+                                    <Link :href="route('admin.department.edit', {'id': department.id})" as="button" methods="get"><Fa :icon="faEdit" class="admin-hover"/></Link>
+                                </div>
                             </td>
                         </tr>
 
@@ -89,11 +98,12 @@ import Pagination from "@/Components/Paginations/Pagination";
 import {ref, reactive, computed, watch} from "vue";
 import RoundSearch from "@/Components/Forms/RoundSearch";
 import SquareSearch from "@/Components/Forms/SquareSearch";
-import {useForm} from "@inertiajs/inertia-vue3"
+import {useForm, Link} from "@inertiajs/inertia-vue3"
 import FlashMessage from "@/Components/Messages/FlashMessage";
 import Checkbox from "@/Components/Forms/Checkbox";
 import Fa from "vue-fa";
 import { faTrashAlt, faCaretSquareUp, faCaretSquareDown } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from "@fortawesome/free-regular-svg-icons"
 import MainLayout from "@/Layouts/Admins/MainLayout";
 import moment from "moment";
 import useTableAction from "@/Composables/useTableAction"
@@ -114,6 +124,7 @@ export default {
         DepartmentRegisterModal,
         Pagination,
         Fa,
+        Link,
     },
 
     props: {
@@ -144,6 +155,7 @@ export default {
                 ) {
                     filteredDepartments.push(department)
                 }
+                console.log(department.created_at)
             }
             return filteredDepartments
         })
@@ -363,6 +375,7 @@ export default {
             sortUpdatedAtUp,
             sortUpdatedAtDown,
             formatDate,
+            faEdit,
 
         }
     },

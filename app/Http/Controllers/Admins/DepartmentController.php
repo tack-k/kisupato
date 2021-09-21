@@ -12,6 +12,11 @@ use Inertia\Inertia;
 
 class DepartmentController extends Controller
 {
+    /**
+     * 部署一覧画面表示
+     * @param Request $request
+     * @return \Inertia\Response
+     */
     public function index(Request $request) {
         $keyword = $request->keyword;
         $departments = new Department();
@@ -28,6 +33,11 @@ class DepartmentController extends Controller
         ]);
     }
 
+    /**
+     * 部署登録
+     * @param DepartmentRequest $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(DepartmentRequest $request) {
         if(Auth::guard('admin')->user()->cannot('create', Department::class)) {
             session()->flash('message', MessageConst::E_01001);
@@ -46,6 +56,46 @@ class DepartmentController extends Controller
         return Inertia::location(route('admin.department.index', ['page' => 1]));
     }
 
+    /**
+     * 部署編集画面表示
+     * @param Department $department
+     * @return \Inertia\Response
+     */
+    public function edit(Department $department) {
+        return Inertia::render('Admins/Department/Edit', [
+            'department' => $department
+        ]);
+    }
+
+    /**
+     * 部署更新
+     * @param DepartmentRequest $request
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(DepartmentRequest $request, $id) {
+        if(Auth::guard('admin')->user()->cannot('update', Department::class)) {
+            session()->flash('message', MessageConst::E_01002);
+            return Inertia::location(route('admin.department.index'));
+        }
+
+        $params = $request->validated();
+        try {
+            Department::findOrFail($id)->update($params);
+            session()->flash('message', MessageConst::DEPARTMENT . MessageConst::I_00002);
+        } catch (\Throwable $e) {
+            report($e);
+            session()->flash('message', MessageConst::DEPARTMENT . MessageConst::E_00002);
+        }
+
+        return Inertia::location(route('admin.department.index'));
+    }
+
+    /**
+     * 部署複数削除
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function delete(Request $request) {
 
         if(Auth::guard('admin')->user()->cannot('delete', Department::class)) {

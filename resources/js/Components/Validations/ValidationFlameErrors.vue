@@ -1,13 +1,13 @@
 <template>
-    <div v-show="open" v-if="hasErrors"
-         class="text-red-500 border border-gray-200 px-6 py-4 rounded relative mb-4 admin-bg-white">
-  <span class="text-xl inline-block mr-5 align-middle">
-    <Fa :icon="faExclamationTriangle"/>
-  </span>
-        <p class="inline-block align-middle mr-8 base-font-bold" v-for="(error, index) in errors"
-              :key="index">{{ error }}</p>
+    <div v-show="open" v-if="hasErrors" class="flex text-red-500 border border-gray-200 px-6 py-4 rounded relative mb-4 admin-bg-white">
+          <span class="text-xl inline-block mr-5 align-middle">
+            <Fa :icon="faExclamationTriangle"/>
+          </span>
+        <ul>
+          <li class="align-middle mr-8 base-font-bold" v-for="(error, index) in errors" :key="index">{{ error }}</li>
+        </ul>
         <button @click="closeForm"
-                class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none">
+                class="absolute bg-transparent text-2xl font-semibold leading-none right-2 top-1 outline-none focus:outline-none">
             <span>×</span>
         </button>
     </div>
