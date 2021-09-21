@@ -37,6 +37,9 @@ class AdminPolicy
         return $this->_commonPolicy->_allManagement($admin);
     }
 
+    public function update(Admin $admin) {
+        return $this->_commonPolicy->_allManagement($admin);
+    }
 
     /**
      * Determine whether the user can delete the model.

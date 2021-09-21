@@ -107,9 +107,16 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Admin $admin)
     {
-        //
+        $authorities = Authority::all();
+        $departments = Department::all();
+
+        return Inertia::render('Admins/Admin/Edit', [
+            'admin' => $admin,
+            'authorities' => $authorities,
+            'departments' => $departments,
+        ]);
     }
 
     /**
@@ -119,9 +126,23 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AdminRequest $request, $id)
     {
-        //
+        if(Auth::guard('admin')->user()->cannot('update', Admin::class)) {
+            session()->flash('message', MessageConst::E_01002);
+            return Inertia::location(route('admin.index'));
+        }
+
+        $params = $request->validated();
+        try {
+            Admin::findOrFail($id)->update($params);
+            session()->flash('message', MessageConst::ADMIN . MessageConst::I_00002);
+        } catch (\Throwable $e) {
+            report($e);
+            session()->flash('message', MessageConst::ADMIN . MessageConst::E_00002);
+        }
+
+        return Inertia::location(route('admin.index'));
     }
 
     /**

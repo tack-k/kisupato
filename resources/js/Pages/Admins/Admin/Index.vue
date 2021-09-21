@@ -56,6 +56,9 @@
                                     <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortAuthorityDown" :class="{ 'admin-text-active': sortStatus.authorityDown }"/>
                                 </div>
                             </th>
+                            <th class="base-th-th" >
+                                <p class="text-center">編集</p>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -75,6 +78,11 @@
                             </td>
                             <td class="base-tb-td">
                                 <p class="">{{ admin.authority_name }}</p>
+                            </td>
+                            <td class="base-tb-td">
+                                <div class="flex justify-center">
+                                    <Link :href="route('admin.edit', admin.id)" as="button" methods="get"><Fa :icon="faEdit" class="admin-hover"/></Link>
+                                </div>
                             </td>
                         </tr>
 
@@ -100,13 +108,14 @@ import Pagination from "@/Components/Paginations/Pagination";
 import {ref, reactive, computed, watch} from "vue";
 import RoundSearch from "@/Components/Forms/RoundSearch";
 import SquareSearch from "@/Components/Forms/SquareSearch";
-import {useForm} from "@inertiajs/inertia-vue3"
+import {useForm, Link} from "@inertiajs/inertia-vue3"
 import FlashMessage from "@/Components/Messages/FlashMessage";
 import Checkbox from "@/Components/Forms/Checkbox";
 import Fa from "vue-fa";
 import { faTrashAlt, faCaretSquareUp, faCaretSquareDown } from "@fortawesome/free-solid-svg-icons";
 import MainLayout from "@/Layouts/Admins/MainLayout";
 import useTableAction from "@/Composables/useTableAction"
+import {faEdit} from "@fortawesome/free-regular-svg-icons";
 
 export default {
     name: "Index",
@@ -123,6 +132,7 @@ export default {
         AdminRegisterModal,
         Pagination,
         Fa,
+        Link,
     },
 
     props: {
@@ -413,7 +423,7 @@ export default {
             sortDepartmentDown,
             sortAuthorityUp,
             sortAuthorityDown,
-
+            faEdit,
         }
     },
 

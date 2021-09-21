@@ -2,7 +2,7 @@
     <Header/>
     <div class="flex">
         <sideBar />
-        <div class="container p-4 lg:p-40">
+        <div class="container p-4 lg:py-24 lg:px-40">
 
             <ValidationFlameErrors v-if="hasChecked"/>
             <FlashMessage />
