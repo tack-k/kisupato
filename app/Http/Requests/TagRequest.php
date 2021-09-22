@@ -31,7 +31,7 @@ class TagRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => '専門人材タグ',
+            'name' => '専門人材タグ名',
         ];
     }
 }
