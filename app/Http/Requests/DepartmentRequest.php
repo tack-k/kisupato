@@ -27,4 +27,11 @@ class DepartmentRequest extends FormRequest
             'name' => 'required|string|max:30'
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'name' => '部署名',
+        ];
+    }
 }
