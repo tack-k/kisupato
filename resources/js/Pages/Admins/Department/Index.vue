@@ -155,7 +155,6 @@ export default {
                 ) {
                     filteredDepartments.push(department)
                 }
-                console.log(department.created_at)
             }
             return filteredDepartments
         })
