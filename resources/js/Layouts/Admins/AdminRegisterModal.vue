@@ -12,7 +12,7 @@
                     <!--header-->
                     <div
                         class="flex items-center justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                        <h3 class="text-3xl base-font-bold">
+                        <h3 class="base-font-m">
                             職員ユーザー登録
                         </h3>
                         <button
@@ -73,7 +73,7 @@
                                 <Select :options="departments" v-model="form.department_id"/>
                             </div>
 
-                            <div class="mt-4">
+                            <div class="mt-4 mb-12">
                                 <label-required for="authority" value="権限"/>
                                 <Select :options="authorities" v-model="form.authority_id"/>
                             </div>
