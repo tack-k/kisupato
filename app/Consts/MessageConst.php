@@ -13,6 +13,7 @@ class MessageConst
     public const AUTHORITY = '権限';
     public const POSITION = '専門人材肩書';
     public const TAG = '専門人材タグ';
+    public const USER_CONTACT_TITLE = 'ユーザーお問い合わせ項目';
 
     public const INIT_PASSWORD = '初期パスワード';
     public const ADMIN_BY = 'admin:';
