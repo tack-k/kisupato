@@ -102,15 +102,11 @@ export default {
                     },
                     "expert_tag": {
                         "title": "専門人材タグ",
-                        "link" : "admin.index"
+                        "link" : "admin.tag.index"
                     },
                     "department": {
                         "title": "部署",
                         "link" : "admin.department.index"
-                    },
-                    "authority": {
-                        "title": "権限",
-                        "link" : "admin.index"
                     },
                     "user_contact_title": {
                         "title": "ユーザー問い合わせ項目",
