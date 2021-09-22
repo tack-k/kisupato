@@ -7,6 +7,7 @@ use App\Consts;
 use \App\Http\Controllers\Users\UserController;
 use \App\Http\Controllers\Admins\AdminController;
 use \App\Http\Controllers\Admins\DepartmentController;
+use \App\Http\Controllers\Admins\PositionController;
 
 
 /*
@@ -64,5 +65,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
     Route::post('/delete', [AdminController::class, 'delete'])->name('delete');
     Route::resource('department', DepartmentController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
     Route::post('/department/delete', [DepartmentController::class, 'delete'])->name('department.delete');
+    Route::resource('position', PositionController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
+    Route::post('/position/delete', [PositionController::class, 'delete'])->name('position.delete');
 
 });

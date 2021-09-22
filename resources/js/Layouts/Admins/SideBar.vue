@@ -98,7 +98,7 @@ export default {
                 "subtitle": {
                     "expert_position": {
                         "title": "専門人材肩書",
-                        "link" : "admin.index"
+                        "link" : "admin.position.index"
                     },
                     "expert_tag": {
                         "title": "専門人材タグ",

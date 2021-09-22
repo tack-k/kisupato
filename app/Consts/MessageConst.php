@@ -11,6 +11,7 @@ class MessageConst
     public const USER = 'ユーザー';
     public const DEPARTMENT = '部署';
     public const AUTHORITY = '権限';
+    public const POSITION = '専門人材肩書';
 
     public const INIT_PASSWORD = '初期パスワード';
     public const ADMIN_BY = 'admin:';
