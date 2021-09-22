@@ -155,7 +155,6 @@ export default {
                 ) {
                     filteredPositions.push(position)
                 }
-                console.log(position.created_at)
             }
             return filteredPositions
         })
