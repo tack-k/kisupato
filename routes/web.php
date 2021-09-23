@@ -10,6 +10,7 @@ use \App\Http\Controllers\Admins\DepartmentController;
 use \App\Http\Controllers\Admins\PositionController;
 use \App\Http\Controllers\Admins\TagController;
 use \App\Http\Controllers\Admins\UserContactTitleController;
+use \App\Http\Controllers\Admins\ExpertContactTitleController;
 
 
 /*
@@ -73,4 +74,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
     Route::post('/tag/delete', [TagController::class, 'delete'])->name('tag.delete');
     Route::resource('userContactTitle', UserContactTitleController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
     Route::post('/userContactTitle/delete', [UserContactTitleController::class, 'delete'])->name('userContactTitle.delete');
+    Route::resource('expertContactTitle', ExpertContactTitleController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
+    Route::post('/expertContactTitle/delete', [ExpertContactTitleController::class, 'delete'])->name('expertContactTitle.delete');
 });

@@ -114,7 +114,7 @@ export default {
                     },
                     "expert_contact_title": {
                         "title": "専門人材問い合わせ項目",
-                        "link" : "admin.index"
+                        "link" : "admin.expertContactTitle.index"
                     },
                 },
             },

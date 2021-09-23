@@ -5,10 +5,9 @@ namespace App\Policies;
 use App\Models\Admins\Admin;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserContactTitlePolicy
+class ExpertContactTitlePolicy
 {
     use HandlesAuthorization;
-
 
     /**
      * 共通ポリシー
@@ -27,7 +26,7 @@ class UserContactTitlePolicy
     }
 
     /**
-     * ユーザー問い合わせ項目を作成できる権限設定
+     * 専門人材問い合わせ項目を作成できる権限設定
      * @param Admin $admin
      * @return bool
      */
@@ -41,7 +40,7 @@ class UserContactTitlePolicy
     }
 
     /**
-     * ユーザー問い合わせ項目を削除できる権限設定
+     * 専門人材問い合わせ項目を削除できる権限設定
      * @param Admin $admin
      * @return bool
      */
