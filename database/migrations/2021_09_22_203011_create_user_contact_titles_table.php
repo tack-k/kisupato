@@ -13,7 +13,8 @@ class CreateUserContactTitlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_contact_titles', function (Blueprint $table) {            $table->id();
+        Schema::create('user_contact_titles', function (Blueprint $table) {
+            $table->id();
             $table->string('name', 30);
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by', 20)->nullable();

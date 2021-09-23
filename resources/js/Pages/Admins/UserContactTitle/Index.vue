@@ -13,7 +13,7 @@
                             <th colspan="5" class="p-1 table-cell">
                                 <div class="flex items-center flex-col-reverse md:justify-between md:flex-row md:mr-6">
                                     <square-search v-model="tableKeyword" placeholder="テーブル内検索"/>
-                                    <p class="text-center">ユーザーお問い合わせ項目一覧</p>
+                                    <p class="text-center">ユーザー問い合わせ項目一覧</p>
                                 </div>
                             </th>
                         </tr>
@@ -30,7 +30,7 @@
                             </th>
                             <th class="base-th-th" >
                                 <div class="flex items-center">
-                                    <p class="mr-2">ユーザーお問い合わせ項目名</p>
+                                    <p class="mr-2">ユーザー問い合わせ項目名</p>
                                     <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortNameUp" :class="{ 'admin-text-active': sortStatus.nameUp }"/>
                                     <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortNameDown" :class="{ 'admin-text-active': sortStatus.nameDown }"/>
                                 </div>
@@ -196,11 +196,11 @@ export default {
         //選択削除のデータ送信
         const submitDelete = () => {
             if(formDelete.checked.length === NO_VALUE ) {
-                return confirm('削除するユーザーお問い合わせ項目名を選択してください')
+                return confirm('削除するユーザー問い合わせ項目名を選択してください')
             }
             getAfterDeletePageParam()
             formDelete.post(route('admin.userContactTitle.delete'),{
-                onBefore: () => confirm('選択したユーザーお問い合わせ項目名を本当に削除しますか？')
+                onBefore: () => confirm('選択したユーザー問い合わせ項目名を本当に削除しますか？')
             })
         }
 

@@ -13,7 +13,7 @@
                     <div
                         class="flex items-center justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                         <h3 class="base-font-m">
-                            ユーザーお問い合わせ項目登録
+                            ユーザー問い合わせ項目登録
                         </h3>
                         <button
                             class=""
@@ -32,7 +32,7 @@
                         <form @submit.prevent="submit()">
                             <div class="mt-4 mb-12">
                                 <div class="mr-2">
-                                    <label-required for="name" value="ユーザーお問い合わせ項目名"/>
+                                    <label-required for="name" value="ユーザー問い合わせ項目名"/>
                                     <Input id="name" type="text" class="mt-1 w-full"
                                            v-model="form.name" autofocus/>
                                 </div>

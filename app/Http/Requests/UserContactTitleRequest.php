@@ -31,7 +31,7 @@ class UserContactTitleRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => 'ユーザーお問い合わせ項目名',
+            'name' => 'ユーザー問い合わせ項目名',
         ];
     }
 }
