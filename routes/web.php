@@ -72,8 +72,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
     Route::post('/position/delete', [PositionController::class, 'delete'])->name('position.delete');
     Route::resource('tag', TagController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
     Route::post('/tag/delete', [TagController::class, 'delete'])->name('tag.delete');
-    Route::resource('userContactTitle', UserContactTitleController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
-    Route::post('/userContactTitle/delete', [UserContactTitleController::class, 'delete'])->name('userContactTitle.delete');
-    Route::resource('expertContactTitle', ExpertContactTitleController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
-    Route::post('/expertContactTitle/delete', [ExpertContactTitleController::class, 'delete'])->name('expertContactTitle.delete');
+    Route::resource('user_contact_title', UserContactTitleController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
+    Route::post('/user_contact_title/delete', [UserContactTitleController::class, 'delete'])->name('userContactTitle.delete');
+    Route::resource('expert_contact_title', ExpertContactTitleController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
+    Route::post('/expert_contact_title/delete', [ExpertContactTitleController::class, 'delete'])->name('expertContactTitle.delete');
 });
