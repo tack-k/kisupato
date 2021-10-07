@@ -25,6 +25,8 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 if($guard == 'admin') {
                     return redirect(RouteServiceProvider::ADMIN_HOME);
+                } elseif ($guard == 'expert') {
+                    return redirect(RouteServiceProvider::EXPERT_HOME);
                 } else {
                     return redirect(RouteServiceProvider::USER_HOME);
                 }

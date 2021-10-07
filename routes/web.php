@@ -12,6 +12,7 @@ use \App\Http\Controllers\Admins\PositionController;
 use \App\Http\Controllers\Admins\TagController;
 use \App\Http\Controllers\Admins\UserContactTitleController;
 use \App\Http\Controllers\Admins\ExpertContactTitleController;
+use \App\Http\Controllers\Experts\ExpertController;
 
 
 /*
@@ -28,6 +29,7 @@ use \App\Http\Controllers\Admins\ExpertContactTitleController;
 
 require __DIR__ . '/user_auth.php';
 require __DIR__ . '/admin_auth.php';
+require __DIR__ . '/expert_auth.php';
 
 //仮置き
 Route::get('/dashboard', function () {
@@ -56,6 +58,23 @@ Route::group(['middleware' => 'guest'], function() {
 //ユーザー:認証あり
 Route::group(['middleware' => 'auth:user'], function() {
 
+});
+
+
+
+//専門家:認証なし
+Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'guest'], function() {
+    Route::get('/register', [ExpertController::class, 'create'])->name('create');
+    Route::post('/register', [ExpertController::class, 'store'])->name('store');
+});
+
+
+//専門家:認証あり
+Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:expert'], function() {
+    //仮置き
+    Route::get('/dashboard', function () {
+        return Inertia::render('Experts/Dashboard');
+    })->middleware(['verified'])->name('dashboard');
 });
 
 //管理者:認証なし

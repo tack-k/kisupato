@@ -44,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+        'expert' => [
+            'driver' => 'session',
+            'provider' => 'experts',
+        ],
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
@@ -77,6 +81,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admins\Admin::class,
         ],
+        'experts' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Experts\Expert::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -108,6 +116,12 @@ return [
         ],
         'admins' => [
             'provider' => 'admins',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'experts' => [
+            'provider' => 'experts',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

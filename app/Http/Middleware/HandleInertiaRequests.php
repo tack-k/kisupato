@@ -35,8 +35,9 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
-                'admin' => $request->user('admin')
+                'user' => $request->user('user'),
+                'admin' => $request->user('admin'),
+                'expert' => $request->user('expert'),
             ],
             'flash' => [
                 'message' => $request->session()->get('message'),

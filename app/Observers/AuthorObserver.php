@@ -14,11 +14,7 @@ class AuthorObserver
      * @return void
      */
     public function creating(Model $model){
-        if(Auth::guard('user')->check()) {
-        $model->created_by = MessageConst::USER_BY . Auth::guard('user')->id();
-        } elseif (Auth::guard('admin')->check()) {
-        $model->created_by = MessageConst::ADMIN_BY . Auth::guard('admin')->id();
-        }
+        $this->_makeCreatedBy($model);
     }
 
     /**
@@ -27,11 +23,7 @@ class AuthorObserver
      * @return void
      */
     public function saving(Model $model){
-        if(Auth::guard('user')->check()) {
-            $model->updated_by = MessageConst::USER_BY . Auth::guard('user')->id();
-        } elseif (Auth::guard('admin')->check()) {
-            $model->updated_by = MessageConst::ADMIN_BY . Auth::guard('admin')->id();
-        }
+        $this->_makeCreatedBy($model);
     }
 
     /**
@@ -40,10 +32,16 @@ class AuthorObserver
      * @return void
      */
     public function deleting(Model $model){
+        $this->_makeCreatedBy($model);
+    }
+
+    public function _makeCreatedBy($model) {
         if(Auth::guard('user')->check()) {
-            $model->deleted_by = MessageConst::USER_BY . Auth::guard('user')->id();
+            $model->created_by = MessageConst::USER_BY . Auth::guard('user')->id();
         } elseif (Auth::guard('admin')->check()) {
-            $model->deleted_by = MessageConst::ADMIN_BY . Auth::guard('admin')->id();
+            $model->created_by = MessageConst::ADMIN_BY . Auth::guard('admin')->id();
+        } elseif (Auth::guard('expert')->check()) {
+            $model->created_by = MessageConst::EXPERT_BY . Auth::guard('expert')->id();
         }
     }
 }

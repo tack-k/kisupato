@@ -19,6 +19,7 @@ class MessageConst
     public const INIT_PASSWORD = '初期パスワード';
     public const ADMIN_BY = 'admin:';
     public const USER_BY = 'user:';
+    public const EXPERT_BY = 'expert:';
 
 
     //エラーメッセージ
