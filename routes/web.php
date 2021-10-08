@@ -13,6 +13,7 @@ use \App\Http\Controllers\Admins\TagController;
 use \App\Http\Controllers\Admins\UserContactTitleController;
 use \App\Http\Controllers\Admins\ExpertContactTitleController;
 use \App\Http\Controllers\Experts\ExpertController;
+use \App\Http\Controllers\Experts\HomeController;
 
 
 /*
@@ -71,10 +72,8 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'guest'],
 
 //専門家:認証あり
 Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:expert'], function() {
-    //仮置き
-    Route::get('/dashboard', function () {
-        return Inertia::render('Experts/Dashboard');
-    })->middleware(['verified'])->name('dashboard');
+    //トップページ
+    Route::get('/', [HomeController::class, 'top'])->middleware(['verified'])->name('home');
 });
 
 //管理者:認証なし
