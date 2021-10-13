@@ -14,6 +14,8 @@ use \App\Http\Controllers\Admins\UserContactTitleController;
 use \App\Http\Controllers\Admins\ExpertContactTitleController;
 use \App\Http\Controllers\Experts\ExpertController;
 use \App\Http\Controllers\Experts\HomeController;
+use \App\Http\Controllers\Experts\MyPageController;
+use \App\Http\Controllers\Experts\ProfileController;
 
 
 /*
@@ -74,6 +76,8 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'guest'],
 Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:expert'], function() {
     //トップページ
     Route::get('/', [HomeController::class, 'top'])->middleware(['verified'])->name('home');
+    Route::get('/my_page', [MyPageController::class, 'top'])->name('myPage.top');
+    Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
 });
 
 //管理者:認証なし
