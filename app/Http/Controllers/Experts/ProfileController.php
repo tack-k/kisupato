@@ -11,4 +11,8 @@ class ProfileController extends Controller
     public function show() {
         return Inertia::render('Experts/Profile/Show');
     }
+
+    public function input() {
+        return Inertia::render(('Experts/Profile/Input'));
+    }
 }
