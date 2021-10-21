@@ -4,6 +4,7 @@
         <SideBar/>
         <div class="overflow-y-scroll h-screen w-full">
             <div class="container mx-auto py-10 max-w-screen-lg expert-bg-white shadow-md w-full md:px-10">
+                <ValidationFlameErrors/>
                 <slot name="content"/>
             </div>
         </div>
@@ -13,10 +14,12 @@
 <script>
 import Header from "@/Layouts/Experts/Header"
 import SideBar from "@/Layouts/Experts/SideBar";
+import ValidationFlameErrors from "@/Components/Validations/ValidationFlameErrors";
 
 export default {
     name: "MyPageLayout",
     components: {
+        ValidationFlameErrors,
         SideBar,
         Header,
     }

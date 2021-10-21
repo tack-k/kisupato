@@ -79,6 +79,7 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
     Route::get('/my_page', [MyPageController::class, 'top'])->name('myPage.top');
     Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/input', [ProfileController::class, 'input'])->name('profile.input');
+    Route::post('/profile/confirm', [ProfileController::class, 'confirm'])->name('profile.confirm');
 });
 
 //管理者:認証なし

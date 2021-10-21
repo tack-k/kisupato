@@ -1,100 +1,120 @@
 <template>
     <my-page-layout>
         <template #content>
-            <section class="mb-10">
-                <LabelRequired class="label" value="ステータス" for="status"/>
-                <Select :options="options" id="status"/>
-            </section>
+            <form @submit.prevent="submit">
+                <section class="mb-10">
+                    <LabelRequired class="label" value="ステータス" for="status"/>
+                    <Select :options="options" id="status" v-model="form.status"/>
+                </section>
 
-            <section class="mb-10">
-                <LabelRequired class="label" value="ニックネーム" for="nickname"/>
-                <Input id="nickname" type="text"/>
-            </section>
+                <section class="mb-10">
+                    <LabelRequired class="label" value="ニックネーム" for="nickname"/>
+                    <Input id="nickname" type="text"/>
+                </section>
 
-            <section class="mb-10">
-                <LabelRequired class="label" value="プロフィール画像"/>
-                <div class="flex flex-col items-center md:flex-row">
-                    <div @dragenter="dragEnterSelf" @dragleave="dragLeaveSelf" @dragover.prevent @drop.prevent="dropSelfFile"
-                         :class="{enter: isEnterSelf}"
+                <section class="mb-10">
+                    <LabelRequired class="label" value="プロフィール画像"/>
+                    <div class="flex flex-col items-center md:flex-row">
+                        <div @dragenter="dragEnterSelf" @dragleave="dragLeaveSelf" @dragover.prevent
+                             @drop.prevent="dropSelfFile"
+                             :class="{enter: isEnterSelf}"
+                             class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
+                            ファイルアップロード
+                        </div>
+                        <ul class="h-40 w-40 mt-10 md:ml-10 md:mt-0">
+                            <li v-for="(file, index) in selfFiles" :key="index">
+                                <div class="relative">
+                                    <img :src="file.url" class="h-40 w-40 rounded-full object-cover" alt="">
+                                    <Fa :icon="faTimes" @click="deleteSelfFile"
+                                        class="absolute expert-hover top-2 right-2"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="mb-10">
+                    <LabelRequired class="label" value="自己紹介" for="self_introduction"/>
+                    <textarea id="self_introduction" class="base-form w-full" rows="2"
+                              v-model="form.self_introduction"></textarea>
+                </section>
+
+                <section class="mb-10">
+                    <LabelRequired class="label" value="活動タイトル" for="activity_title"/>
+                    <textarea id="activity_title" class="base-form w-full" rows="2"
+                              v-model="form.activity_title"></textarea>
+                </section>
+
+                <section class="mb-10">
+                    <LabelRequired class="label" value="活動内容" for="activity_content"/>
+                    <textarea id="activity_content" class="base-form w-full" rows="5"
+                              v-model="form.activity_content"></textarea>
+                </section>
+
+                <section class="mb-10">
+                    <LabelRequired class="label" value="活動写真" for="activity_title"/>
+                    <div @dragenter="dragEnterActivity" @dragleave="dragLeaveActivity" @dragover.prevent
+                         @drop.prevent="dropActivityFile"
+                         :class="{enter: isEnterActivity}"
                          class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
                         ファイルアップロード
                     </div>
-                    <ul class="h-40 w-40 mt-10 md:ml-10 md:mt-0">
-                        <li v-for="(file, index) in selfFiles" :key="index">
-                            <div class="relative">
-                                <img :src="file.url" class="h-40 w-40 rounded-full object-cover" alt="">
-                                <Fa :icon="faTimes" @click="deleteSelfFile" class="absolute expert-hover top-2 right-2"/>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </section>
-
-            <section class="mb-10">
-                <LabelRequired class="label" value="自己紹介" for="self_introduction"/>
-                <textarea class="base-form w-full" rows="2" v-model="form.self_introduction"></textarea>
-            </section>
-
-            <section class="mb-10">
-                <LabelRequired class="label" value="活動タイトル" for="activity_title"/>
-                <textarea class="base-form w-full" rows="2" v-model="form.activity_title"></textarea>
-
-            </section>
-
-            <section class="mb-10">
-                <LabelRequired class="label" value="活動写真" for="activity_title"/>
-                <div @dragenter="dragEnterActivity" @dragleave="dragLeaveActivity" @dragover.prevent @drop.prevent="dropActivityFile"
-                     :class="{enter: isEnterActivity}"
-                     class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
-                    ファイルアップロード
-                </div>
-                <div class="w-full flex">
-                    <!-- main -->
-                    <main class="w-full">
-                        <div class="grid grid-cols-4 gap-4">
-                            <div v-for="(activityFile, index) in activityFiles" :key="index"
-                                 class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center">
-                                <div class="bg-white rounded-lg mt-5 relative">
-                                    <img :src="activityFile.url" class="rounded-md h-40 object-cover" alt="">
-                                    <Fa :icon="faTimes" @click="deleteActivityFile" class="absolute expert-hover top-2 right-2"/>
+                    <div class="w-full flex">
+                        <!-- main -->
+                        <main class="w-full">
+                            <div class="grid grid-cols-4 gap-4">
+                                <div v-for="(activityFile, index) in activityFiles" :key="index"
+                                     class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center">
+                                    <div class="bg-white rounded-lg mt-5 relative">
+                                        <img :src="activityFile.url" class="rounded-md h-40 object-cover" alt="">
+                                        <Fa :icon="faTimes" @click="deleteActivityFile"
+                                            class="absolute expert-hover top-2 right-2"/>
+                                    </div>
                                 </div>
+                                <!-- end cols -->
                             </div>
-                            <!-- end cols -->
+                        </main>
+                    </div>
+                </section>
+
+                <section class="mb-10">
+                    <LabelRequired class="label" value="提供スキル" for="activity_title"/>
+                    <div v-for="(skill, index) in form.skills" :key="skill" class="mb-6">
+                        <div class="mb-4">
+                            <h3 class="base-font-s base-font-bold mb-2">タイトル{{ index + 1 }}</h3>
+                            <textarea class="base-form w-full" rows="2" v-model="skill.skill_title"></textarea>
                         </div>
-                    </main>
-                </div>
-            </section>
-
-            <section class="mb-10">
-                <LabelRequired class="label" value="提供スキル" for="activity_title"/>
-                <div v-for="(skill, index) in form.skills" :key="skill" class="mb-6">
-                    <div class="mb-4">
-                        <h3 class="base-font-s base-font-bold mb-2">タイトル{{ index + 1 }}</h3>
-                        <textarea class="base-form w-full" rows="2" v-model="skill.skill_title"></textarea>
+                        <div>
+                            <h3 class="base-font-s base-font-bold mb-2">内容{{ index + 1 }}</h3>
+                            <textarea class="base-form w-full" rows="5" v-model="skill.skill_content"></textarea>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="base-font-s base-font-bold mb-2">内容{{ index + 1 }}</h3>
-                        <textarea class="base-form w-full" rows="5" v-model="skill.skill_content"></textarea>
+                    <div class="flex justify-center">
+                        <button @click="addSkill" v-show="isAddSkill" class="expert-regular-btn">追加</button>
+                        <button @click="deleteSkill" v-show="isDeleteSkill" class="expert-outline-btn">削除</button>
                     </div>
-                </div>
+                </section>
                 <div class="flex justify-center">
-                    <button @click="addSkill" v-show="isAddSkill" class="expert-regular-btn">追加</button>
-                    <button @click="deleteSkill" v-show="isDeleteSkill" class="expert-outline-btn">削除</button>
+                    <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
+                            type="submit"
+                            class="expert-regular-btn mr-20">確認する
+                    </button>
+                    <Link href="#" as="button" type="button" class="expert-regular-btn mr-20">一時保存</Link>
+                    <Link href="#" as="button" type="button" class="expert-outline-btn">戻る</Link>
                 </div>
-
-            </section>
+            </form>
         </template>
     </my-page-layout>
 </template>
 
 <script>
 import MyPageLayout from "@/Layouts/Experts/MyPageLayout";
-import {useForm} from "@inertiajs/inertia-vue3";
+import {useForm, usePage, Link} from "@inertiajs/inertia-vue3";
 import RegularButton from "@/Components/Buttons/RegularButton";
 import Select from "@/Components/Forms/Select";
 import {ref, reactive} from "vue"
 import Input from "@/Components/Forms/Input";
-import { faTimes } from "@fortawesome/free-solid-svg-icons"
+import {faTimes} from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import LabelRequired from "@/Components/Labels/LabelRequired";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
@@ -109,18 +129,19 @@ export default {
         RegularButton,
         MyPageLayout,
         Fa,
+        Link,
     },
 
     setup() {
         const options = reactive([
             {'id': 0, 'name': '公開'},
-            {'id': 0, 'name': '非公開'},
+            {'id': 1, 'name': '非公開'},
         ])
 
         const form = useForm({
             status: '',
             nickname: '',
-            image: '',
+            image: [],
             self_introduction: '',
             activity_title: '',
             activity_image: [],
@@ -140,11 +161,13 @@ export default {
 
         const dropSelfFile = () => {
             isEnterSelf.value = false
-            if(event.dataTransfer.files.length >= 2) {
+            if (event.dataTransfer.files.length >= 2) {
                 return
             }
             selfFiles.value = [...event.dataTransfer.files]
             selfFiles.value.forEach(selfFile => selfFile['url'] = URL.createObjectURL(selfFile))
+            form.image = selfFiles.value[0]
+            console.log(form.image[0])
         }
 
         const deleteSelfFile = (index) => {
@@ -163,6 +186,9 @@ export default {
             isEnterActivity.value = false
             activityFiles.value.push(...event.dataTransfer.files)
             activityFiles.value.forEach(selfFile => selfFile['url'] = URL.createObjectURL(selfFile))
+            form.activity_image = activityFiles.value
+            console.log(form.activity_image)
+
         }
 
         const deleteActivityFile = (index) => {
@@ -177,26 +203,38 @@ export default {
 
         const addSkill = () => {
             form.skills.push({skill_title: '', skill_content: ''})
-            if(form.skills.length === MAX_SKILLS) {
+            if (form.skills.length === MAX_SKILLS) {
                 isAddSkill.value = false
             }
-            if(form.skills.length === MIN_SKILLS + 1) {
+            if (form.skills.length === MIN_SKILLS + 1) {
                 isDeleteSkill.value = true
             }
         }
 
         const deleteSkill = (index) => {
             form.skills.splice(index, 1)
-            if(form.skills.length === MAX_SKILLS - 1) {
+            if (form.skills.length === MAX_SKILLS - 1) {
                 isAddSkill.value = true
             }
-            if(form.skills.length === MIN_SKILLS) {
+            if (form.skills.length === MIN_SKILLS) {
                 isDeleteSkill.value = false
                 return
             }
 
         }
 
+        //フォーム送信
+        const expertId = usePage().props.value.auth.expert.id
+        console.log(expertId)
+
+        const submit = () => {
+            form.post(route('expert.profile.confirm', expertId), {
+                forceFormData: true,
+                onSuccess: () => {
+                    form.reset()
+                }
+            })
+        }
 
         return {
             form,
@@ -218,6 +256,7 @@ export default {
             deleteSkill,
             isAddSkill,
             isDeleteSkill,
+            submit,
         }
     }
 }
