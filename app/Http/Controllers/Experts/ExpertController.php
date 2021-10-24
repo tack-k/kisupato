@@ -62,7 +62,7 @@ class ExpertController extends Controller
 
         Auth::guard('expert')->login($expert);
 
-        return redirect(route('expert.dashboard'));
+        return redirect(route('expert.myPage.top'));
     }
 
     /**
