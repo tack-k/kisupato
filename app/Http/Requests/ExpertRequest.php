@@ -6,6 +6,7 @@ use App\Rules\KanaRule;
 use App\Rules\PostalCodeRule;
 use App\Rules\TelRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class ExpertRequest extends FormRequest
@@ -32,7 +33,7 @@ class ExpertRequest extends FormRequest
             'first_name' => 'required|string|max:20',
             'first_name_kana' => ['required','string','max:20',new KanaRule()],
             'last_name_kana' => ['required', 'string', 'max:20', new KanaRule()],
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('experts')->ignore($this->expert)],
             'tel' => ['required',  new TelRule()],
             'postal_code' => ['required',  new PostalCodeRule()],
             'region' => 'required|string|max:10',
