@@ -9,7 +9,7 @@
 
                 <section class="mb-10">
                     <LabelRequired class="label" value="ニックネーム" for="nickname"/>
-                    <Input id="nickname" type="text"/>
+                    <Input id="nickname" type="text" v-model="form.nickname"/>
                 </section>
 
                 <section class="mb-10">
@@ -225,7 +225,6 @@ export default {
 
         //フォーム送信
         const expertId = usePage().props.value.auth.expert.id
-        console.log(expertId)
 
         const submit = () => {
             form.post(route('expert.profile.confirm', expertId), {

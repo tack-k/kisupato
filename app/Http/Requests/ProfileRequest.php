@@ -41,7 +41,7 @@ class ProfileRequest extends FormRequest
     {
         return [
             'status' => 'ステータス',
-            'nickname' => 'ステータス',
+            'nickname' => 'ニックネーム',
             'image' => 'プロフィール画像',
             'self_introduction' => '自己紹介',
             'activity_title' => '活動タイトル',
