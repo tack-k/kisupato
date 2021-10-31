@@ -90,8 +90,8 @@
                         </div>
                     </div>
                     <div class="flex justify-center">
-                        <button @click="addSkill" v-show="isAddSkill" class="expert-regular-btn">追加</button>
-                        <button @click="deleteSkill" v-show="isDeleteSkill" class="expert-outline-btn">削除</button>
+                        <button @click="addSkill" v-show="isAddSkill" class="expert-regular-btn mr-4" type="button">追加</button>
+                        <button @click="deleteSkill" v-show="isDeleteSkill" class="expert-outline-btn" type="button">削除</button>
                     </div>
                 </section>
                 <div class="flex justify-center">
@@ -144,11 +144,9 @@ export default {
             image: [],
             self_introduction: '',
             activity_title: '',
-            activity_image: [],
             activity_content: [],
+            activity_images: [],
             skills: [{skill_title: '', skill_content: ''}],
-            skill_title: '',
-            skill_content: '',
         })
 
         //自己紹介ドラッグ&ドロップ
@@ -181,14 +179,15 @@ export default {
         const dragLeaveActivity = () => isEnterActivity.value = false
 
         let activityFiles = ref([])
-
+        const MAX_ACTIVITY_FILES = 7
         const dropActivityFile = () => {
+            if(activityFiles.value.length >= MAX_ACTIVITY_FILES) {
+                return alert('アップロードできる写真は7枚までです。')
+            }
             isEnterActivity.value = false
             activityFiles.value.push(...event.dataTransfer.files)
             activityFiles.value.forEach(selfFile => selfFile['url'] = URL.createObjectURL(selfFile))
-            form.activity_image = activityFiles.value
-            console.log(form.activity_image)
-
+            form.activity_images = activityFiles.value
         }
 
         const deleteActivityFile = (index) => {
@@ -227,7 +226,7 @@ export default {
         const expertId = usePage().props.value.auth.expert.id
 
         const submit = () => {
-            form.post(route('expert.profile.confirm', expertId), {
+            form.post(route('expert.profile.preUpdate', expertId), {
                 forceFormData: true,
                 onSuccess: () => {
                     form.reset()

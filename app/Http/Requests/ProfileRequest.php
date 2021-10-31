@@ -27,13 +27,15 @@ class ProfileRequest extends FormRequest
     {
         return [
             'status' => ['required', 'integer', 'numeric'],
-            'nickname' => ['required', 'string', 'max:10', Rule::unique('profiles')->ignore($this->expeert)],
-            'image' => ['required', 'file', 'image'],
+            'nickname' => ['required', 'string', 'max:10', Rule::unique('profiles')->ignore($this->expert)],
+            'image' => ['required', 'file', 'image', 'max:5000'],
             'self_introduction' => ['required','string','max:500'],
             'activity_title' => 'required|string|max:30',
-            'activity_image.*' => ['required', 'file', 'image'],
             'activity_content' => 'required|string|max:500',
-            'skills' => ['required', 'array'],
+            'activity_images' => ['required'],
+            'activity_images.*' => ['required', 'file', 'image', 'max:5000'],
+            'skills.*.skill_title' => ['required', 'max:30'],
+            'skills.*.skill_content' => ['required', 'max:300'],
         ];
     }
 
@@ -45,9 +47,11 @@ class ProfileRequest extends FormRequest
             'image' => 'プロフィール画像',
             'self_introduction' => '自己紹介',
             'activity_title' => '活動タイトル',
-            'activity_image' => '活動写真',
+            'activity_images' => '活動写真',
+            'activity_images.*' => '活動写真',
             'activity_content' => '活動内容',
-            'skills' => '提供スキル',
+            'skills.*.skill_title' => '提供スキルタイトル',
+            'skills.*.skill_content' => '提供スキル内容',
         ];
     }
 }

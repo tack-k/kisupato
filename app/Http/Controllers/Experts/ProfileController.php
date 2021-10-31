@@ -4,11 +4,17 @@ namespace App\Http\Controllers\Experts;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use App\Services\ProfileService;
 
-class ProfileController extends Controller
-{
+class ProfileController extends Controller {
+    protected $_service;
+
+    public function __construct(ProfileService $_service) {
+        $this->_service = $_service;
+    }
+
     public function show() {
         return Inertia::render('Experts/Profile/Show');
     }
@@ -17,18 +23,26 @@ class ProfileController extends Controller
         return Inertia::render(('Experts/Profile/Input'));
     }
 
-    public function confirm(ProfileRequest $request) {
-       $params = $request->validated();
+    public function preUpdate(ProfileRequest $request) {
+        $params = $request->except(['image', 'activity_image']);
 
-        $params['skill_title'] = [];
-        $params['skill_content'] = [];
-       foreach ($params['skills'] as $skill) {
-         array_push($params['skill_title'], $skill->skill_title);
-         array_push($params['skill_content'], $skill->skill_content);
-       }
-var_dump($params);
+        //画像パスを作成しパラメーターをセッションに保存
+        $this->_service->saveParams($request, $params);
 
-        return Inertia::render(('Experts/Profile/Confirm'));
+        return Redirect()->route(('expert.profile.confirm'));
 
     }
+
+    public function confirm() {
+        $params = session()->pull('input_profile');
+
+        if (empty($params)) {
+            return Redirect::route('expert.profile.show');
+        }
+
+        return Inertia::render('Experts/Profile/Confirm', [
+            'params' => $params,
+        ]);
+    }
 }
+

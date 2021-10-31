@@ -3,60 +3,43 @@
         <template #content>
             <section class="mb-10">
                 <LabelRequired class="label" value="ステータス" for="status"/>
-                <Select :options="options" id="status"/>
+                <p>{{ options[params.status].name }}</p>
             </section>
 
             <section class="mb-10">
                 <LabelRequired class="label" value="ニックネーム" for="nickname"/>
-                <Input id="nickname" type="text"/>
+                <p>{{ params.nickname }}</p>
             </section>
 
             <section class="mb-10">
                 <LabelRequired class="label" value="プロフィール画像"/>
-                <div class="flex flex-col items-center md:flex-row">
-                    <div @dragenter="dragEnterSelf" @dragleave="dragLeaveSelf" @dragover.prevent @drop.prevent="dropSelfFile"
-                         :class="{enter: isEnterSelf}"
-                         class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
-                        ファイルアップロード
-                    </div>
-                    <ul class="h-40 w-40 mt-10 md:ml-10 md:mt-0">
-                        <li v-for="(file, index) in selfFiles" :key="index">
-                            <div class="relative">
-                                <img :src="file.url" class="h-40 w-40 rounded-full object-cover" alt="">
-                                <Fa :icon="faTimes" @click="deleteSelfFile" class="absolute expert-hover top-2 right-2"/>
-                            </div>
-                        </li>
-                    </ul>
+                <div class="h-40 w-40 mt-10">
+                    <img :src="params.profile_image.profile_image_path + params.profile_image.profile_image_extension" class="h-40 w-40 rounded-full object-cover" alt="">
                 </div>
             </section>
 
             <section class="mb-10">
                 <LabelRequired class="label" value="自己紹介" for="self_introduction"/>
-                <textarea class="base-form w-full" rows="2" v-model="form.self_introduction"></textarea>
+                <p>{{ params.self_introduction }}</p>
             </section>
 
             <section class="mb-10">
                 <LabelRequired class="label" value="活動タイトル" for="activity_title"/>
-                <textarea class="base-form w-full" rows="2" v-model="form.activity_title"></textarea>
-
+                <p>{{ params.activity_title }}</p>
             </section>
 
             <section class="mb-10">
                 <LabelRequired class="label" value="活動写真" for="activity_title"/>
-                <div @dragenter="dragEnterActivity" @dragleave="dragLeaveActivity" @dragover.prevent @drop.prevent="dropActivityFile"
-                     :class="{enter: isEnterActivity}"
-                     class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
-                    ファイルアップロード
-                </div>
                 <div class="w-full flex">
                     <!-- main -->
                     <main class="w-full">
                         <div class="grid grid-cols-4 gap-4">
-                            <div v-for="(activityFile, index) in activityFiles" :key="index"
+                            <div v-for="(activity_image, index) in params.activity_images" :key="index"
                                  class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center">
                                 <div class="bg-white rounded-lg mt-5 relative">
-                                    <img :src="activityFile.url" class="rounded-md h-40 object-cover" alt="">
-                                    <Fa :icon="faTimes" @click="deleteActivityFile" class="absolute expert-hover top-2 right-2"/>
+                                    <img
+                                        :src="activity_image.activity_image_path + activity_image.activity_image_extension"
+                                        class="rounded-md h-40 object-cover" alt="">
                                 </div>
                             </div>
                             <!-- end cols -->
@@ -67,26 +50,21 @@
 
             <section class="mb-10">
                 <LabelRequired class="label" value="提供スキル" for="activity_title"/>
-                <div v-for="(skill, index) in form.skills" :key="skill" class="mb-6">
+                <div v-for="(skill, index) in params.skills" :key="skill" class="mb-6">
                     <div class="mb-4">
                         <h3 class="base-font-s base-font-bold mb-2">タイトル{{ index + 1 }}</h3>
-                        <textarea class="base-form w-full" rows="2" v-model="skill.skill_title"></textarea>
+                        <p>{{ skill.skill_title }}</p>
                     </div>
                     <div>
                         <h3 class="base-font-s base-font-bold mb-2">内容{{ index + 1 }}</h3>
-                        <textarea class="base-form w-full" rows="5" v-model="skill.skill_content"></textarea>
+                        <p>{{ skill.skill_content }}</p>
                     </div>
-                </div>
-                <div class="flex justify-center">
-                    <button @click="addSkill" v-show="isAddSkill" class="expert-regular-btn">追加</button>
-                    <button @click="deleteSkill" v-show="isDeleteSkill" class="expert-outline-btn">削除</button>
                 </div>
 
             </section>
 
             <div class="flex justify-center">
-                <Link href="#" as="button" type="button" class="expert-regular-btn mr-20">確認する</Link>
-                <Link href="#" as="button" type="button" class="expert-regular-btn mr-20">一時保存</Link>
+                <Link href="#" as="button" type="button" class="expert-regular-btn mr-20">確定する</Link>
                 <Link href="#" as="button" type="button" class="expert-outline-btn">戻る</Link>
             </div>
         </template>
@@ -100,7 +78,7 @@ import RegularButton from "@/Components/Buttons/RegularButton";
 import Select from "@/Components/Forms/Select";
 import {ref, reactive} from "vue"
 import Input from "@/Components/Forms/Input";
-import { faTimes } from "@fortawesome/free-solid-svg-icons"
+import {faTimes} from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import LabelRequired from "@/Components/Labels/LabelRequired";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
@@ -117,11 +95,17 @@ export default {
         Fa,
         Link,
     },
+    props: {
+        params: Object,
+    },
 
-    setup() {
+    setup(props) {
+        const params = props.params
+
+
         const options = reactive([
             {'id': 0, 'name': '公開'},
-            {'id': 0, 'name': '非公開'},
+            {'id': 1, 'name': '非公開'},
         ])
 
         const form = useForm({
@@ -132,110 +116,25 @@ export default {
             activity_title: '',
             activity_image: [],
             activity_content: [],
-            skills: [{skill_title: '', skill_content: ''}],
-            skill_title: '',
-            skill_content: '',
+            skills: [{skill_title: '', skill_content: ''}]
         })
 
-        //自己紹介ドラッグ&ドロップ
-        let isEnterSelf = ref(false)
-
-        const dragEnterSelf = () => isEnterSelf.value = true
-        const dragLeaveSelf = () => isEnterSelf.value = false
-
-        let selfFiles = ref([])
-
-        const dropSelfFile = () => {
-            isEnterSelf.value = false
-            if(event.dataTransfer.files.length >= 2) {
-                return
-            }
-            selfFiles.value = [...event.dataTransfer.files]
-            selfFiles.value.forEach(selfFile => selfFile['url'] = URL.createObjectURL(selfFile))
-        }
-
-        const deleteSelfFile = (index) => {
-            selfFiles.value.splice(index, 1)
-        }
-
-        //活動写真ドラッグ&ドロップ
-        let isEnterActivity = ref(false)
-
-        const dragEnterActivity = () => isEnterActivity.value = true
-        const dragLeaveActivity = () => isEnterActivity.value = false
-
-        let activityFiles = ref([])
-
-        const dropActivityFile = () => {
-            isEnterActivity.value = false
-            activityFiles.value.push(...event.dataTransfer.files)
-            activityFiles.value.forEach(selfFile => selfFile['url'] = URL.createObjectURL(selfFile))
-        }
-
-        const deleteActivityFile = (index) => {
-            activityFiles.value.splice(index, 1)
-        }
-
-        //提供スキルの追加・削除
-        let isAddSkill = ref(true)
-        let isDeleteSkill = ref(false)
-        const MAX_SKILLS = 3;
-        const MIN_SKILLS = 1;
-
-        const addSkill = () => {
-            form.skills.push({skill_title: '', skill_content: ''})
-            if(form.skills.length === MAX_SKILLS) {
-                isAddSkill.value = false
-            }
-            if(form.skills.length === MIN_SKILLS + 1) {
-                isDeleteSkill.value = true
-            }
-        }
-
-        const deleteSkill = (index) => {
-            form.skills.splice(index, 1)
-            if(form.skills.length === MAX_SKILLS - 1) {
-                isAddSkill.value = true
-            }
-            if(form.skills.length === MIN_SKILLS) {
-                isDeleteSkill.value = false
-                return
-            }
-
-        }
 
         //フォーム送信
         const expertId = usePage().props.value.auth.expert.id
-        console.log(expertId)
 
         const submit = () => {
             form.post(route('expert.profile.update', expertId), {
-                onSuccess:() => {
+                onSuccess: () => {
                     form.reset()
                 }
             })
         }
 
         return {
-            form,
             options,
-            dragEnterSelf,
-            isEnterSelf,
-            dragLeaveSelf,
-            dropSelfFile,
-            selfFiles,
-            faTimes,
-            deleteSelfFile,
-            isEnterActivity,
-            dragEnterActivity,
-            dragLeaveActivity,
-            dropActivityFile,
-            activityFiles,
-            deleteActivityFile,
-            addSkill,
-            deleteSkill,
-            isAddSkill,
-            isDeleteSkill,
+            params,
+            submit,
         }
     }
 }
