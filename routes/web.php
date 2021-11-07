@@ -15,7 +15,7 @@ use \App\Http\Controllers\Admins\ExpertContactTitleController;
 use \App\Http\Controllers\Experts\ExpertController;
 use \App\Http\Controllers\Experts\HomeController;
 use \App\Http\Controllers\Experts\MyPageController;
-use \App\Http\Controllers\Experts\ProfileController;
+use \App\Http\Controllers\Experts\ExpertProfileController;
 
 
 /*
@@ -77,10 +77,9 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
     //トップページ
     Route::get('/', [HomeController::class, 'top'])->middleware(['verified'])->name('home');
     Route::get('/my_page', [MyPageController::class, 'top'])->name('myPage.top');
-    Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/input', [ProfileController::class, 'input'])->name('profile.input');
-    Route::post('/profile/input', [ProfileController::class, 'preUpdate'])->name('profile.preUpdate');
-    Route::get('/profile/confirm', [ProfileController::class, 'confirm'])->name('profile.confirm');
+    Route::get('/profile/show', [ExpertProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/input', [ExpertProfileController::class, 'input'])->name('profile.input');
+    Route::post('/profile/input', [ExpertProfileController::class, 'update'])->name('profile.update');
 
 });
 

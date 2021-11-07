@@ -4,9 +4,10 @@ namespace App\Http\Requests;
 
 use App\Rules\KanaRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class ProfileRequest extends FormRequest
+class ExpertProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,24 +28,40 @@ class ProfileRequest extends FormRequest
     {
         return [
             'status' => ['required', 'integer', 'numeric'],
-            'nickname' => ['required', 'string', 'max:10', Rule::unique('profiles')->ignore($this->expert)],
-            'image' => ['required', 'file', 'image', 'max:5000'],
+            'nickname' => ['required', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
+            'profile_image.*' => ['file', 'image', 'max:5000'],
             'self_introduction' => ['required','string','max:500'],
             'activity_title' => 'required|string|max:30',
             'activity_content' => 'required|string|max:500',
-            'activity_images' => ['required'],
             'activity_images.*' => ['required', 'file', 'image', 'max:5000'],
             'skills.*.skill_title' => ['required', 'max:30'],
             'skills.*.skill_content' => ['required', 'max:300'],
         ];
     }
 
+    public function withValidator($validator)
+    {
+
+        $validator->after(function ($validator) {
+
+            if (!$this->hasAny(['profile_image', 'saved_profile_image'])) {
+                $validator->errors()->add('profile_image', 'プロフィール画像は必ず設定してください。');
+            }
+
+            if (!$this->hasAny(['activity_images', 'saved_activity_images'])) {
+                $validator->errors()->add('activity_images', '活動写真は必ず設定してください。');
+            }
+        });
+    }
+
+
+
     public function attributes()
     {
         return [
             'status' => 'ステータス',
             'nickname' => 'ニックネーム',
-            'image' => 'プロフィール画像',
+            'profile_image.*' => 'プロフィール画像',
             'self_introduction' => '自己紹介',
             'activity_title' => '活動タイトル',
             'activity_images' => '活動写真',

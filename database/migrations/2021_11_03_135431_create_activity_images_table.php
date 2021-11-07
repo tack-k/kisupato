@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProfilesTable extends Migration
+class CreateActivityImagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('activity_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('expert_id');
-            $table->string('status', 5);
-            $table->string('nickname', 20);
-            $table->string('image', 255);
-            $table->text('self_introduction');
-            $table->text('activity_title');
-            $table->text('activity_content');
+            $table->foreignId('expert_profile_id');
+            $table->string('activity_image', 255);
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();
@@ -38,6 +33,6 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('activity_images');
     }
 }
