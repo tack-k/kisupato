@@ -229,7 +229,7 @@ export default {
             form.delete_activity_images.push(form.saved_activity_images[index])
             form.saved_activity_images.splice(index, 1)
         }
-        
+
         //提供スキルの追加・削除
         const MAX_SKILLS = 3;
         const MIN_SKILLS = 1;
