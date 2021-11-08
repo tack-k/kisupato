@@ -37,7 +37,7 @@ class ExpertProfileService
 
             $expert_id = Auth::guard('expert')->id();
 
-            if ($request->has('delete_profile_image')) {
+            if ($request->has('delete_profile_image') && $request->delete_profile_image[0] !== 'default_profile.png') {
 
                 //ファイルの削除処理
                 Storage::disk('public')->delete($this->PROFILE_PATH . $request->delete_profile_image[0]);
