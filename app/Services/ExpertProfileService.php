@@ -46,7 +46,7 @@ class ExpertProfileService
 
             if ($request->has('profile_image')) {
                 $profile_image = $request->file('profile_image')[0];
-                $profile_image_name = Carbon::today()->format('Ymd_') . mt_rand() . '.' . $profile_image->getClientOriginalExtension();
+                $profile_image_name = $this->imageNameFormat($profile_image);
                 Storage::disk('public')->putFileAs($this->PROFILE_PATH, $profile_image, $profile_image_name);
                 $params['profile_image'] = $profile_image_name;
             }
@@ -74,7 +74,7 @@ class ExpertProfileService
 
                 $activity_images = $request->file('activity_images');
                 foreach ($activity_images as $activity_image) {
-                    $activity_image_name = Carbon::now()->format('Ymd_') . mt_rand() . '.' . $activity_image->getClientOriginalExtension();
+                    $activity_image_name = $this->imageNameFormat($activity_image);
                     Storage::putFileAs($this->ACTIVITY_PATH, $activity_image, $activity_image_name);
                     $image[] = [
                         'expert_profile_id' => $profile->id,
@@ -96,5 +96,14 @@ class ExpertProfileService
             Skill::upsert($skills, 'id', ['skill_title', 'skill_content']);
 
         });
+    }
+
+    /**
+     * 画像名を年月日+乱数にフォーマット
+     * @param $image
+     * @return string
+     */
+    public function imageNameFormat($image): string {
+        return Carbon::now()->format('Ymd_') . mt_rand() . '.' . $image->getClientOriginalExtension();
     }
 }
