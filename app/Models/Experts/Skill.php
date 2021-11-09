@@ -22,7 +22,7 @@ class Skill extends Model {
      * 提供技術を持つプロフィールを取得
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function ExpertProfile() {
+    public function expertProfile() {
         return $this->belongsTo(ExpertProfile::class);
     }
 }

@@ -22,4 +22,11 @@ class ActivityImage extends Model {
             ->where('expert_profile_id', $profile_id)
             ->get();
     }
+
+    /**
+     * 活動写真を持つプロフィールを取得
+     */
+    public function expertProfile() {
+        $this->belongsTo(ExpertProfile::class);
+    }
 }
