@@ -15,7 +15,7 @@ class CreateDraftSkillsTable extends Migration
     {
         Schema::create('draft_skills', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('expert_profile_id');
+            $table->foreignId('draft_expert_profile_id');
             $table->string('skill_title', 255)->nullable();
             $table->text('skill_content')->nullable();
             $table->dateTimeTz('created_at')->nullable();

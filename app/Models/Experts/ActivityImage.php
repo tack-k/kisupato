@@ -16,13 +16,6 @@ class ActivityImage extends Model {
         'acitivity_image'
     ];
 
-    public function getActivityImageInfo($profile_id) {
-        return DB::table('activity_images AS ai')
-            ->select('ai.id', 'ai.expert_profile_id', 'ai.activity_image')
-            ->where('expert_profile_id', $profile_id)
-            ->get();
-    }
-
     /**
      * 活動写真を持つプロフィールを取得
      */

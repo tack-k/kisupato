@@ -22,7 +22,7 @@ class CreateDraftExpertProfilesTable extends Migration
             $table->text('self_introduction')->nullable();
             $table->text('activity_title')->nullable();
             $table->text('activity_content')->nullable();
-            $table->unsignedTinyInteger('saved_flag');
+            $table->tinyInteger('saved_flag');
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();

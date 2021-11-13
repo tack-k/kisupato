@@ -15,7 +15,7 @@ class CreateDraftActivityImagesTable extends Migration
     {
         Schema::create('draft_activity_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('expert_profile_id');
+            $table->foreignId('draft_expert_profile_id');
             $table->string('activity_image', 255)->nullable();
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();

@@ -114,7 +114,10 @@
                             type="submit"
                             class="expert-regular-btn mr-20">保存する
                     </button>
-                    <Link href="#" as="button" type="button" class="expert-regular-btn mr-20">一時保存</Link>
+                    <button :disabled="form.processing"
+                            type="button" @click="submitDraft"
+                            class="expert-regular-btn mr-20">一時保存
+                    </button>
                     <Link href="#" as="button" type="button" class="expert-outline-btn">戻る</Link>
                 </div>
             </form>
@@ -165,12 +168,13 @@ export default {
             activity_title: props.profile.activity_title ?? '',
             activity_content: props.profile.activity_content ?? [],
             activity_images: [],
-            skills: props.skills.length != 0 ? props.skills : [{id: '', skill_title: '', skill_content: ''}],
-            saved_profile_image: [props.profile.profile_image] ?? '',
+            skills: props.skills.length != 0 ? props.skills : [{id: null, skill_title: '', skill_content: ''}],
+            saved_profile_image: [props.profile.profile_image] ?? [],
             saved_activity_images: props.activityImages ?? [],
             delete_profile_image: [],
             delete_activity_images: [],
             delete_skills: [],
+            saved_flag: props.profile.saved_flag ?? null
         })
 
         const NOT_EXIST = 'undefined'
@@ -212,7 +216,10 @@ export default {
 
         const MAX_ACTIVITY_FILES = 3
         const dropActivityFile = () => {
-            if(form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES) {
+            console.log(event.dataTransfer.files.length  + form.saved_activity_images.length)
+            if(event.dataTransfer.files.length + form.saved_activity_images.length > MAX_ACTIVITY_FILES
+            || form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES
+            ) {
                 return alert(`アップロードできる写真は${MAX_ACTIVITY_FILES}枚です。`)
             }
             isEnterActivity.value = false
@@ -234,7 +241,7 @@ export default {
         const MAX_SKILLS = 3;
         const MIN_SKILLS = 1;
         let isAddSkill = form.skills.length >= MAX_SKILLS ? ref(false) : ref(true)
-        let isDeleteSkill = form.skills.length >= MAX_SKILLS ? ref(true) : ref(false)
+        let isDeleteSkill = form.skills.length <= MIN_SKILLS ? ref(false) : ref(true)
 
         const addSkill = () => {
             form.skills.push({id: '', skill_title: '', skill_content: ''})
@@ -245,7 +252,6 @@ export default {
                 isDeleteSkill.value = true
             }
         }
-
         const deleteSkill = () => {
             if(Number.isFinite(form.skills[form.skills.length - 1].id)) {
             form.delete_skills.push((form.skills[form.skills.length - 1]).id)
@@ -261,14 +267,29 @@ export default {
 
         }
 
-
-
         //フォーム送信
         const submit = () => {
+            form.saved_flag = 1
             form.post(route('expert.profile.update'), {
                 forceFormData: true,
                 onSuccess: () => {
                     form.reset()
+                }
+            })
+        }
+
+       // 一時保存フォーム送信
+        const submitDraft = () => {
+            form.saved_flag = 0
+            form.post(route('expert.profile.update'), {
+                forceFormData: true,
+                onSuccess: () => {
+                    form.profile_image = []
+                    form.activity_images = []
+                    form.saved_profile_image =[props.profile.profile_image]
+                    form.saved_activity_images = props.activityImages
+                    form.delete_activity_images = []
+                    alert('一時保存しました。')
                 }
             })
         }
@@ -297,6 +318,7 @@ export default {
             NOT_EXIST,
             deleteSavedProfileFile,
             deleteSavedActivityFile,
+            submitDraft,
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Experts\ActivityImage;
+use App\Models\Experts\DraftExpertProfile;
 use App\Models\Experts\ExpertProfile;
 use App\Models\Experts\Skill;
 use Carbon\Carbon;
@@ -16,26 +17,24 @@ class ExpertProfileService
     protected $PROFILE_PATH = 'profile_images/';
 
     //活動写真のパス
-    protected $ACTIVITY_PATH = 'public/activity_images';
+    protected $ACTIVITY_PATH = 'activity_images/';
 
     /**
      * プロフィール更新処理
      * @param $request
      */
-    public function updateProfile($request) {
+    public function updateExpertProfile($request, $expert_id) {
 
-        DB::transaction(function () use ($request) {
-            $params = $request->except([
+        DB::transaction(function () use ($request, $expert_id) {
+            $params = $request->only([
+                'status',
+                'nickname',
                 'profile_image',
-                'activity_images',
-                'skills',
-                'saved_profile_image',
-                'saved_activity_images',
-                'delete_profile_image',
-                'delete_activity_images',
+                'self_introduction',
+                'activity_title',
+                'activity_content',
             ]);
 
-            $expert_id = Auth::guard('expert')->id();
 
             if ($request->has('delete_profile_image') && $request->delete_profile_image[0] !== 'default_profile.png') {
 
@@ -75,7 +74,7 @@ class ExpertProfileService
                 $activity_images = $request->file('activity_images');
                 foreach ($activity_images as $activity_image) {
                     $activity_image_name = $this->imageNameFormat($activity_image);
-                    Storage::putFileAs($this->ACTIVITY_PATH, $activity_image, $activity_image_name);
+                    Storage::disk('public')->putFileAs($this->ACTIVITY_PATH, $activity_image, $activity_image_name);
                     $image[] = [
                         'expert_profile_id' => $profile->id,
                         'activity_image' => $activity_image_name
@@ -94,6 +93,9 @@ class ExpertProfileService
             }
 
             Skill::upsert($skills, 'id', ['skill_title', 'skill_content']);
+
+            DraftExpertProfile::where('expert_id', $expert_id)
+                ->update(['saved_flag' => false]);
 
         });
     }
