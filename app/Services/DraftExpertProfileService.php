@@ -81,6 +81,7 @@ class DraftExpertProfileService
                     $activity_image_name = $this->imageNameFormat($activity_image);
                     Storage::disk('public')->putFileAs($this->ACTIVITY_PATH, $activity_image, $activity_image_name);
                     $image[] = [
+                        'id' => null,
                         'draft_expert_profile_id' => $profile->id,
                         'activity_image' => $activity_image_name
                     ];
