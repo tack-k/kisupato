@@ -92,6 +92,7 @@ class DraftExpertProfileService
                 $saved_activity_images = $request->saved_activity_images;
                 foreach ($saved_activity_images as $saved_activity_image) {
                     $image[] = [
+                        'id' => $saved_activity_image['id'],
                         'draft_expert_profile_id' => $profile->id,
                         'activity_image' => $saved_activity_image['activity_image']
                     ];
