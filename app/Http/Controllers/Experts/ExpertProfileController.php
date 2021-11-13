@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Experts;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DraftExpertProfileRequest;
 use App\Http\Requests\ExpertProfileRequest;
+use App\Models\Experts\DraftActivityImage;
 use App\Models\Experts\DraftExpertProfile;
+use App\Models\Experts\DraftSkill;
 use App\Models\Experts\ExpertProfile;
 use App\Services\DraftExpertProfileService;
 use Illuminate\Support\Facades\Auth;
@@ -28,9 +30,11 @@ class ExpertProfileController extends Controller {
 
     public function input() {
         $expert_id = Auth::guard('expert')->id();
-        $profile = DraftExpertProfile::select('saved_flag')->firstWhere('expert_id', $expert_id);
+    //    $profile = DraftExpertProfile::select('saved_flag')->firstWhere('expert_id', $expert_id);
 
-        if($profile->saved_flag == 0) {
+        $is_saved = DraftExpertProfile::where('expert_id', $expert_id)->exists();
+
+        if($is_saved) {
             $profile = DraftExpertProfile::select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content', 'saved_flag')
                 ->firstWhere('expert_id', $expert_id);
             if ($profile) {
@@ -72,9 +76,16 @@ class ExpertProfileController extends Controller {
             //プロフィール更新処理
             $this->_service->updateExpertProfile($request, $expert_id);
 
-            //保存状態を解除
-            DraftExpertProfile::where('expert_id', $expert_id)
-            ->update(['saved_flag' => $request->saved_flag]);
+            $is_saved = DraftExpertProfile::where('expert_id', $expert_id)->exists();
+            if ($is_saved) {
+            //一時保存を削除
+            $draft_profile = DraftExpertProfile::firstWhere('expert_id', $expert_id);
+            $draft_profile_id = $draft_profile->id;
+            DraftExpertProfile::destroy($draft_profile_id);
+            DraftSkill::where('draft_expert_profile_id', $draft_profile_id)->delete();
+            DraftActivityImage::where('draft_expert_profile_id', $draft_profile_id)->delete();
+            }
+
         }
 
 
