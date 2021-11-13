@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Experts\DraftActivityImage;
+use App\Models\Experts\ActivityImage;
 use App\Models\Experts\DraftExpertProfile;
 use App\Models\Experts\DraftSkill;
 use Carbon\Carbon;
@@ -68,6 +69,7 @@ class DraftExpertProfileService
 
                 //パスの削除
                 DraftActivityImage::destroy($activity_image_id);
+                ActivityImage::destroy($activity_image_id);
             }
 
             $image = [];
