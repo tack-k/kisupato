@@ -70,6 +70,7 @@ class DraftExpertProfileService
                 DraftActivityImage::destroy($activity_image_id);
             }
 
+            $image = [];
             if ($request->has('activity_images')) {
 
                 $activity_images = $request->file('activity_images');
@@ -81,8 +82,20 @@ class DraftExpertProfileService
                         'activity_image' => $activity_image_name
                     ];
                 }
-                DraftActivityImage::upsert($image, 'id', ['activity_image']);
             }
+
+            //本番保存された活動写真を一時保存に反映
+            if ($request->has('saved_activity_images')) {
+                $saved_activity_images = $request->saved_activity_images;
+                foreach ($saved_activity_images as $saved_activity_image) {
+                    $image[] = [
+                        'draft_expert_profile_id' => $profile->id,
+                        'activity_image' => $saved_activity_image['activity_image']
+                    ];
+                }
+            }
+
+            DraftActivityImage::upsert($image, 'id', ['activity_image']);
 
             $delete_skills_id = $request->delete_skills;
             DraftSkill::destroy($delete_skills_id);
