@@ -6,6 +6,7 @@ use App\Models\Experts\DraftActivityImage;
 use App\Models\Experts\ActivityImage;
 use App\Models\Experts\DraftExpertProfile;
 use App\Models\Experts\DraftSkill;
+use App\Models\Experts\Skill;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -101,6 +102,7 @@ class DraftExpertProfileService
 
             $delete_skills_id = $request->delete_skills;
             DraftSkill::destroy($delete_skills_id);
+            Skill::destroy($delete_skills_id);
 
             $skills_params = $request->skills;
             foreach ($skills_params as $skills_param) {
