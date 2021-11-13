@@ -288,7 +288,9 @@ export default {
                     form.activity_images = []
                     form.saved_profile_image =[props.profile.profile_image]
                     form.saved_activity_images = props.activityImages
+                    form.delete_profile_image = []
                     form.delete_activity_images = []
+                    form.delete_skills = []
                     alert('一時保存しました。')
                 }
             })
