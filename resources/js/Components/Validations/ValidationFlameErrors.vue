@@ -16,7 +16,7 @@
 <script>
 import Fa from 'vue-fa';
 import {faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {usePage} from '@inertiajs/inertia-vue3'
 
 export default {
@@ -31,6 +31,8 @@ export default {
         const errors = computed(() => usePage().props.value.errors)
 
         const hasErrors = computed(() => Object.keys(errors.value).length > 0)
+
+        watch(errors, () => open.value = true)
 
         return {
             faExclamationTriangle,
