@@ -26,15 +26,15 @@ class DraftExpertProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => ['integer', 'numeric'],
-            'nickname' => ['string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
+            'status' => ['nullable', 'integer', 'numeric'],
+            'nickname' => ['nullable', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
             'profile_image.*' => ['file', 'image', 'max:5000'],
-            'self_introduction' => ['string','max:500'],
-            'activity_title' => 'string|max:30',
-            'activity_content' => 'string|max:500',
-            'activity_images.*' => ['file', 'image', 'max:5000'],
-            'skills.*.skill_title' => ['max:30'],
-            'skills.*.skill_content' => ['max:300'],
+            'self_introduction' => ['nullable', 'string', 'max:500'],
+            'activity_title' => 'nullable|string|max:30',
+            'activity_content' => 'nullable|string|max:500',
+            'activity_images.*' => ['nullable', 'file', 'image', 'max:5000'],
+            'skills.*.skill_title' => ['nullable', 'max:30'],
+            'skills.*.skill_content' => ['nullable', 'max:300'],
         ];
     }
 

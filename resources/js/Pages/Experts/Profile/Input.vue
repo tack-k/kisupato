@@ -273,7 +273,7 @@ export default {
        // 一時保存フォーム送信
         const submitDraft = () => {
             form.saved_flag = 0
-            form.post(route('expert.profile.update'), {
+            form.post(route('expert.profile.save'), {
                 forceFormData: true,
                 onSuccess: () => {
                     form.profile_image = []

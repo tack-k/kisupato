@@ -107,8 +107,6 @@ class ExpertProfileService
 
             Skill::upsert($skills, 'id', ['skill_title', 'skill_content']);
 
-            DraftExpertProfile::where('expert_id', $expert_id)
-                ->update(['saved_flag' => false]);
 
         });
     }
