@@ -71,7 +71,7 @@
                                     <div class="bg-white rounded-lg mt-5 relative">
                                         <img :src="ACTIVITY_PATH + saved_activity_image.activity_image" class="rounded-md h-40 object-cover" alt="">
                                         <Fa :icon="faTimes" @click="deleteSavedActivityFile(index)"
-                                            class="absolute expert-hover top-2 right-2"/>
+                                            class="absolute expert-hover -top-2 -right-2"/>
                                     </div>
                                 </li>
                                 <li v-for="(activity_image, index) in form.activity_images" :key="index"
@@ -79,7 +79,7 @@
                                     <div class="bg-white rounded-lg mt-5 relative">
                                         <img :src="activity_image.url" class="rounded-md h-40 object-cover" alt="">
                                         <Fa :icon="faTimes" @click="deleteActivityFile(index)"
-                                            class="absolute expert-hover top-2 right-2"/>
+                                            class="absolute expert-hover -top-2 -right-2"/>
                                     </div>
                                 </li>
                                 <!-- end cols -->
