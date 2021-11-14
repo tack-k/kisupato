@@ -25,15 +25,11 @@
                             <li v-for="(file, index) in form.saved_profile_image" :key="index">
                             <div class="relative">
                                     <img :src="PROFILE_PATH + file" class="h-40 w-40 rounded-full object-cover" alt="">
-                                    <Fa :icon="faTimes" @click="deleteSavedProfileFile(index)"
-                                        class="absolute expert-hover top-2 right-2"/>
                                 </div>
                             </li>
                             <li v-for="(file, index) in form.profile_image" :key="index">
                                 <div class="relative">
                                     <img :src="file.url" class="h-40 w-40 rounded-full object-cover" alt="">
-                                    <Fa :icon="faTimes" @click="deleteProfileFile(index)"
-                                        class="absolute expert-hover top-2 right-2"/>
                                 </div>
                             </li>
                         </ul>
@@ -189,23 +185,21 @@ export default {
 
         const MAX_PROFILE_FILES = 1
         const dropSelfFile = () => {
-            if(form.profile_image.length + form.saved_profile_image.length >= MAX_PROFILE_FILES) {
-                return alert(`アップロードできる写真は${MAX_PROFILE_FILES}枚です。`)
-            }
+            // if(form.profile_image.length + form.saved_profile_image.length >= MAX_PROFILE_FILES) {
+            //     return alert(`アップロードできる写真は${MAX_PROFILE_FILES}枚です。`)
+            // }
             isEnterSelf.value = false
             if (event.dataTransfer.files.length >= 2) {
-                return
+                return alert(`アップロードできる写真は${MAX_PROFILE_FILES}枚です。`)
             }
-            form.profile_image.push(...event.dataTransfer.files)
+            // form.profile_image.push(...event.dataTransfer.files)
+            form.profile_image = [...event.dataTransfer.files]
+
+            if(form.saved_profile_image !== null) {
+            form.delete_profile_image = form.saved_profile_image
+            form.saved_profile_image = []
+            }
             form.profile_image.forEach(selfFile => selfFile['url'] = URL.createObjectURL(selfFile))
-        }
-
-        const deleteProfileFile = index => form.profile_image.splice(index, 1)
-
-
-        const  deleteSavedProfileFile = index => {
-            form.delete_profile_image.push(form.saved_profile_image[index])
-            form.saved_profile_image.splice(index, 1)
         }
 
         //活動写真ドラッグ&ドロップ
@@ -304,7 +298,6 @@ export default {
             dragLeaveSelf,
             dropSelfFile,
             faTimes,
-            deleteProfileFile,
             isEnterActivity,
             dragEnterActivity,
             dragLeaveActivity,
@@ -318,7 +311,6 @@ export default {
             PROFILE_PATH,
             ACTIVITY_PATH,
             NOT_EXIST,
-            deleteSavedProfileFile,
             deleteSavedActivityFile,
             submitDraft,
         }
