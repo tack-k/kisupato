@@ -69,19 +69,32 @@ class ExpertProfileService
                 ActivityImage::destroy($activity_image_id);
             }
 
+            $image = [];
             if ($request->has('activity_images')) {
-
                 $activity_images = $request->file('activity_images');
                 foreach ($activity_images as $activity_image) {
                     $activity_image_name = $this->imageNameFormat($activity_image);
                     Storage::disk('public')->putFileAs($this->ACTIVITY_PATH, $activity_image, $activity_image_name);
                     $image[] = [
+                        'id' => null,
                         'expert_profile_id' => $profile->id,
                         'activity_image' => $activity_image_name
                     ];
                 }
-                ActivityImage::upsert($image, 'id', ['activity_image']);
             }
+
+            if ($request->has('saved_activity_images')) {
+                $saved_activity_images = $request->saved_activity_images;
+                foreach ($saved_activity_images as $saved_activity_image) {
+                    $image[] = [
+                        'id' => $saved_activity_image['id'],
+                        'expert_profile_id' => $profile->id,
+                        'activity_image' => $saved_activity_image['activity_image']
+                    ];
+                }
+            }
+                ActivityImage::upsert($image, 'id', ['activity_image']);
+
 
             $delete_skills_id = $request->delete_skills;
             Skill::destroy($delete_skills_id);
