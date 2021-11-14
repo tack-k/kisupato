@@ -5,11 +5,10 @@ namespace App\Models\Experts;
 use App\Traits\AuthorObservable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DraftExpertProfile extends Model
 {
-    use HasFactory, SoftDeletes, AuthorObservable;
+    use HasFactory, AuthorObservable;
 
     protected $fillable = [
         'expert_id',
