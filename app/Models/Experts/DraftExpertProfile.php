@@ -22,6 +22,27 @@ class DraftExpertProfile extends Model
     ];
 
     /**
+     * 一時保存したプロフィールが存在するかチェックする
+     * @param $query
+     * @param $expert_id
+     * @return mixed
+     */
+    public function scopeCheckTemporarilySaved($query, $expert_id) {
+       return $query->where('expert_id', $expert_id)->exists();
+    }
+
+    /**
+     * 専門人材のプロフィール情報を取得する
+     * @param $query
+     * @param $expert_id
+     * @return mixed
+     */
+    public function scopeGetDraftExpertProfileInfo($query, $expert_id) {
+        return $query->select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content', 'saved_flag')
+            ->firstWhere('expert_id', $expert_id);
+    }
+
+    /**
      * 下書きプロフィールが持つ下書き提供技術を取得
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

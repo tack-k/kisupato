@@ -23,6 +23,17 @@ class ExpertProfile extends Model
     ];
 
     /**
+     * 専門人材の下書きプロフィール情報を取得する
+     * @param $query
+     * @param $expert_id
+     * @return mixed
+     */
+    public function scopeGetExpertProfileInfo($query, $expert_id) {
+        return $query->select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content')
+            ->firstWhere('expert_id', $expert_id);
+    }
+
+    /**
      * プロフィールが持つ提供技術を取得
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

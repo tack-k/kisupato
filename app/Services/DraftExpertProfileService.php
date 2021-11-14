@@ -7,19 +7,17 @@ use App\Models\Experts\ActivityImage;
 use App\Models\Experts\DraftExpertProfile;
 use App\Models\Experts\DraftSkill;
 use App\Models\Experts\Skill;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Consts\CommonConst;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use function PHPUnit\Framework\isEmpty;
 
-class DraftExpertProfileService
-{
-    //プロフィール画像のパス
-    protected $PROFILE_PATH = 'profile_images/';
+class DraftExpertProfileService {
+    //共通サービスクラス
+    protected $_commonService;
 
-    //活動写真のパス
-    protected $ACTIVITY_PATH = 'activity_images/';
+    public function __construct() {
+        $this->_commonService = new CommonService();
+    }
 
 
     /**
@@ -42,15 +40,15 @@ class DraftExpertProfileService
 
             if ($request->has('delete_profile_image') && $request->delete_profile_image[0] !== 'default_profile.png') {
                 $params['profile_image'] = 'default_profile.png';
-                    //ファイルの削除処理
-                Storage::disk('public')->delete($this->PROFILE_PATH . $request->delete_profile_image[0]);
+                //ファイルの削除処理
+                Storage::disk('public')->delete(CommonConst::PROFILE_PATH . $request->delete_profile_image[0]);
             }
 
 
             if ($request->has('profile_image')) {
                 $profile_image = $request->file('profile_image')[0];
-                $profile_image_name = $this->imageNameFormat($profile_image);
-                Storage::disk('public')->putFileAs($this->PROFILE_PATH, $profile_image, $profile_image_name);
+                $profile_image_name = $this->_commonService->imageNameFormat($profile_image);
+                Storage::disk('public')->putFileAs(CommonConst::PROFILE_PATH, $profile_image, $profile_image_name);
                 $params['profile_image'] = $profile_image_name;
             }
 
@@ -63,7 +61,7 @@ class DraftExpertProfileService
             if ($request->has('delete_activity_images')) {
                 //ファイルの削除
                 foreach ($request->delete_activity_images as $delete_activity_image) {
-                    $delete_activity_path[] = $this->ACTIVITY_PATH . $delete_activity_image['activity_image'];
+                    $delete_activity_path[] = CommonConst::ACTIVITY_PATH . $delete_activity_image['activity_image'];
                     $activity_image_id[] = $delete_activity_image['id'];
                 }
                 Storage::disk('public')->delete($delete_activity_path);
@@ -78,8 +76,8 @@ class DraftExpertProfileService
 
                 $activity_images = $request->file('activity_images');
                 foreach ($activity_images as $activity_image) {
-                    $activity_image_name = $this->imageNameFormat($activity_image);
-                    Storage::disk('public')->putFileAs($this->ACTIVITY_PATH, $activity_image, $activity_image_name);
+                    $activity_image_name = $this->_commonService->imageNameFormat($activity_image);
+                    Storage::disk('public')->putFileAs(CommonConst::ACTIVITY_PATH, $activity_image, $activity_image_name);
                     $image[] = [
                         'id' => null,
                         'draft_expert_profile_id' => $profile->id,
@@ -112,19 +110,24 @@ class DraftExpertProfileService
                 $skills[] = $skills_param;
             }
 
-
             DraftSkill::upsert($skills, 'id', ['skill_title', 'skill_content']);
-
 
         });
     }
 
     /**
-     * 画像名を年月日+乱数にフォーマット
-     * @param $image
-     * @return string
+     * 一時保存した専門人材のプロフィールを削除
+     * @param $expert_id
      */
-    public function imageNameFormat($image): string {
-        return Carbon::now()->format('Ymd_') . mt_rand() . '.' . $image->getClientOriginalExtension();
+    public function deleteDraftExpertInfo($expert_id) {
+        $is_saved = DraftExpertProfile::checkTemporarilySaved($expert_id);
+        if ($is_saved) {
+            $draft_profile = DraftExpertProfile::firstWhere('expert_id', $expert_id);
+            $draft_profile_id = $draft_profile->id;
+            DraftExpertProfile::destroy($draft_profile_id);
+            DraftSkill::where('draft_expert_profile_id', $draft_profile_id)->delete();
+            DraftActivityImage::where('draft_expert_profile_id', $draft_profile_id)->delete();
+        }
+
     }
 }

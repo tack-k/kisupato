@@ -15,9 +15,9 @@
                 <section class="mb-10">
                     <LabelRequired class="label" value="プロフィール画像"/>
                     <div class="flex flex-col items-center md:flex-row">
-                        <div @dragenter="dragEnterSelf" @dragleave="dragLeaveSelf" @dragover.prevent
-                             @drop.prevent="dropSelfFile"
-                             :class="{enter: isEnterSelf}"
+                        <div @dragenter="dragEnterProfile" @dragleave="dragLeaveProfile" @dragover.prevent
+                             @drop.prevent="dropProfileFile"
+                             :class="{enter: isEnterProfile}"
                              class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
                             ファイルアップロード
                         </div>
@@ -156,6 +156,7 @@ export default {
             {'id': 0, 'name': '公開'},
             {'id': 1, 'name': '非公開'},
         ])
+
         const form = useForm({
             status: props.profile.status ?? '',
             nickname: props.profile.nickname ?? '',
@@ -177,29 +178,26 @@ export default {
         const PROFILE_PATH = '/storage/profile_images/'
         const ACTIVITY_PATH = '/storage/activity_images/'
 
-        //自己紹介ドラッグ&ドロップ
-        let isEnterSelf = ref(false)
+        //プロフィール画像ドラッグ&ドロップ
+        let isEnterProfile = ref(false)
 
-        const dragEnterSelf = () => isEnterSelf.value = true
-        const dragLeaveSelf = () => isEnterSelf.value = false
+        const dragEnterProfile = () => isEnterProfile.value = true
+        const dragLeaveProfile = () => isEnterProfile.value = false
 
         const MAX_PROFILE_FILES = 1
-        const dropSelfFile = () => {
-            // if(form.profile_image.length + form.saved_profile_image.length >= MAX_PROFILE_FILES) {
-            //     return alert(`アップロードできる写真は${MAX_PROFILE_FILES}枚です。`)
-            // }
-            isEnterSelf.value = false
+        const dropProfileFile = () => {
+
+            isEnterProfile.value = false
             if (event.dataTransfer.files.length >= 2) {
                 return alert(`アップロードできる写真は${MAX_PROFILE_FILES}枚です。`)
             }
-            // form.profile_image.push(...event.dataTransfer.files)
             form.profile_image = [...event.dataTransfer.files]
 
             if(form.saved_profile_image !== null) {
             form.delete_profile_image = form.saved_profile_image
             form.saved_profile_image = []
             }
-            form.profile_image.forEach(selfFile => selfFile['url'] = URL.createObjectURL(selfFile))
+            form.profile_image.forEach(profileFile => profileFile['url'] = URL.createObjectURL(profileFile))
         }
 
         //活動写真ドラッグ&ドロップ
@@ -217,7 +215,7 @@ export default {
             }
             isEnterActivity.value = false
             form.activity_images.push(...event.dataTransfer.files)
-            form.activity_images.forEach(selfFile => selfFile['url'] = URL.createObjectURL(selfFile))
+            form.activity_images.forEach(profileFile => profileFile['url'] = URL.createObjectURL(profileFile))
         }
 
         const deleteActivityFile = (index) => {
@@ -294,10 +292,10 @@ export default {
         return {
             form,
             options,
-            dragEnterSelf,
-            isEnterSelf,
-            dragLeaveSelf,
-            dropSelfFile,
+            dragEnterProfile,
+            isEnterProfile,
+            dragLeaveProfile,
+            dropProfileFile,
             faTimes,
             isEnterActivity,
             dragEnterActivity,
