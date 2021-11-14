@@ -210,7 +210,6 @@ export default {
 
         const MAX_ACTIVITY_FILES = 3
         const dropActivityFile = () => {
-            console.log(event.dataTransfer.files.length  + form.saved_activity_images.length)
             if(event.dataTransfer.files.length + form.saved_activity_images.length > MAX_ACTIVITY_FILES
             || form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES
             ) {
@@ -226,7 +225,6 @@ export default {
         }
 
         const deleteSavedActivityFile = index => {
-            console.log(index)
             form.delete_activity_images.push(form.saved_activity_images[index])
             form.saved_activity_images.splice(index, 1)
         }
@@ -286,6 +284,9 @@ export default {
                     form.delete_activity_images = []
                     form.delete_skills = []
                     alert('一時保存しました。')
+                },
+                onError: () => {
+                    alert('一時保存に失敗しました。')
                 }
             })
         }
