@@ -35,7 +35,11 @@ class ExpertProfileController extends Controller {
      * @return \Inertia\Response
      */
     public function show() {
-        return Inertia::render('Experts/Profile/Show');
+        $expert_id = Auth::guard('expert')->id();
+        $profile = ExpertProfile::getExpertProfileAllInfo($expert_id);
+        return Inertia::render('Experts/Profile/Show', [
+            'profile' => $profile,
+        ]);
     }
 
     /**

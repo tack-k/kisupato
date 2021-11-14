@@ -75,6 +75,15 @@ export default {
         RegularButton,
         MyPageLayout,
         Link,
+    },
+    props: {
+      profile: Object,
+    },
+    setup(props) {
+        console.log(props.profile)
+        return {
+
+        }
     }
 }
 </script>
