@@ -110,7 +110,7 @@
                             type="submit"
                             class="expert-regular-btn mr-20">保存する
                     </button>
-                    <button :disabled="form.processing"
+                    <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
                             type="button" @click="submitDraft"
                             class="expert-regular-btn mr-20">一時保存
                     </button>
