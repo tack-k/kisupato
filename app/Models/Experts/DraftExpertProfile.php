@@ -38,7 +38,7 @@ class DraftExpertProfile extends Model
      * @return mixed
      */
     public function scopeGetDraftExpertProfileInfo($query, $expert_id) {
-        return $query->select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content', 'saved_flag')
+        return $query->select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content')
             ->firstWhere('expert_id', $expert_id);
     }
 

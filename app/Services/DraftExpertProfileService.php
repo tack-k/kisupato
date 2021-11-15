@@ -35,7 +35,6 @@ class DraftExpertProfileService {
                 'self_introduction',
                 'activity_title',
                 'activity_content',
-                'saved_flag',
             ]);
 
             if ($request->has('delete_profile_image') && $request->delete_profile_image[0] !== 'default_profile.png') {

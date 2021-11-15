@@ -4,7 +4,7 @@
             <section class="mb-10">
                 <div class="flex mb-4">
                     <h2 class="base-font-m base-font-bold mr-10">【{{ options[profile.status].name }}】</h2>
-                    <regular-button class="expert-bg-active">編集する</regular-button>
+                    <SelectSavedModal/>
                 </div>
                 <div class="flex flex-col items-center md:flex-row">
                     <div class="flex flex-col items-center mb-8 md:mb-0">
@@ -66,6 +66,7 @@
 import MyPageLayout from "@/Layouts/Experts/MyPageLayout";
 import {Link} from "@inertiajs/inertia-vue3";
 import RegularButton from "@/Components/Buttons/RegularButton";
+import SelectSavedModal from "@/Layouts/Experts/SelectSavedModal";
 import { reactive } from "vue"
 
 
@@ -74,6 +75,7 @@ export default {
     components: {
         RegularButton,
         MyPageLayout,
+        SelectSavedModal,
         Link,
     },
     props: {
@@ -86,6 +88,7 @@ export default {
             {'id': 0, 'name': '公開'},
             {'id': 1, 'name': '非公開'},
         ])
+
         return {
             PROFILE_PATH,
             ACTIVITY_PATH,

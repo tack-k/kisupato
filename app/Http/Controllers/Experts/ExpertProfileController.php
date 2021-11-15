@@ -9,6 +9,7 @@ use App\Models\Experts\DraftExpertProfile;
 use App\Models\Experts\ExpertProfile;
 use App\Services\CommonService;
 use App\Services\DraftExpertProfileService;
+use App\Consts\ExpertConst;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,7 @@ class ExpertProfileController extends Controller {
         $this->_service = new ExpertProfileService();
         $this->_draftExpertProfileService = new DraftExpertProfileService();
         $this->_commonService = new CommonService();
+
     }
 
     /**
@@ -46,12 +48,13 @@ class ExpertProfileController extends Controller {
      * 専門人材のプロフィール入力画面を表示する
      * @return \Inertia\Response
      */
-    public function input() {
+    public function input($saved) {
+
         $expert_id = Auth::guard('expert')->id();
 
         $is_saved = DraftExpertProfile::checkTemporarilySaved($expert_id);
 
-        if ($is_saved) {
+        if ($is_saved && $saved == ExpertConst::SAVED) {
             $profile = DraftExpertProfile::getDraftExpertProfileInfo($expert_id);
             if ($profile) {
                 $skills = $profile->draftSkills()->select('id', 'skill_title', 'skill_content')->where('draft_expert_profile_id', $profile->id)->get();
@@ -61,6 +64,7 @@ class ExpertProfileController extends Controller {
                 $skills = [];
                 $activity_images = [];
             }
+
         } else {
             $profile = ExpertProfile::getExpertProfileInfo($expert_id);
 
@@ -110,7 +114,14 @@ class ExpertProfileController extends Controller {
         $expert_id = Auth::guard('expert')->id();
 
         $this->_draftExpertProfileService->updateDraftExpertProfile($request, $expert_id);
-        return Redirect::route('expert.profile.input');
+        return Redirect::route('expert.profile.input', ['saved' => ExpertConst::SAVED]);
+    }
+
+    public function ajaxGetSaved() {
+        $expert_id = Auth::guard('expert')->id();
+
+        return DraftExpertProfile::checkTemporarilySaved($expert_id);
+
     }
 
 }
