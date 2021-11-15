@@ -57,7 +57,7 @@ export default {
                 "id": 0,
                 'icon': faPortrait,
                 "title": "プロフィール",
-                "link": "expert.home",
+                "link": "expert.profile.show",
             },
             "talk_room": {
                 "id": 1,
