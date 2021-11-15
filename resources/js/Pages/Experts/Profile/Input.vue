@@ -114,7 +114,7 @@
                             type="button" @click="submitDraft"
                             class="expert-regular-btn mr-20">一時保存
                     </button>
-                    <Link href="#" as="button" type="button" class="expert-outline-btn">戻る</Link>
+                    <Link :href="route('expert.profile.show')" as="button" type="button" class="expert-outline-btn">戻る</Link>
                 </div>
             </form>
         </template>
