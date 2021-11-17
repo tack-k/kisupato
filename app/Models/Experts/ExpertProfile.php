@@ -31,7 +31,7 @@ class ExpertProfile extends Model
     public function scopeGetExpertProfileAllInfo($query, $expert_id) {
         return $query->select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content')
             ->with(['activityImages:id,expert_profile_id,activity_image', 'skills:id,expert_profile_id,skill_title,skill_content'])
-            ->firstWhere('expert_id', $expert_id);
+            ->where('expert_id', $expert_id);
 
     }
 
@@ -43,7 +43,7 @@ class ExpertProfile extends Model
      */
     public function scopeGetExpertProfileInfo($query, $expert_id) {
         return $query->select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content')
-            ->firstWhere('expert_id', $expert_id);
+            ->where('expert_id', $expert_id);
     }
 
 

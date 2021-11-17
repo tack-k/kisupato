@@ -38,7 +38,13 @@ class ExpertProfileController extends Controller {
      */
     public function show() {
         $expert_id = Auth::guard('expert')->id();
-        $profile = ExpertProfile::getExpertProfileAllInfo($expert_id);
+        $profile = ExpertProfile::getExpertProfileAllInfo($expert_id)->first();
+
+        if(is_null($profile)) {
+            $saved = DraftExpertProfile::checkTemporarilySaved($expert_id);
+            return Redirect::route('expert.profile.input', ['saved' => $saved]);
+        }
+
         return Inertia::render('Experts/Profile/Show', [
             'profile' => $profile,
         ]);
@@ -55,7 +61,7 @@ class ExpertProfileController extends Controller {
         $is_saved = DraftExpertProfile::checkTemporarilySaved($expert_id);
 
         if ($is_saved && $saved == ExpertConst::SAVED) {
-            $profile = DraftExpertProfile::getDraftExpertProfileInfo($expert_id);
+            $profile = DraftExpertProfile::getDraftExpertProfileInfo($expert_id)->first();
             if ($profile) {
                 $skills = $profile->draftSkills()->select('id', 'skill_title', 'skill_content')->where('draft_expert_profile_id', $profile->id)->get();
                 $activity_images = $profile->draftActivityImages;
@@ -66,9 +72,9 @@ class ExpertProfileController extends Controller {
             }
 
         } else {
-            $profile = ExpertProfile::getExpertProfileInfo($expert_id);
-
+            $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
             if ($profile) {
+
                 $skills = $profile->skills()->select('id', 'skill_title', 'skill_content')->where('expert_profile_id', $profile->id)->get();
                 $activity_images = $profile->activityImages;
             } else {

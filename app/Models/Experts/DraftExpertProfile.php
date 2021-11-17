@@ -39,7 +39,7 @@ class DraftExpertProfile extends Model
      */
     public function scopeGetDraftExpertProfileInfo($query, $expert_id) {
         return $query->select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content')
-            ->firstWhere('expert_id', $expert_id);
+            ->where('expert_id', $expert_id);
     }
 
     /**
