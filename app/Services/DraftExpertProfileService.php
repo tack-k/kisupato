@@ -6,6 +6,7 @@ use App\Models\Experts\DraftActivityImage;
 use App\Models\Experts\ActivityImage;
 use App\Models\Experts\DraftExpertProfile;
 use App\Models\Experts\DraftSkill;
+use App\Models\Experts\ExpertProfile;
 use App\Models\Experts\Skill;
 use App\Consts\CommonConst;
 use Illuminate\Support\Facades\DB;
@@ -121,7 +122,26 @@ class DraftExpertProfileService {
     public function deleteDraftExpertInfo($expert_id) {
         $is_saved = DraftExpertProfile::checkTemporarilySaved($expert_id);
         if ($is_saved) {
-            $draft_profile = DraftExpertProfile::firstWhere('expert_id', $expert_id);
+            $draft_profile = DraftExpertProfile::getDraftExpertProfileAllInfo($expert_id)->first();
+            $draft_profile_image = $draft_profile->profile_image;
+            $is_same_image = ExpertProfile::checkSameImage($draft_profile_image);
+            if (!$is_same_image) {
+                Storage::disk('public')->delete(CommonConst::PROFILE_PATH . $draft_profile_image);
+            }
+
+            $draft_activity_images = $draft_profile->draftActivityImages;
+            if ($draft_activity_images) {
+                foreach ($draft_activity_images as $draft_activity_image) {
+                  $image[] = $draft_activity_image['activity_image'];
+                }
+                $same_images = ActivityImage::whereIn('activity_image', $image)->get();
+
+                if (!$same_images) {
+                    Storage::disk('public')->delete(CommonConst::ACTIVITY_PATH . $same_images);
+                }
+            }
+
+
             $draft_profile_id = $draft_profile->id;
             DraftExpertProfile::destroy($draft_profile_id);
             DraftSkill::where('draft_expert_profile_id', $draft_profile_id)->delete();

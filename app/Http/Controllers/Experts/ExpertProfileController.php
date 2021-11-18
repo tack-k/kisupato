@@ -42,6 +42,8 @@ class ExpertProfileController extends Controller {
 
         if(is_null($profile)) {
             $saved = DraftExpertProfile::checkTemporarilySaved($expert_id);
+            $saved = $saved ? ExpertConst::SAVED : ExpertConst::NOT_SAVED;
+
             return Redirect::route('expert.profile.input', ['saved' => $saved]);
         }
 

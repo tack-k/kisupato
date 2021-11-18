@@ -46,6 +46,10 @@ class ExpertProfile extends Model
             ->where('expert_id', $expert_id);
     }
 
+    public function scopeCheckSameImage($query, $image) {
+        return $query->where('profile_image', $image)->exists();
+    }
+
 
     /**
      * プロフィールが持つ提供技術を取得
