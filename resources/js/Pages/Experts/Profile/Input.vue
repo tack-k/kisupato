@@ -24,7 +24,7 @@
                         <ul class="h-40 w-40 mt-10 md:ml-10 md:mt-0">
                             <li v-for="(file, index) in form.saved_profile_image" :key="index">
                             <div class="relative">
-                                    <img :src="PROFILE_PATH + file" class="h-40 w-40 rounded-full object-cover" alt="">
+                                    <img :src="displayedProfilePath + file" class="h-40 w-40 rounded-full object-cover" alt="">
                                 </div>
                             </li>
                             <li v-for="(file, index) in form.profile_image" :key="index">
@@ -69,7 +69,7 @@
                                 <li v-for="(saved_activity_image, index) in form.saved_activity_images" :key="index"
                                     class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center">
                                     <div class="bg-white rounded-lg mt-5 relative">
-                                        <img :src="ACTIVITY_PATH + saved_activity_image.activity_image" class="rounded-md h-40 object-cover" alt="">
+                                        <img :src="displayedActivityPath + saved_activity_image.activity_image" class="rounded-md h-40 object-cover" alt="">
                                         <Fa :icon="faTimes" @click="deleteSavedActivityFile(index)"
                                             class="absolute expert-hover -top-2 -right-2"/>
                                     </div>
@@ -149,6 +149,7 @@ export default {
         profile: Object,
         skills: Object,
         activityImages: Object,
+        saved: String,
     },
 
     setup(props) {
@@ -177,6 +178,13 @@ export default {
         const NOT_EXIST = 'undefined'
         const PROFILE_PATH = '/storage/profile_images/'
         const ACTIVITY_PATH = '/storage/activity_images/'
+        const DRAFT_PROFILE_PATH = '/storage/draft_profile_images/'
+        const DRAFT_ACTIVITY_PATH = '/storage/draft_activity_images/'
+        const NOT_SAVED = '0'
+        const SAVED = '1'
+
+        let displayedProfilePath = props.saved === SAVED ? DRAFT_PROFILE_PATH : PROFILE_PATH
+        let displayedActivityPath = props.saved === SAVED ? DRAFT_ACTIVITY_PATH : ACTIVITY_PATH
 
         //プロフィール画像ドラッグ&ドロップ
         let isEnterProfile = ref(false)
@@ -312,6 +320,8 @@ export default {
             NOT_EXIST,
             deleteSavedActivityFile,
             submitDraft,
+            displayedProfilePath,
+            displayedActivityPath,
         }
     }
 }

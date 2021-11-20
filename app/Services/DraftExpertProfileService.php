@@ -41,14 +41,14 @@ class DraftExpertProfileService {
             if ($request->has('delete_profile_image') && $request->delete_profile_image[0] !== 'default_profile.png') {
                 $params['profile_image'] = 'default_profile.png';
                 //ファイルの削除処理
-                Storage::disk('public')->delete(CommonConst::PROFILE_PATH . $request->delete_profile_image[0]);
+                Storage::disk('public')->delete(CommonConst::DRAFT_PROFILE_PATH . $request->delete_profile_image[0]);
             }
 
 
             if ($request->has('profile_image')) {
                 $profile_image = $request->file('profile_image')[0];
                 $profile_image_name = $this->_commonService->imageNameFormat($profile_image);
-                Storage::disk('public')->putFileAs(CommonConst::PROFILE_PATH, $profile_image, $profile_image_name);
+                Storage::disk('public')->putFileAs(CommonConst::DRAFT_PROFILE_PATH, $profile_image, $profile_image_name);
                 $params['profile_image'] = $profile_image_name;
             }
 
@@ -61,7 +61,7 @@ class DraftExpertProfileService {
             if ($request->has('delete_activity_images')) {
                 //ファイルの削除
                 foreach ($request->delete_activity_images as $delete_activity_image) {
-                    $delete_activity_path[] = CommonConst::ACTIVITY_PATH . $delete_activity_image['activity_image'];
+                    $delete_activity_path[] = CommonConst::DRAFT_ACTIVITY_PATH . $delete_activity_image['activity_image'];
                     $activity_image_id[] = $delete_activity_image['id'];
                 }
                 Storage::disk('public')->delete($delete_activity_path);
@@ -77,7 +77,7 @@ class DraftExpertProfileService {
                 $activity_images = $request->file('activity_images');
                 foreach ($activity_images as $activity_image) {
                     $activity_image_name = $this->_commonService->imageNameFormat($activity_image);
-                    Storage::disk('public')->putFileAs(CommonConst::ACTIVITY_PATH, $activity_image, $activity_image_name);
+                    Storage::disk('public')->putFileAs(CommonConst::DRAFT_ACTIVITY_PATH, $activity_image, $activity_image_name);
                     $image[] = [
                         'id' => null,
                         'draft_expert_profile_id' => $profile->id,
@@ -126,7 +126,7 @@ class DraftExpertProfileService {
             $draft_profile_image = $draft_profile->profile_image;
             $is_same_image = ExpertProfile::checkSameImage($draft_profile_image);
             if (!$is_same_image) {
-                Storage::disk('public')->delete(CommonConst::PROFILE_PATH . $draft_profile_image);
+                Storage::disk('public')->delete(CommonConst::DRAFT_PROFILE_PATH . $draft_profile_image);
             }
 
             $draft_activity_images = $draft_profile->draftActivityImages;
@@ -137,7 +137,7 @@ class DraftExpertProfileService {
                 $same_images = ActivityImage::whereIn('activity_image', $image)->get();
 
                 if (!$same_images) {
-                    Storage::disk('public')->delete(CommonConst::ACTIVITY_PATH . $same_images);
+                    Storage::disk('public')->delete(CommonConst::DRAFT_ACTIVITY_PATH . $same_images);
                 }
             }
 

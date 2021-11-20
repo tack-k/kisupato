@@ -84,12 +84,15 @@ class ExpertProfileController extends Controller {
                 $skills = [];
                 $activity_images = [];
             }
+
+            $saved = ExpertConst::NOT_SAVED;
         }
 
         return Inertia::render(('Experts/Profile/Input'), [
             'profile' => $profile,
             'skills' => $skills,
             'activityImages' => $activity_images,
+            'saved' => $saved,
         ]);
     }
 
