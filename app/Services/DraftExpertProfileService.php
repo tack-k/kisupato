@@ -44,7 +44,6 @@ class DraftExpertProfileService {
                 Storage::disk('public')->delete(CommonConst::DRAFT_PROFILE_PATH . $request->delete_profile_image[0]);
             }
 
-
             if ($request->has('profile_image')) {
                 $profile_image = $request->file('profile_image')[0];
                 $profile_image_name = $this->_commonService->imageNameFormat($profile_image);
@@ -68,7 +67,7 @@ class DraftExpertProfileService {
 
                 //パスの削除
                 DraftActivityImage::destroy($activity_image_id);
-                ActivityImage::destroy($activity_image_id);
+                //    ActivityImage::destroy($activity_image_id);
             }
 
             $image = [];
@@ -102,7 +101,7 @@ class DraftExpertProfileService {
 
             $delete_skills_id = $request->delete_skills;
             DraftSkill::destroy($delete_skills_id);
-            Skill::destroy($delete_skills_id);
+            //   Skill::destroy($delete_skills_id);
 
             $skills_params = $request->skills;
             foreach ($skills_params as $skills_param) {
@@ -124,20 +123,33 @@ class DraftExpertProfileService {
         if ($is_saved) {
             $draft_profile = DraftExpertProfile::getDraftExpertProfileAllInfo($expert_id)->first();
             $draft_profile_image = $draft_profile->profile_image;
-            $is_same_image = ExpertProfile::checkSameImage($draft_profile_image);
-            if (!$is_same_image) {
-                Storage::disk('public')->delete(CommonConst::DRAFT_PROFILE_PATH . $draft_profile_image);
-            }
+//            $is_same_image = ExpertProfile::checkSameImage($draft_profile_image);
+//            if (!$is_same_image) {
+//                Storage::disk('public')->delete(CommonConst::DRAFT_PROFILE_PATH . $draft_profile_image);
+//            }
+//
+//            $draft_activity_images = $draft_profile->draftActivityImages;
+//            if ($draft_activity_images) {
+//                foreach ($draft_activity_images as $draft_activity_image) {
+//                  $image[] = $draft_activity_image['activity_image'];
+//                }
+//                $same_images = ActivityImage::whereIn('activity_image', $image)->get();
+//
+//                if (!$same_images) {
+//                    Storage::disk('public')->delete(CommonConst::DRAFT_ACTIVITY_PATH . $same_images);
+//                }
+//            }
+
+            Storage::disk('public')->delete(CommonConst::DRAFT_PROFILE_PATH . $draft_profile_image);
 
             $draft_activity_images = $draft_profile->draftActivityImages;
             if ($draft_activity_images) {
                 foreach ($draft_activity_images as $draft_activity_image) {
-                  $image[] = $draft_activity_image['activity_image'];
+                    $images[] = $draft_activity_image['activity_image'];
                 }
-                $same_images = ActivityImage::whereIn('activity_image', $image)->get();
 
-                if (!$same_images) {
-                    Storage::disk('public')->delete(CommonConst::DRAFT_ACTIVITY_PATH . $same_images);
+                foreach ($images as $image) {
+                    Storage::disk('public')->delete(CommonConst::DRAFT_ACTIVITY_PATH . $image);
                 }
             }
 

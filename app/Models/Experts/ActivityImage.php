@@ -16,6 +16,10 @@ class ActivityImage extends Model {
         'acitivity_image'
     ];
 
+    public function scopeCheckSameImage($query, $image) {
+        return $query->where('activity_image', $image)->exists();
+    }
+
     /**
      * 活動写真を持つプロフィールを取得
      */
