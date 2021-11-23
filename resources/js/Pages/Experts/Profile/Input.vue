@@ -186,6 +186,8 @@ export default {
         let displayedProfilePath = props.saved === SAVED ? DRAFT_PROFILE_PATH : PROFILE_PATH
         let displayedActivityPath = props.saved === SAVED ? DRAFT_ACTIVITY_PATH : ACTIVITY_PATH
 
+
+
         //プロフィール画像ドラッグ&ドロップ
         let isEnterProfile = ref(false)
 
@@ -296,6 +298,19 @@ export default {
                 }
             })
         }
+
+        // 一時保存自動フォーム送信
+        const submitDraftAuto = () => {
+            // form.post(route('expert.profile.save'), {
+            //     forceFormData: true
+            // })
+            axios.post(route('expert.profile.save'), )
+        }
+
+        watch(form, () => {
+            console.log(111)
+            submitDraftAuto()
+        })
 
         return {
             form,

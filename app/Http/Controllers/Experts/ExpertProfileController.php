@@ -56,13 +56,13 @@ class ExpertProfileController extends Controller {
      * 専門人材のプロフィール入力画面を表示する
      * @return \Inertia\Response
      */
-    public function input($saved) {
+    public function input() {
 
         $expert_id = Auth::guard('expert')->id();
 
         $is_saved = DraftExpertProfile::checkTemporarilySaved($expert_id);
 
-        if ($is_saved && $saved == ExpertConst::SAVED) {
+        if ($is_saved) {
             $profile = DraftExpertProfile::getDraftExpertProfileInfo($expert_id)->first();
             if ($profile) {
                 $skills = $profile->draftSkills()->select('id', 'skill_title', 'skill_content')->where('draft_expert_profile_id', $profile->id)->get();
@@ -85,14 +85,12 @@ class ExpertProfileController extends Controller {
                 $activity_images = [];
             }
 
-            $saved = ExpertConst::NOT_SAVED;
         }
 
         return Inertia::render(('Experts/Profile/Input'), [
             'profile' => $profile,
             'skills' => $skills,
             'activityImages' => $activity_images,
-            'saved' => $saved,
         ]);
     }
 
@@ -122,10 +120,9 @@ class ExpertProfileController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateDraft(DraftExpertProfileRequest $request) {
-        $expert_id = Auth::guard('expert')->id();
+     //   $expert_id = Auth::guard('expert')->id();
 
-        $this->_draftExpertProfileService->updateDraftExpertProfile($request, $expert_id);
-        return Redirect::route('expert.profile.input', ['saved' => ExpertConst::SAVED]);
+    //    $this->_draftExpertProfileService->updateDraftExpertProfile($request, $expert_id);
     }
 
     public function ajaxGetSaved() {
