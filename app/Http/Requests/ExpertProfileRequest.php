@@ -37,7 +37,7 @@ class ExpertProfileRequest extends FormRequest {
             ];
 
     }
-    
+
     public function attributes() {
         return [
             'status' => 'ステータス',

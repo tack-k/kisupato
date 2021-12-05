@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpertProfileRequest;
 use App\Models\Experts\ExpertProfile;
 use App\Services\CommonService;
-use App\Services\DraftExpertProfileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -19,15 +18,11 @@ class ExpertProfileController extends Controller
     //プロフィールサービスクラス
     protected $_service;
 
-    //下書きエキスパートサービスクラス
-    protected $_draftExpertProfileService;
-
     protected $_commonService;
 
     public function __construct()
     {
         $this->_service = new ExpertProfileService();
-        $this->_draftExpertProfileService = new DraftExpertProfileService();
         $this->_commonService = new CommonService();
 
     }
@@ -58,33 +53,6 @@ class ExpertProfileController extends Controller
     {
 
         $expert_id = Auth::guard('expert')->id();
-
-//        $is_saved = DraftExpertProfile::checkTemporarilySaved($expert_id);
-//
-//        if ($is_saved) {
-//            $profile = DraftExpertProfile::getDraftExpertProfileInfo($expert_id)->first();
-//            if ($profile) {
-//                $skills = $profile->draftSkills()->select('id', 'skill_title', 'skill_content')->where('draft_expert_profile_id', $profile->id)->get();
-//                $activity_images = $profile->draftActivityImages;
-//            } else {
-//                $profile = ['profile_image' => 'default_profile.png'];
-//                $skills = [];
-//                $activity_images = [];
-//            }
-//
-//        } else {
-//            $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
-//            if ($profile) {
-//
-//                $skills = $profile->skills()->select('id', 'skill_title', 'skill_content')->where('expert_profile_id', $profile->id)->get();
-//                $activity_images = $profile->activityImages;
-//            } else {
-//                $profile = ['profile_image' => 'default_profile.png'];
-//                $skills = [];
-//                $activity_images = [];
-//            }
-//
-//        }
 
         $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
         if ($profile) {

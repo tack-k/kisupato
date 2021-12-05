@@ -49,10 +49,6 @@ class ExpertProfileService {
 
         if ($request->has('saved_profile_image')) {
             $params['profile_image'] = $request->saved_profile_image[0];
-//            $same_profile_image = ExpertProfile::checkSameImage($params['profile_image']);
-//            if (!$same_profile_image) {
-//                Storage::disk('public')->copy(CommonConst::DRAFT_PROFILE_PATH . $params['profile_image'], CommonConst::PROFILE_PATH . $params['profile_image']);
-//            }
         }
 
         $profile = ExpertProfile::updateOrCreate(['expert_id' => $expert_id], $params);
@@ -98,19 +94,6 @@ class ExpertProfileService {
                 $saved_images[] = $saved_activity_image['activity_image'];
             }
 
-//            //本番保存されていない画像のみコピー
-//            $same_images = ActivityImage::select('id', 'expert_profile_id', 'activity_image')->whereIn('activity_image', $saved_images)->get();
-//
-//            //保存画像から本番保存していない画像をピックアップ
-//            foreach ($same_images as $same_image) {
-//                $same_image_array[] = $same_image['activity_image'];
-//            }
-//
-//            $copy_activity_images = array_diff($saved_images, $same_image_array);
-//
-//            foreach ($copy_activity_images as $copy_activity_image) {
-//                Storage::disk('public')->copy(CommonConst::DRAFT_ACTIVITY_PATH . $saved_activity_image['activity_image'], CommonConst::ACTIVITY_PATH . $copy_activity_image);
-//            }
         }
 
         ActivityImage::upsert($image, 'id', ['activity_image']);
