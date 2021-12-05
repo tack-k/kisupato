@@ -162,6 +162,14 @@ class ExpertProfileController extends Controller
             }
         }
 
+        if($messages) {
+            return Redirect::route('expert.profile.show')->with('message', $messages);
+        }
+
+        $profile->status = $request->status;
+        $profile->save();
+
+
         $messages[] = 'プロフィールを公開しました。';
 
         return Redirect::route('expert.profile.show')->with('message', $messages);
