@@ -16,12 +16,12 @@ class CreateExpertProfilesTable extends Migration
         Schema::create('expert_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('expert_id');
-            $table->string('status', 5);
-            $table->string('nickname', 20);
+            $table->string('status', 5)->default('1');
+            $table->string('nickname', 20)->nullable();
             $table->string('profile_image', 255);
-            $table->text('self_introduction');
-            $table->text('activity_title');
-            $table->text('activity_content');
+            $table->text('self_introduction')->nullable();
+            $table->text('activity_title')->nullable();
+            $table->text('activity_content')->nullable();
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();

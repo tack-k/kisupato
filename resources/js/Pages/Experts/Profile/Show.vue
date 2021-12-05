@@ -3,8 +3,16 @@
         <template #content>
             <section class="mb-10">
                 <div class="flex mb-4">
-                    <h2 class="base-font-m base-font-bold mr-10">【{{ options[profile.status].name }}】</h2>
-                    <SelectSavedModal/>
+                    <h2 class="base-font-m base-font-bold mr-10">ステータス：【{{ options[profile.status].name }}】</h2>
+                    <form @submit.prevent="submitStatus">
+                        <regular-button v-if="profile.status === '1'" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">公開する</regular-button>
+                        <regular-button v-else :class="{ 'opacity-25': form.processing }" :disabled="form.processing">非公開にする</regular-button>
+                    </form>
+                </div>
+                <div class="my-5">
+                    <Link :href="route('expert.profile.input')" as="button" type="button" class="expert-regular-btn">
+                        プロフィール編集
+                    </Link>
                 </div>
                 <div class="flex flex-col items-center md:flex-row">
                     <div class="flex flex-col items-center mb-8 md:mb-0">
@@ -40,7 +48,8 @@
                             <div v-for="(activity_image, index) in profile.activity_images" :key="index"
                                  class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center">
                                 <div class="bg-white rounded-lg mt-5">
-                                    <img :src="ACTIVITY_PATH + activity_image.activity_image" class="rounded-md h-40 object-cover" alt=""/>
+                                    <img :src="ACTIVITY_PATH + activity_image.activity_image"
+                                         class="rounded-md h-40 object-cover" alt=""/>
                                 </div>
                             </div>
                             <!-- end cols -->
@@ -64,10 +73,9 @@
 
 <script>
 import MyPageLayout from "@/Layouts/Experts/MyPageLayout";
-import {Link} from "@inertiajs/inertia-vue3";
+import {Link, useForm} from "@inertiajs/inertia-vue3";
 import RegularButton from "@/Components/Buttons/RegularButton";
-import SelectSavedModal from "@/Layouts/Experts/SelectSavedModal";
-import { reactive } from "vue"
+import {reactive} from "vue"
 
 
 export default {
@@ -75,11 +83,10 @@ export default {
     components: {
         RegularButton,
         MyPageLayout,
-        SelectSavedModal,
         Link,
     },
     props: {
-      profile: Object,
+        profile: Object,
     },
     setup(props) {
         const PROFILE_PATH = '/storage/profile_images/'
@@ -89,10 +96,48 @@ export default {
             {'id': 1, 'name': '非公開'},
         ])
 
+        const form = useForm({
+            status: props.profile.status
+        })
+
+        let profile = reactive({
+            status: props.profile.status,
+            nickname: props.profile.nickname ?? 'ニックネームを入力してください',
+            profile_image: props.profile.profile_image.length === 0 ? 'default_profile.png' : props.profile.profile_image,
+            activity_images: props.profile.activity_images.length === 0 ? [{'activity_image': 'default_activity.png'}] : props.profile.activity_images,
+            activity_title: props.profile.activity_title ?? '活動タイトルを入力してください',
+            activity_content: props.profile.activity_content ?? '活動内容を入力してください',
+            skills: props.profile.skills
+
+        })
+
+        // if(profile.profile_image.length === 0) {
+        //
+        // }
+
+        profile.skills.map((skill, index) => {
+            skill.skill_title = skill.skill_title ?? "提供技術タイトルを入力してください"
+            skill.skill_content = skill.skill_content ?? "提供技術内容を入力してください"
+        })
+
+        const submitStatus = () => {
+           form.status = form.status === '1' ? '0' : '1'
+            form.post(route('expert.profile.status'), {
+                onError: () => {
+                    form.status = props.profile.status
+                    alert('ステータスを変更できませんでした。時間をおいて再度お試しください')
+                }
+            })
+        }
+
+
         return {
             PROFILE_PATH,
             ACTIVITY_PATH,
             options,
+            profile,
+            submitStatus,
+            form,
         }
     }
 }

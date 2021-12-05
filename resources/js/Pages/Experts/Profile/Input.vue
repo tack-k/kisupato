@@ -3,11 +3,6 @@
         <template #content>
             <form @submit.prevent="submit">
                 <section class="mb-10">
-                    <LabelRequired class="label" value="ステータス" for="status"/>
-                    <Select :options="options" id="status" v-model="form.status"/>
-                </section>
-
-                <section class="mb-10">
                     <LabelRequired class="label" value="ニックネーム" for="nickname"/>
                     <InputForm id="nickname" type="text" v-model="form.nickname"/>
                 </section>
@@ -110,10 +105,6 @@
                             type="submit"
                             class="expert-regular-btn mr-20">保存する
                     </button>
-                    <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
-                            type="button" @click="submitDraft"
-                            class="expert-regular-btn mr-20">一時保存
-                    </button>
                     <Link :href="route('expert.profile.show')" as="button" type="button" class="expert-outline-btn">戻る</Link>
                 </div>
             </form>
@@ -159,7 +150,6 @@ export default {
         ])
 
         const form = useForm({
-            status: props.profile.status ?? '',
             nickname: props.profile.nickname ?? '',
             profile_image: [],
             self_introduction: props.profile.self_introduction ?? '',
@@ -167,7 +157,7 @@ export default {
             activity_content: props.profile.activity_content ?? [],
             activity_images: [],
             skills: props.skills.length != 0 ? props.skills : [{id: null, skill_title: '', skill_content: ''}],
-            saved_profile_image: [props.profile.profile_image] ?? [],
+            saved_profile_image: props.profile.profile_image.length === 0 ?  [] : [props.profile.profile_image],
             saved_activity_images: props.activityImages ?? [],
             delete_profile_image: [],
             delete_activity_images: [],
@@ -278,40 +268,6 @@ export default {
             })
         }
 
-       // 一時保存フォーム送信
-        const submitDraft = () => {
-            form.saved_flag = 0
-            form.post(route('expert.profile.save'), {
-                forceFormData: true,
-                onSuccess: () => {
-                    form.profile_image = []
-                    form.activity_images = []
-                    form.saved_profile_image =[props.profile.profile_image]
-                    form.saved_activity_images = props.activityImages
-                    form.delete_profile_image = []
-                    form.delete_activity_images = []
-                    form.delete_skills = []
-                    alert('一時保存しました。')
-                },
-                onError: () => {
-                    alert('一時保存に失敗しました。')
-                }
-            })
-        }
-
-        // 一時保存自動フォーム送信
-        const submitDraftAuto = () => {
-            // form.post(route('expert.profile.save'), {
-            //     forceFormData: true
-            // })
-            axios.post(route('expert.profile.save'), )
-        }
-
-        watch(form, () => {
-            console.log(111)
-            submitDraftAuto()
-        })
-
         return {
             form,
             options,
@@ -334,7 +290,6 @@ export default {
             ACTIVITY_PATH,
             NOT_EXIST,
             deleteSavedActivityFile,
-            submitDraft,
             displayedProfilePath,
             displayedActivityPath,
         }

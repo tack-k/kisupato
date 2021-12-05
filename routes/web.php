@@ -80,9 +80,7 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
     Route::get('/profile/show', [ExpertProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/input', [ExpertProfileController::class, 'input'])->name('profile.input');
     Route::post('/profile/input', [ExpertProfileController::class, 'update'])->name('profile.update');
-    Route::post('/profile/save', [ExpertProfileController::class, 'updateDraft'])->name('profile.save');
-
-    Route::get('/profile/saved', [ExpertProfileController::class, 'ajaxGetSaved'])->name('profile.ajaxSave');
+    Route::post('profile/status', [ExpertProfileController::class, 'status'])->name('profile.status');
 
 });
 

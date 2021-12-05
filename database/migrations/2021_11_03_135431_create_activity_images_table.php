@@ -16,7 +16,7 @@ class CreateActivityImagesTable extends Migration
         Schema::create('activity_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('expert_profile_id');
-            $table->string('activity_image', 255);
+            $table->string('activity_image', 255)->nullable();
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();

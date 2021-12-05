@@ -16,8 +16,8 @@ class CreateSkillsTable extends Migration
         Schema::create('skills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('expert_profile_id');
-            $table->string('skill_title', 255);
-            $table->text('skill_content');
+            $table->string('skill_title', 255)->nullable();
+            $table->text('skill_content')->nullable();
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();
