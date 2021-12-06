@@ -92,53 +92,59 @@ class ExpertProfileController extends Controller
 
     public function status(Request $request)
     {
-        $validated = $request->validate([
+        $params = $request->validate([
             'status' => ['required', 'string', 'between:0,1']
         ]);
-
         $expert_id = Auth::guard('expert')->id();
         $profile = ExpertProfile::getExpertProfileAllInfo($expert_id)->first();
 
         $messages = [];
 
-        if(is_null($profile->profile_image)) {
-            $messages[] = 'プロフィール画像を入力してください';
-        }
+        if($params['status'] === '0') {
 
-        if(is_null($profile->self_introduction)) {
-            $messages[] = '自己紹介を入力してください';
-        }
-
-        if(is_null($profile->activity_title)) {
-            $messages[] = '活動タイトルを入力してください';
-        }
-
-        if(is_null($profile->activity_content)) {
-            $messages[] = '活動内容を入力してください';
-        }
-
-        if($profile->activityImages->isEmpty()) {
-            $messages[] = '活動写真を入力してください';
-        }
-
-        foreach ($profile->skills as $key => $skill) {
-            if(is_null($skill['skill_title'])) {
-                $messages[] = '提供スキルタイトル' . ($key + 1) . 'を入力してください';
+            if (is_null($profile->profile_image)) {
+                $messages[] = 'プロフィール画像を入力してください';
             }
-            if(is_null($skill['skill_content'])) {
-                $messages[] = '提供スキル内容' . ($key + 1) . 'を入力してください';
+
+            if (is_null($profile->self_introduction)) {
+                $messages[] = '自己紹介を入力してください';
             }
+
+            if (is_null($profile->activity_title)) {
+                $messages[] = '活動タイトルを入力してください';
+            }
+
+            if (is_null($profile->activity_content)) {
+                $messages[] = '活動内容を入力してください';
+            }
+
+            if ($profile->activityImages->isEmpty()) {
+                $messages[] = '活動写真を入力してください';
+            }
+
+            foreach ($profile->skills as $key => $skill) {
+                if (is_null($skill['skill_title'])) {
+                    $messages[] = '提供スキルタイトル' . ($key + 1) . 'を入力してください';
+                }
+                if (is_null($skill['skill_content'])) {
+                    $messages[] = '提供スキル内容' . ($key + 1) . 'を入力してください';
+                }
+            }
+
+            if ($messages) {
+                return Redirect::route('expert.profile.show')->with('message', $messages);
+            }
+
         }
 
-        if($messages) {
-            return Redirect::route('expert.profile.show')->with('message', $messages);
-        }
-
-        $profile->status = $request->status;
+        $profile->status = $params['status'];
         $profile->save();
 
-
-        $messages[] = 'プロフィールを公開しました。';
+        if ($profile->status === '0') {
+            $messages[] = 'プロフィールを公開しました。';
+        } else {
+            $messages[] = 'プロフィールを非公開にしました。';
+        }
 
         return Redirect::route('expert.profile.show')->with('message', $messages);
     }
