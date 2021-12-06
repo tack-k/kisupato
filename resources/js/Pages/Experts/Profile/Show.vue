@@ -75,7 +75,7 @@
 import MyPageLayout from "@/Layouts/Experts/MyPageLayout";
 import {Link, useForm} from "@inertiajs/inertia-vue3";
 import RegularButton from "@/Components/Buttons/RegularButton";
-import {reactive} from "vue"
+import {reactive, watch, watchEffect} from "vue"
 
 
 export default {
@@ -111,9 +111,9 @@ export default {
 
         })
 
-        // if(profile.profile_image.length === 0) {
-        //
-        // }
+        watchEffect(() => {
+            profile.status = props.profile.status
+        })
 
         profile.skills.map((skill, index) => {
             skill.skill_title = skill.skill_title ?? "提供技術タイトルを入力してください"
