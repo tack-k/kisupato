@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Experts\ExpertProfile;
 use App\Rules\KanaRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -24,19 +25,48 @@ class ExpertProfileRequest extends FormRequest {
      */
     public function rules() {
 
-            return [
-                'status' => ['nullable', 'integer', 'numeric'],
-                'nickname' => ['nullable', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
-                'profile_image.*' => ['file', 'image', 'max:5000'],
-                'self_introduction' => ['nullable', 'string', 'max:500'],
-                'activity_title' => 'nullable|string|max:30',
-                'activity_content' => 'nullable|string|max:500',
-                'activity_images.*' => ['nullable', 'file', 'image', 'max:5000'],
-                'skills.*.skill_title' => ['nullable', 'max:30'],
-                'skills.*.skill_content' => ['nullable', 'max:300'],
-            ];
+            $expert_id = Auth::guard('expert')->id();
+             $profile = ExpertProfile::find($expert_id);
+
+             if($profile->status === '0') {
+                 return [
+                     'nickname' => ['required', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
+                     'self_introduction' => ['required', 'string', 'max:500'],
+                     'activity_title' => 'required|string|max:30',
+                     'activity_content' => 'required|string|max:500',
+                     'activity_images.*' => ['required', 'file', 'image', 'max:5000'],
+                     'skills.*.skill_title' => ['required', 'max:30'],
+                     'skills.*.skill_content' => ['required', 'max:300'],
+                 ];
+             } else {
+                 return [
+                     'nickname' => ['nullable', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
+                     'profile_image.*' => ['file', 'image', 'max:5000'],
+                     'self_introduction' => ['nullable', 'string', 'max:500'],
+                     'activity_title' => 'nullable|string|max:30',
+                     'activity_content' => 'nullable|string|max:500',
+                     'activity_images.*' => ['nullable', 'file', 'image', 'max:5000'],
+                     'skills.*.skill_title' => ['nullable', 'max:30'],
+                     'skills.*.skill_content' => ['nullable', 'max:300'],
+                 ];
+             }
 
     }
+
+    public function withValidator($validator) {
+
+        $validator->after(function ($validator) {
+
+            if (!$this->hasAny(['profile_image', 'saved_profile_image'])) {
+                $validator->errors()->add('profile_image', 'プロフィール画像は必ず設定してください。');
+            }
+
+            if (!$this->hasAny(['activity_images', 'saved_activity_images'])) {
+                $validator->errors()->add('activity_images', '活動写真は必ず設定してください。');
+            }
+        });
+    }
+
 
     public function attributes() {
         return [

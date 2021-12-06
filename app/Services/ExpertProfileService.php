@@ -2,10 +2,13 @@
 
 namespace App\Services;
 
+use App\Consts\ExpertConst;
+use App\Consts\MessageConst;
 use App\Models\Experts\ActivityImage;
 use App\Models\Experts\ExpertProfile;
 use App\Models\Experts\Skill;
 use App\Consts\CommonConst;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
 class ExpertProfileService {
@@ -109,6 +112,42 @@ class ExpertProfileService {
         }
 
         Skill::upsert($skills, 'id', ['skill_title', 'skill_content']);
+
+    }
+
+    public function checkProfileExistence($profile, $messages) {
+
+
+            if (is_null($profile->profile_image)) {
+                $messages[] = 'プロフィール画像を入力してください';
+            }
+
+            if (is_null($profile->self_introduction)) {
+                $messages[] = '自己紹介を入力してください';
+            }
+
+            if (is_null($profile->activity_title)) {
+                $messages[] = '活動タイトルを入力してください';
+            }
+
+            if (is_null($profile->activity_content)) {
+                $messages[] = '活動内容を入力してください';
+            }
+
+            if ($profile->activityImages->isEmpty()) {
+                $messages[] = '活動写真を入力してください';
+            }
+
+            foreach ($profile->skills as $key => $skill) {
+                if (is_null($skill['skill_title'])) {
+                    $messages[] = '提供スキルタイトル' . ($key + 1) . 'を入力してください';
+                }
+                if (is_null($skill['skill_content'])) {
+                    $messages[] = '提供スキル内容' . ($key + 1) . 'を入力してください';
+                }
+            }
+
+            return $messages;
 
     }
 

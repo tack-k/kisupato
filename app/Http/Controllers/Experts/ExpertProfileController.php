@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Experts;
 
+use App\Consts\ExpertConst;
+use App\Consts\MessageConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpertProfileRequest;
 use App\Models\Experts\ExpertProfile;
@@ -56,7 +58,6 @@ class ExpertProfileController extends Controller
 
         $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
         if ($profile) {
-
             $skills = $profile->skills()->select('id', 'skill_title', 'skill_content')->where('expert_profile_id', $profile->id)->get();
             $activity_images = $profile->activityImages;
         } else {
@@ -99,51 +100,21 @@ class ExpertProfileController extends Controller
         $profile = ExpertProfile::getExpertProfileAllInfo($expert_id)->first();
 
         $messages = [];
-
-        if($params['status'] === '0') {
-
-            if (is_null($profile->profile_image)) {
-                $messages[] = 'プロフィール画像を入力してください';
-            }
-
-            if (is_null($profile->self_introduction)) {
-                $messages[] = '自己紹介を入力してください';
-            }
-
-            if (is_null($profile->activity_title)) {
-                $messages[] = '活動タイトルを入力してください';
-            }
-
-            if (is_null($profile->activity_content)) {
-                $messages[] = '活動内容を入力してください';
-            }
-
-            if ($profile->activityImages->isEmpty()) {
-                $messages[] = '活動写真を入力してください';
-            }
-
-            foreach ($profile->skills as $key => $skill) {
-                if (is_null($skill['skill_title'])) {
-                    $messages[] = '提供スキルタイトル' . ($key + 1) . 'を入力してください';
-                }
-                if (is_null($skill['skill_content'])) {
-                    $messages[] = '提供スキル内容' . ($key + 1) . 'を入力してください';
-                }
-            }
+        if ($params['status'] === ExpertConst::PUBLIC) {
+           $messages = $this->_service->checkProfileExistence($profile, $messages);
 
             if ($messages) {
                 return Redirect::route('expert.profile.show')->with('message', $messages);
             }
-
         }
 
         $profile->status = $params['status'];
         $profile->save();
 
-        if ($profile->status === '0') {
-            $messages[] = 'プロフィールを公開しました。';
+        if ($profile->status === ExpertConst::PUBLIC) {
+            $messages[] = MessageConst::PROFILE . MessageConst::I_00004;
         } else {
-            $messages[] = 'プロフィールを非公開にしました。';
+            $messages[] = MessageConst::PROFILE . MessageConst::I_00005;
         }
 
         return Redirect::route('expert.profile.show')->with('message', $messages);

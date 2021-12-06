@@ -6,8 +6,8 @@ namespace App\Consts;
 
 class ExpertConst
 {
-    //プロフィールが一時保存されているか
-    public const NOT_SAVED = '0';
-    public const SAVED = '1';
+    //プロフィールが公開されているか
+    public const PUBLIC = '0';
+    public const PRIVATE = '1';
 
 }
