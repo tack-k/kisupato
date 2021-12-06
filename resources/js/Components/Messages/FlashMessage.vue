@@ -6,7 +6,7 @@
   </span>
         <ul v-if="Array.isArray($page.props.flash.message)" v-for="(message, index) in $page.props.flash.message"
             :key="index">
-            <li class="inline-block align-middle mr-8 base-font-bold mt-0.5">{{ message }}</li>
+            <li class="inline-block align-middle mr-8 base-font-bold mt-1.5">{{ message }}</li>
         </ul>
         <span class="inline-block align-middle mr-8 base-font-bold" v-else>{{ $page.props.flash.message }}</span>
         <button @click="closeForm"
@@ -19,7 +19,8 @@
 <script>
 import Fa from 'vue-fa';
 import {faInfoCircle} from '@fortawesome/free-solid-svg-icons';
-import {ref} from "vue";
+import {ref, watch, computed} from "vue";
+import {usePage} from "@inertiajs/inertia-vue3";
 
 export default {
     name: "FlashMessage",
@@ -30,10 +31,16 @@ export default {
         let open = ref(true)
         const closeForm = () => open.value = false
 
+        let message = computed(() => usePage().props.value.flash.message)
+        watch(message, (newVal, oldVal) => {
+            open.value = true
+        })
+
         return {
             faInfoCircle,
             closeForm,
             open,
+            message,
         }
     }
 }
