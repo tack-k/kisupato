@@ -10,21 +10,32 @@
                 <section class="mb-10">
                     <LabelRequired class="label" value="プロフィール画像"/>
                     <div class="flex flex-col items-center md:flex-row">
-                        <div @dragenter="dragEnterProfile" @dragleave="dragLeaveProfile" @dragover.prevent
-                             @drop.prevent="dropProfileFile"
-                             :class="{enter: isEnterProfile}"
-                             class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
-                            ファイルアップロード
-                        </div>
+                        <label class="w-full md:w-1/2">
+                            <div @dragenter="dragEnterProfile" @dragleave="dragLeaveProfile" @dragover.prevent
+                                 @drop.prevent="dropProfileFile"
+                                 :class="{enter: isEnterProfile}"
+                                 class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center expert-hover">
+                                ファイルアップロード
+                            </div>
+                            <input type="file" class="hidden" @change="uploadProfileImage">
+                        </label>
                         <ul class="h-40 w-40 mt-10 md:ml-10 md:mt-0">
                             <li v-for="(file, index) in form.saved_profile_image" :key="index">
-                            <div class="relative">
-                                    <img :src="displayedProfilePath + file" class="h-40 w-40 rounded-full object-cover" alt="">
+                                <div class="relative">
+                                    <label>
+                                        <img :src="displayedProfilePath + file"
+                                             class="h-40 w-40 rounded-full object-cover expert-hover" alt="">
+                                        <input type="file" class="hidden" @change="uploadProfileImage">
+                                    </label>
+
                                 </div>
                             </li>
                             <li v-for="(file, index) in form.profile_image" :key="index">
                                 <div class="relative">
-                                    <img :src="file.url" class="h-40 w-40 rounded-full object-cover" alt="">
+                                    <label>
+                                        <img :src="file.url" class="h-40 w-40 rounded-full object-cove expert-hover" alt="">
+                                        <input type="file" class="hidden" @change="uploadProfileImage">
+                                    </label>
                                 </div>
                             </li>
                         </ul>
@@ -64,13 +75,14 @@
                                 <li v-for="(saved_activity_image, index) in form.saved_activity_images" :key="index"
                                     class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center">
                                     <div class="bg-white rounded-lg mt-5 relative">
-                                        <img :src="displayedActivityPath + saved_activity_image.activity_image" class="rounded-md h-40 object-cover" alt="">
+                                        <img :src="displayedActivityPath + saved_activity_image.activity_image"
+                                             class="rounded-md h-40 object-cover" alt="">
                                         <Fa :icon="faTimes" @click="deleteSavedActivityFile(index)"
                                             class="absolute expert-hover -top-2 -right-2"/>
                                     </div>
                                 </li>
                                 <li v-for="(activity_image, index) in form.activity_images" :key="index"
-                                     class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center">
+                                    class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center">
                                     <div class="bg-white rounded-lg mt-5 relative">
                                         <img :src="activity_image.url" class="rounded-md h-40 object-cover" alt="">
                                         <Fa :icon="faTimes" @click="deleteActivityFile(index)"
@@ -96,8 +108,11 @@
                         </div>
                     </div>
                     <div class="flex justify-center">
-                        <button @click="addSkill" v-show="isAddSkill" class="expert-regular-btn mr-4" type="button">追加</button>
-                        <button @click="deleteSkill" v-show="isDeleteSkill" class="expert-outline-btn" type="button">削除</button>
+                        <button @click="addSkill" v-show="isAddSkill" class="expert-regular-btn mr-4" type="button">追加
+                        </button>
+                        <button @click="deleteSkill" v-show="isDeleteSkill" class="expert-outline-btn" type="button">
+                            削除
+                        </button>
                     </div>
                 </section>
                 <div class="flex justify-center">
@@ -105,7 +120,8 @@
                             type="submit"
                             class="expert-regular-btn mr-20">保存する
                     </button>
-                    <Link :href="route('expert.profile.show')" as="button" type="button" class="expert-outline-btn">戻る</Link>
+                    <Link :href="route('expert.profile.show')" as="button" type="button" class="expert-outline-btn">戻る
+                    </Link>
                 </div>
             </form>
         </template>
@@ -157,7 +173,7 @@ export default {
             activity_content: props.profile.activity_content ?? [],
             activity_images: [],
             skills: props.skills.length != 0 ? props.skills : [{id: null, skill_title: '', skill_content: ''}],
-            saved_profile_image: props.profile.profile_image.length === 0 ?  [] : [props.profile.profile_image],
+            saved_profile_image: props.profile.profile_image.length === 0 ? [] : [props.profile.profile_image],
             saved_activity_images: props.activityImages ?? [],
             delete_profile_image: [],
             delete_activity_images: [],
@@ -177,7 +193,6 @@ export default {
         let displayedActivityPath = props.saved === SAVED ? DRAFT_ACTIVITY_PATH : ACTIVITY_PATH
 
 
-
         //プロフィール画像ドラッグ&ドロップ
         let isEnterProfile = ref(false)
 
@@ -192,10 +207,21 @@ export default {
                 return alert(`アップロードできる写真は${MAX_PROFILE_FILES}枚です。`)
             }
             form.profile_image = [...event.dataTransfer.files]
+            
+            createImageUrl()
+          }
 
-            if(form.saved_profile_image !== null) {
-            form.delete_profile_image = form.saved_profile_image
-            form.saved_profile_image = []
+        //プロフィール画像アップロード
+        const uploadProfileImage = (event) => {
+            form.profile_image = [...event.target.files]
+
+            createImageUrl()
+        }
+
+        const createImageUrl = () => {
+            if (form.saved_profile_image !== null) {
+                form.delete_profile_image = form.saved_profile_image
+                form.saved_profile_image = []
             }
             form.profile_image.forEach(profileFile => profileFile['url'] = URL.createObjectURL(profileFile))
         }
@@ -208,8 +234,8 @@ export default {
 
         const MAX_ACTIVITY_FILES = 3
         const dropActivityFile = () => {
-            if(event.dataTransfer.files.length + form.saved_activity_images.length + form.activity_images.length > MAX_ACTIVITY_FILES
-            || form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES
+            if (event.dataTransfer.files.length + form.saved_activity_images.length + form.activity_images.length > MAX_ACTIVITY_FILES
+                || form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES
             ) {
                 return alert(`アップロードできる写真は${MAX_ACTIVITY_FILES}枚です。`)
             }
@@ -243,8 +269,8 @@ export default {
             }
         }
         const deleteSkill = () => {
-            if(Number.isFinite(form.skills[form.skills.length - 1].id)) {
-            form.delete_skills.push((form.skills[form.skills.length - 1]).id)
+            if (Number.isFinite(form.skills[form.skills.length - 1].id)) {
+                form.delete_skills.push((form.skills[form.skills.length - 1]).id)
             }
             form.skills.splice(form.skills.length - 1, 1)
             if (form.skills.length === MAX_SKILLS - 1) {
@@ -292,6 +318,7 @@ export default {
             deleteSavedActivityFile,
             displayedProfilePath,
             displayedActivityPath,
+            uploadProfileImage,
         }
     }
 }
