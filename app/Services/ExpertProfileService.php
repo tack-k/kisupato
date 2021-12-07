@@ -115,35 +115,41 @@ class ExpertProfileService {
 
     }
 
+    /**
+     * プロフィールの存在をチェックしてエラーメッセージを返す
+     * @param $profile
+     * @param $messages
+     * @return mixed
+     */
     public function checkProfileExistence($profile, $messages) {
 
 
             if (is_null($profile->profile_image)) {
-                $messages[] = 'プロフィール画像を入力してください';
+                $messages[] = MessageConst::PROFILE_IMAGE . MessageConst::E_00004;
             }
 
             if (is_null($profile->self_introduction)) {
-                $messages[] = '自己紹介を入力してください';
+                $messages[] = MessageConst::SELF_INTRODUCTION . MessageConst::E_00004;
             }
 
             if (is_null($profile->activity_title)) {
-                $messages[] = '活動タイトルを入力してください';
+                $messages[] = MessageConst::ACTIVITY_TITLE . MessageConst::E_00004;
             }
 
             if (is_null($profile->activity_content)) {
-                $messages[] = '活動内容を入力してください';
+                $messages[] = MessageConst::ACTIVITY_CONTENT . MessageConst::E_00004;
             }
 
             if ($profile->activityImages->isEmpty()) {
-                $messages[] = '活動写真を入力してください';
+                $messages[] = MessageConst::ACTIVITY_IMAGE . MessageConst::E_00004;
             }
 
             foreach ($profile->skills as $key => $skill) {
                 if (is_null($skill['skill_title'])) {
-                    $messages[] = '提供スキルタイトル' . ($key + 1) . 'を入力してください';
+                    $messages[] = MessageConst::SKILL_TITLE . ($key + 1) . MessageConst::E_00004;
                 }
                 if (is_null($skill['skill_content'])) {
-                    $messages[] = '提供スキル内容' . ($key + 1) . 'を入力してください';
+                    $messages[] = MessageConst::SKILL_CONTENT . ($key + 1) . MessageConst::E_00004;
                 }
             }
 

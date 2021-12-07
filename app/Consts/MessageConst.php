@@ -22,12 +22,21 @@ class MessageConst
     public const EXPERT_BY = 'expert:';
 
     public const PROFILE = 'プロフィール';
+    public const PROFILE_IMAGE = 'プロフィール画像';
+    public const SELF_INTRODUCTION = '自己紹介';
+    public const ACTIVITY_TITLE = '活動タイトル';
+    public const ACTIVITY_CONTENT = '活動内容';
+    public const ACTIVITY_IMAGE = '活動写真';
+    public const SKILL_TITLE = '提供スキルタイトル';
+    public const SKILL_CONTENT = '提供スキル内容';
 
 
     //エラーメッセージ
     public const E_00001 = 'を作成できませんでした';
     public const E_00002 = 'を変更できませんでした';
     public const E_00003 = 'を削除できませんでした';
+    public const E_00004 = 'を入力してください';
+
     public const E_01001 = '作成権限がありません';
     public const E_01002 = '変更権限がありません';
     public const E_01003 = '削除権限がありません';

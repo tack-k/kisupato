@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Consts\ExpertConst;
 use App\Models\Experts\ExpertProfile;
 use App\Rules\KanaRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,7 +29,7 @@ class ExpertProfileRequest extends FormRequest {
             $expert_id = Auth::guard('expert')->id();
              $profile = ExpertProfile::find($expert_id);
 
-             if($profile->status === '0') {
+             if($profile->status === ExpertConst::PUBLIC) {
                  return [
                      'nickname' => ['required', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
                      'self_introduction' => ['required', 'string', 'max:500'],
@@ -57,12 +58,17 @@ class ExpertProfileRequest extends FormRequest {
 
         $validator->after(function ($validator) {
 
-            if (!$this->hasAny(['profile_image', 'saved_profile_image'])) {
-                $validator->errors()->add('profile_image', 'プロフィール画像は必ず設定してください。');
-            }
+            $expert_id = Auth::guard('expert')->id();
+            $profile = ExpertProfile::find($expert_id);
 
-            if (!$this->hasAny(['activity_images', 'saved_activity_images'])) {
-                $validator->errors()->add('activity_images', '活動写真は必ず設定してください。');
+            if($profile->status === ExpertConst::PUBLIC) {
+                if (!$this->hasAny(['profile_image', 'saved_profile_image'])) {
+                    $validator->errors()->add('profile_image', 'プロフィール画像は必ず設定してください。');
+                }
+
+                if (!$this->hasAny(['activity_images', 'saved_activity_images'])) {
+                    $validator->errors()->add('activity_images', '活動写真は必ず設定してください。');
+                }
             }
         });
     }

@@ -91,6 +91,11 @@ class ExpertProfileController extends Controller
         return Redirect::route('expert.profile.show');
     }
 
+    /**
+     * プロフィールの公開ステータスを更新する
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function status(Request $request)
     {
         $params = $request->validate([
