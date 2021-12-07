@@ -208,7 +208,7 @@ export default {
 
         const MAX_ACTIVITY_FILES = 3
         const dropActivityFile = () => {
-            if(event.dataTransfer.files.length + form.saved_activity_images.length > MAX_ACTIVITY_FILES
+            if(event.dataTransfer.files.length + form.saved_activity_images.length + form.activity_images.length > MAX_ACTIVITY_FILES
             || form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES
             ) {
                 return alert(`アップロードできる写真は${MAX_ACTIVITY_FILES}枚です。`)
