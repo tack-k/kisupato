@@ -33,7 +33,8 @@
                             <li v-for="(file, index) in form.profile_image" :key="index">
                                 <div class="relative">
                                     <label>
-                                        <img :src="file.url" class="h-40 w-40 rounded-full object-cove expert-hover" alt="">
+                                        <img :src="file.url" class="h-40 w-40 rounded-full object-cove expert-hover"
+                                             alt="">
                                         <input type="file" class="hidden" @change="uploadProfileImage">
                                     </label>
                                 </div>
@@ -61,13 +62,19 @@
                 </section>
 
                 <section class="mb-10">
-                    <LabelRequired class="label" value="活動写真" for="activity_title"/>
-                    <div @dragenter="dragEnterActivity" @dragleave="dragLeaveActivity" @dragover.prevent
-                         @drop.prevent="dropActivityFile"
-                         :class="{enter: isEnterActivity}"
-                         class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
-                        ファイルアップロード
-                    </div>
+                    <label>
+                        <div class="flex items-center mb-1.5">
+                            <LabelRequired class="label" value="活動写真" for="activity_image"/>
+                            <div class="expert-regular-btn inline-block expert-hover">アップロード</div>
+                        </div>
+                        <div @dragenter="dragEnterActivity" @dragleave="dragLeaveActivity" @dragover.prevent
+                             @drop.prevent="dropActivityFile"
+                             :class="{enter: isEnterActivity}"
+                             class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
+                            ファイルアップロード
+                        </div>
+                        <input type="file" class="hidden" @change="uploadActivityImage">
+                    </label>
                     <div class="w-full flex">
                         <!-- main -->
                         <main class="w-full">
@@ -207,9 +214,9 @@ export default {
                 return alert(`アップロードできる写真は${MAX_PROFILE_FILES}枚です。`)
             }
             form.profile_image = [...event.dataTransfer.files]
-            
+
             createImageUrl()
-          }
+        }
 
         //プロフィール画像アップロード
         const uploadProfileImage = (event) => {
@@ -241,7 +248,7 @@ export default {
             }
             isEnterActivity.value = false
             form.activity_images.push(...event.dataTransfer.files)
-            form.activity_images.forEach(profileFile => profileFile['url'] = URL.createObjectURL(profileFile))
+            form.activity_images.forEach(activityFile => activityFile['url'] = URL.createObjectURL(activityFile))
         }
 
         const deleteActivityFile = (index) => {
@@ -252,6 +259,18 @@ export default {
             form.delete_activity_images.push(form.saved_activity_images[index])
             form.saved_activity_images.splice(index, 1)
         }
+
+        //活動写真アップロード
+        const uploadActivityImage = event => {
+            if (event.target.files.length + form.saved_activity_images.length + form.activity_images.length > MAX_ACTIVITY_FILES
+                || form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES
+            ) {
+                return alert(`アップロードできる写真は${MAX_ACTIVITY_FILES}枚です。`)
+            }
+            form.activity_images.push(...event.target.files)
+            form.activity_images.forEach(activityFile => activityFile['url'] = URL.createObjectURL(activityFile))
+        }
+
 
         //提供スキルの追加・削除
         const MAX_SKILLS = 3;
@@ -319,6 +338,7 @@ export default {
             displayedProfilePath,
             displayedActivityPath,
             uploadProfileImage,
+            uploadActivityImage,
         }
     }
 }
