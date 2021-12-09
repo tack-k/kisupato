@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Consts;
 use \App\Http\Controllers\Users\UserController;
 use \App\Http\Controllers\Users\ResourceController;
+use \App\Http\Controllers\Users\TopController;
 use \App\Http\Controllers\Admins\AdminController;
 use \App\Http\Controllers\Admins\DepartmentController;
 use \App\Http\Controllers\Admins\PositionController;
@@ -53,7 +54,8 @@ Route::get('/dashboard', function () {
 Route::group(['middleware' => 'guest'], function() {
     Route::get('/register', [UserController::class, 'create'])->name('create');
     Route::post('/register', [UserController::class, 'store'])->name('store');
-    Route::get('/', [ResourceController::class, 'index'])->name('home');
+  //  Route::get('/', [ResourceController::class, 'index'])->name('home');
+    Route::get('/', [TopController::class, 'index'])->name('home');
 });
 
 
