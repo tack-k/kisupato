@@ -5,9 +5,10 @@
                 <h1 class="text-6xl expert-text-white mb-10 base-font-bold">新たな出会いはいつもここから</h1>
                 <div>
                     <SearchPlaceModal v-model:checked="form.checked"/>
-                    <input type="text">
-                    <input type="text">
-                    <input type="text">
+                    <input type="text" @click="toggleTagsOpen" v-model="form.tag">
+                    <ul v-if="isTagsOpen" @click.self="closeTagsOpen" class="border rounded shadow-lg user-bg-white">
+                        <li v-for="(tag, index) in searchTags" :key="tag" @click="getSelectedTag(index)" class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{ tag }}</li>
+                    </ul>
                 </div>
             </div>
             <div class="w-full bg-white p-12 pt-40">
@@ -15,7 +16,7 @@
                     <p class="pl-4 mb-6">お知らせ</p>
                     <table class="table-auto">
                         <tbody>
-                        <tr v-for="value in 3" key="value" class="user-hover">
+                        <tr v-for="value in 3" :key="value" class="user-hover">
                             <td class="px-4 py-0.5">2022/01/01</td>
                             <td class="px-4 py-0.5">サービス一時停止のお知らせ</td>
                             <td class="px-4 py-0.5">日曜日の午前１時から午前３時までの間はサービスを停止いたします。ご不便をおかけ・・・</td>
@@ -95,7 +96,7 @@
                                     </p>
                                     <div class="flex items-center mt-4">
                                         <a href="#" class="block relative">
-                                            <img alt="profil" :src="'/images/users/profile.png'"
+                                            <img alt="profile" :src="'/images/users/profile.png'"
                                                  class="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                         <div class="flex flex-col justify-between ml-4 text-sm">
@@ -113,7 +114,6 @@
                     </div>
                 </div>
             </div>
-
         </template>
     </full-page-layout>
 </template>
@@ -124,6 +124,7 @@ import SearchPlaceModal from "@/Layouts/Users/SearchPlaceModal";
 import {faHeart} from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import {useForm} from "@inertiajs/inertia-vue3";
+import {computed, ref} from "vue";
 
 export default {
     name: "Index",
@@ -133,15 +134,50 @@ export default {
         Fa,
     },
     setup() {
+        const NO_RESULTS = -1
 
         let form = useForm({
-          checked : []
+          checked : [],
+          tag: '',
+
+        })
+
+        const tags = ref(['農業', '地域づくり', '林業士', '建築士'])
+        const isTagsOpen = ref(false)
+        const toggleTagsOpen = () => {
+            isTagsOpen.value = !isTagsOpen.value
+        }
+
+        const closeTagsOpen = () => isTagsOpen.value = false
+
+        const getSelectedTag = (index) => {
+            form.tag = tags.value[index]
+            closeTagsOpen()
+        }
+
+
+        const searchTags = computed(() => {
+            const filteredTags = ref([])
+
+            tags.value.forEach(tag => {
+                if(tag.indexOf(form.tag) !== NO_RESULTS) {
+                    filteredTags.value.push(tag)
+                }
+            })
+console.log(filteredTags)
+            return filteredTags
         })
 
 
         return {
             faHeart,
             form,
+            tags,
+            isTagsOpen,
+            toggleTagsOpen,
+            closeTagsOpen,
+            getSelectedTag,
+            searchTags,
         }
     }
 }
