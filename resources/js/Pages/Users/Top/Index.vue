@@ -4,16 +4,9 @@
             <div class="top-image flex items-center justify-center flex-col">
                 <h1 class="text-6xl expert-text-white mb-10 base-font-bold">新たな出会いはいつもここから</h1>
                 <div>
-                    <select name="" id="">
-                        <option value="">場所</option>
-                        <option value="">長野</option>
-                        <option value="">長野</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">ジャンル</option>
-                        <option value="">農業</option>
-                        <option value="">地域づくり</option>
-                    </select>
+                    <SearchPlaceModal v-model:checked="form.checked"/>
+                    <input type="text">
+                    <input type="text">
                     <input type="text">
                 </div>
             </div>
@@ -82,7 +75,7 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
                         <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto"
-                             v-for="value in 4" key="value">
+                             v-for="value in 4" :key="value">
                             <a href="#" class="w-full block h-full">
                                 <div class="relative">
                                     <Fa :icon="faHeart" class="text-lg absolute right-2 top-2 text-red-400"/>
@@ -127,19 +120,28 @@
 
 <script>
 import FullPageLayout from "@/Layouts/Users/FullPageLayout";
+import SearchPlaceModal from "@/Layouts/Users/SearchPlaceModal";
 import {faHeart} from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
+import {useForm} from "@inertiajs/inertia-vue3";
 
 export default {
     name: "Index",
     components: {
         FullPageLayout,
+        SearchPlaceModal,
         Fa,
     },
     setup() {
 
+        let form = useForm({
+          checked : []
+        })
+
+
         return {
             faHeart,
+            form,
         }
     }
 }
