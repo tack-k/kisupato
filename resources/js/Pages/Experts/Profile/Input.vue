@@ -9,12 +9,12 @@
 
                 <section class="mb-10">
                     <LabelRequired class="label" value="プロフィール画像"/>
-                    <div class="flex flex-col items-center md:flex-row">
+                    <div class="flex flex-col items-center lg:flex-row">
                         <label class="w-full md:w-1/2">
                             <div @dragenter="dragEnterProfile" @dragleave="dragLeaveProfile" @dragover.prevent
                                  @drop.prevent="dropProfileFile"
                                  :class="{enter: isEnterProfile}"
-                                 class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center expert-hover">
+                                 class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center expert-hover hidden lg:flex">
                                 ファイルアップロード
                             </div>
                             <input type="file" class="hidden" @change="uploadProfileImage">
@@ -70,7 +70,7 @@
                         <div @dragenter="dragEnterActivity" @dragleave="dragLeaveActivity" @dragover.prevent
                              @drop.prevent="dropActivityFile"
                              :class="{enter: isEnterActivity}"
-                             class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2">
+                             class="border-dashed border-4 border-light-blue-500 h-40 flex items-center justify-center w-full md:w-1/2 hidden lg:flex">
                             ファイルアップロード
                         </div>
                         <input type="file" class="hidden" @change="uploadActivityImage">
