@@ -1,26 +1,40 @@
 <template>
     <full-page-layout>
         <template #content>
-            <div class="top-image flex items-center justify-center flex-col" @click.self="closeTagsOpen">
+            <div class="top-image flex items-center justify-center flex-col" @click.self="closeTags">
                 <h1 class="text-6xl expert-text-white mb-10 base-font-bold">新たな出会いはいつもここから</h1>
+                <div class="user-bg rounded mb-12 hover:cursor-pointer">
+                    <Fa :icon="faMapMarkedAlt" class="text-9xl text-white p-4"/>
+                    <p class="text-center text-white font-bold">地図から探す</p>
+                </div>
                 <div class="flex items-center">
                     <div class="flex border-1 rounded-full bg-white border-gray-100">
-                        <SearchPlaceModal v-model:checked="form.checked"/>
+                        <SearchPlaceModal @click.self="closeTags" v-model:checked="form.checked"
+                                          :closeTags="closeTags"/>
                         <div class="relative">
-                            <input type="text" @click="toggleTagsOpen" v-model="form.tag" placeholder="タグを選ぶ">
-                            <ul v-if="isTagsOpen" @click.self="closeTagsOpen"
+                            <div
+                                class="before:h-10 before:w-0.5 before:bg-gray-100 before:absolute before:top-1/2 before:-translate-y-1/2 after:h-10 after:w-0.5 after:bg-gray-100 after:absolute after:top-1/2 after:-translate-y-1/2">
+                                <input class=" rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4" type="text"
+                                       @click="toggleTagsOpen" v-model="form.tag" placeholder="タグを選ぶ">
+                            </div>
+                            <ul v-if="isTagsOpen" @click.self="closeTags"
                                 class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-full">
                                 <li v-for="(tag, index) in searchTags.value" :key="tag" @click="getSelectedTag(index)"
-                                    class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{ tag }}
+                                    class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{
+                                        tag
+                                    }}
                                 </li>
                             </ul>
                         </div>
-                        <div class="">
-                            <input class="rounded-r-full" type="text" v-model="form.keyword" placeholder="キーワード検索">
+                        <div class="flex items-center relative">
+                            <div class="">
+                                <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 pr-16" type="text"
+                                       v-model="form.keyword" placeholder="キーワード検索">
+                            </div>
+                            <div class="p-4 bg-red-400 rounded-full absolute right-0.5 hover:cursor-pointer">
+                                <Fa :icon="faSearch" class="text-lg text-white"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ml-10">
-                        <regular-button>検索</regular-button>
                     </div>
                 </div>
             </div>
@@ -135,7 +149,7 @@
 import FullPageLayout from "@/Layouts/Users/FullPageLayout";
 import SearchPlaceModal from "@/Layouts/Users/SearchPlaceModal";
 import RegularButton from "@/Components/Buttons/RegularButton";
-import {faHeart} from "@fortawesome/free-solid-svg-icons"
+import {faHeart, faSearch, faMapMarkedAlt} from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import {useForm} from "@inertiajs/inertia-vue3";
 import {computed, ref} from "vue";
@@ -164,11 +178,11 @@ export default {
             isTagsOpen.value = !isTagsOpen.value
         }
 
-        const closeTagsOpen = () => isTagsOpen.value = false
+        const closeTags = () => isTagsOpen.value = false
 
         const getSelectedTag = (index) => {
             form.tag = tags.value[index]
-            closeTagsOpen()
+            closeTags()
         }
 
 
@@ -198,10 +212,12 @@ export default {
             tags,
             isTagsOpen,
             toggleTagsOpen,
-            closeTagsOpen,
+            closeTags,
             getSelectedTag,
             searchTags,
             isNoTag,
+            faSearch,
+            faMapMarkedAlt
         }
     }
 }
