@@ -1,7 +1,6 @@
 <template>
-    <div>
-        <div class="flex justify-end mt-8">
-            <input type="text" placeholder="場所" @click="toggleModal" :value="checkedStr">
+        <div class="">
+            <input class="rounded-l-full" type="text" placeholder="市町村から選ぶ" @click="toggleModal" :value="checkedStr">
         </div>
         <div v-if="showModal" @click.self="emitChecked"
              class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
@@ -29,7 +28,6 @@
             </div>
         </div>
         <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
-    </div>
 </template>
 
 <script>

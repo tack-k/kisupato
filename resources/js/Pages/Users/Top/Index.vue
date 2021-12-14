@@ -1,14 +1,27 @@
 <template>
     <full-page-layout>
         <template #content>
-            <div class="top-image flex items-center justify-center flex-col">
+            <div class="top-image flex items-center justify-center flex-col" @click.self="closeTagsOpen">
                 <h1 class="text-6xl expert-text-white mb-10 base-font-bold">新たな出会いはいつもここから</h1>
-                <div>
-                    <SearchPlaceModal v-model:checked="form.checked"/>
-                    <input type="text" @click="toggleTagsOpen" v-model="form.tag">
-                    <ul v-if="isTagsOpen" @click.self="closeTagsOpen" class="border rounded shadow-lg user-bg-white">
-                        <li v-for="(tag, index) in searchTags" :key="tag" @click="getSelectedTag(index)" class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{ tag }}</li>
-                    </ul>
+                <div class="flex items-center">
+                    <div class="flex border-1 rounded-full bg-white border-gray-100">
+                        <SearchPlaceModal v-model:checked="form.checked"/>
+                        <div class="relative">
+                            <input type="text" @click="toggleTagsOpen" v-model="form.tag" placeholder="タグを選ぶ">
+                            <ul v-if="isTagsOpen" @click.self="closeTagsOpen"
+                                class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-full">
+                                <li v-for="(tag, index) in searchTags.value" :key="tag" @click="getSelectedTag(index)"
+                                    class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{ tag }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="">
+                            <input class="rounded-r-full" type="text" v-model="form.keyword" placeholder="キーワード検索">
+                        </div>
+                    </div>
+                    <div class="ml-10">
+                        <regular-button>検索</regular-button>
+                    </div>
                 </div>
             </div>
             <div class="w-full bg-white p-12 pt-40">
@@ -121,6 +134,7 @@
 <script>
 import FullPageLayout from "@/Layouts/Users/FullPageLayout";
 import SearchPlaceModal from "@/Layouts/Users/SearchPlaceModal";
+import RegularButton from "@/Components/Buttons/RegularButton";
 import {faHeart} from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import {useForm} from "@inertiajs/inertia-vue3";
@@ -131,14 +145,16 @@ export default {
     components: {
         FullPageLayout,
         SearchPlaceModal,
+        RegularButton,
         Fa,
     },
     setup() {
         const NO_RESULTS = -1
 
         let form = useForm({
-          checked : [],
-          tag: '',
+            checked: [],
+            tag: '',
+            keyword: '',
 
         })
 
@@ -160,13 +176,20 @@ export default {
             const filteredTags = ref([])
 
             tags.value.forEach(tag => {
-                if(tag.indexOf(form.tag) !== NO_RESULTS) {
+                if (tag.indexOf(form.tag) !== NO_RESULTS) {
                     filteredTags.value.push(tag)
                 }
             })
-console.log(filteredTags)
+
+            if (filteredTags.value.length === 0) {
+                filteredTags.value.push('該当項目がありません')
+                isNoTag.value = true
+            }
+
             return filteredTags
         })
+
+        const isNoTag = ref(false)
 
 
         return {
@@ -178,6 +201,7 @@ console.log(filteredTags)
             closeTagsOpen,
             getSelectedTag,
             searchTags,
+            isNoTag,
         }
     }
 }
