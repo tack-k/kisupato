@@ -110,11 +110,11 @@ export default {
                     },
                     "user_contact_title": {
                         "title": "ユーザー問い合わせ項目",
-                        "link" : "admin.userContactTitle.index"
+                        "link" : "admin.user_contact_title.index"
                     },
                     "expert_contact_title": {
                         "title": "専門人材問い合わせ項目",
-                        "link" : "admin.expertContactTitle.index"
+                        "link" : "admin.expert_contact_title.index"
                     },
                 },
             },
