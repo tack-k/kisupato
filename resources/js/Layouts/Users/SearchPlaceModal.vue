@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="" @click="closeTags">
-            <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4" type="text" placeholder="場所から探す" @click="toggleModal" :value="checkedStr">
+            <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text" placeholder="場所から探す" @click="toggleModal" :value="checkedStr">
         </div>
         <div v-if="showModal" @click.self="emitChecked"
              class="overflow-x-hidden overflow-y-auto fixed inset-0 z-20 outline-none focus:outline-none justify-center items-center flex">
