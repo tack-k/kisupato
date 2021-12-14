@@ -15,7 +15,7 @@
                             <div
                                 class="before:h-10 before:w-0.5 before:bg-gray-100 before:absolute before:top-1/2 before:-translate-y-1/2 after:h-10 after:w-0.5 after:bg-gray-100 after:absolute after:top-1/2 after:-translate-y-1/2">
                                 <input class=" rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4" type="text"
-                                       @click="toggleTagsOpen" v-model="form.tag" placeholder="タグを選ぶ">
+                                       @click="toggleTagsOpen" v-model="form.tag" placeholder="タグから探す">
                             </div>
                             <ul v-if="isTagsOpen" @click.self="closeTags"
                                 class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-full">
