@@ -36,4 +36,8 @@ class Position extends Model
         }
         return $positions;
     }
+
+    public function scopeGetPositions($query) {
+        $query->select('name');
+    }
 }

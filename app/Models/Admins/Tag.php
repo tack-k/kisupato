@@ -36,4 +36,8 @@ class Tag extends Model
         }
         return $tags;
     }
+
+    public function scopeGetTags($query) {
+        $query->select('name');
+    }
 }

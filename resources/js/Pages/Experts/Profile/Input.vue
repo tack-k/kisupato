@@ -7,6 +7,29 @@
                     <InputForm id="nickname" type="text" v-model="form.nickname"/>
                 </section>
 
+              <section>
+                <LabelRequired class="label" value="タグ" for="tag"/>
+                <div class="flex">
+                 <div class="">
+                  <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text"
+                         @click="toggleTagsOpen" v-model="form.tag" placeholder="タグから探す">
+                  </div>
+                  <ul v-if="displayTags.value.length >= 1" class="flex items-center">
+                    <li class="rounded-lg px-4 py-2 user-bg ml-6 user-text-white base-font-bold relative" v-for="(tag, index) in displayTags.value" :key="index">{{ tag }}
+                      <span class="absolute -top-1 -right-1 hover:cursor-pointer text-gray-400">✕</span>
+                    </li>
+                  </ul>
+                </div>
+                <ul v-if="isTagsOpen" @click.self="closeTags"
+                    class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-full">
+                  <li v-for="(tag, index) in searchTags.value" :key="tag" @click="getSelectedTag(index)"
+                      class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{
+                      tag
+                    }}
+                  </li>
+                </ul>
+              </section>
+
                 <section class="mb-10">
                     <LabelRequired class="label" value="プロフィール画像"/>
                     <div class="flex flex-col items-center lg:flex-row">
@@ -146,6 +169,7 @@ import {faTimes} from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import LabelRequired from "@/Components/Labels/LabelRequired";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
+import useTagAction from "@/Composables/useTagAction";
 
 export default {
     name: "Input",
@@ -163,7 +187,8 @@ export default {
         profile: Object,
         skills: Object,
         activityImages: Object,
-        saved: String,
+        tags: Object,
+        positions: Object,
     },
 
     setup(props) {
@@ -185,7 +210,8 @@ export default {
             delete_profile_image: [],
             delete_activity_images: [],
             delete_skills: [],
-            saved_flag: props.profile.saved_flag ?? null
+            saved_flag: props.profile.saved_flag ?? null,
+            tag: [],
         })
 
         const NOT_EXIST = 'undefined'
@@ -313,6 +339,9 @@ export default {
             })
         }
 
+        //タグの表示
+        const { isTagsOpen, toggleTagsOpen, closeTags, searchTags, getSelectedTag, isNoTag, displayTags } = useTagAction(props.tags, form)
+
         return {
             form,
             options,
@@ -339,6 +368,13 @@ export default {
             displayedActivityPath,
             uploadProfileImage,
             uploadActivityImage,
+            isTagsOpen,
+            toggleTagsOpen,
+            closeTags,
+            searchTags,
+            getSelectedTag,
+            isNoTag,
+            displayTags
         }
     }
 }

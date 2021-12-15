@@ -6,6 +6,9 @@ use App\Consts\ExpertConst;
 use App\Consts\MessageConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpertProfileRequest;
+use App\Models\Admins\Admin;
+use App\Models\Admins\Position;
+use App\Models\Admins\Tag;
 use App\Models\Experts\ExpertProfile;
 use App\Services\CommonService;
 use Illuminate\Http\Request;
@@ -55,6 +58,8 @@ class ExpertProfileController extends Controller
     {
 
         $expert_id = Auth::guard('expert')->id();
+        $tags = Tag::getTags()->get();
+        $positions = Position::getPositions()->get();
 
         $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
         if ($profile) {
@@ -70,6 +75,8 @@ class ExpertProfileController extends Controller
             'profile' => $profile,
             'skills' => $skills,
             'activityImages' => $activity_images,
+            'tags' => $tags,
+            'positions' => $positions,
         ]);
     }
 
