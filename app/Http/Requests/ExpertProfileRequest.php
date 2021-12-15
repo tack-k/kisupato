@@ -29,7 +29,7 @@ class ExpertProfileRequest extends FormRequest {
             $expert_id = Auth::guard('expert')->id();
              $profile = ExpertProfile::find($expert_id);
 
-             if($profile->status === ExpertConst::PUBLIC) {
+             if(isset($profile) && $profile->status === ExpertConst::PUBLIC) {
                  return [
                      'nickname' => ['required', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
                      'self_introduction' => ['required', 'string', 'max:500'],
@@ -61,7 +61,7 @@ class ExpertProfileRequest extends FormRequest {
             $expert_id = Auth::guard('expert')->id();
             $profile = ExpertProfile::find($expert_id);
 
-            if($profile->status === ExpertConst::PUBLIC) {
+            if(isset($profile) && $profile->status === ExpertConst::PUBLIC) {
                 if (!$this->hasAny(['profile_image', 'saved_profile_image'])) {
                     $validator->errors()->add('profile_image', 'プロフィール画像は必ず設定してください。');
                 }
