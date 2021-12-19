@@ -2,6 +2,7 @@
 
 namespace App\Models\Admins;
 
+use App\Models\Experts\ExpertProfile;
 use App\Traits\AuthorObservable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,5 +36,13 @@ class Tag extends Model
                 ->paginate(5);
         }
         return $tags;
+    }
+
+    /**
+     * この人材タグに属する専門人材プロフィール
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function expertProfiles() {
+        return $this->belongsToMany(ExpertProfile::class, 'expert_profiles_tags');
     }
 }

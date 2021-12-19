@@ -2,6 +2,7 @@
 
 namespace App\Models\Experts;
 
+use App\Models\Admins\Tag;
 use App\Traits\AuthorObservable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -65,5 +66,13 @@ class ExpertProfile extends Model
      */
     public function activityImages() {
         return $this->hasMany(ActivityImage::class);
+    }
+
+    /**
+     * この専門人材プルフィールに属する人材タグ
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags() {
+        return $this->belongsToMany(Tag::class, 'expert_profiles_tags');
     }
 }
