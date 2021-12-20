@@ -2,8 +2,6 @@ import {computed, ref} from "vue";
 
 
 export default function useTagAction(tags, form) {
-console.log(tags)
-    const NO_RESULTS = -1
 
     const isTagsOpen = ref(false)
     const toggleTagsOpen = () => {
@@ -12,29 +10,41 @@ console.log(tags)
 
     const closeTags = () => isTagsOpen.value = false
 
-    const Tags = ref([])
+    const newTags = ref([])
+
+    //表示させるタグの監視
     const displayTags = computed(() => {
-       return Tags
+        form.tag = newTags
+        return newTags
     })
 
+    //タグ選択時に追加・リストから削除
     const getSelectedTag = (index) => {
-        Tags.value.push(tags[index].name)
+        newTags.value.push({
+            'id': tags[index].id,
+            'name': tags[index].name,
+        })
         tags.splice(index, 1)
         closeTags()
     }
 
-
+    //タグの選択
     const searchTags = computed(() => {
         const filteredTags = ref([])
 
         tags.forEach(tag => {
-            if (tag.name.indexOf(form.tag) !== NO_RESULTS) {
-                filteredTags.value.push(tag.name)
-            }
+            filteredTags.value.push({
+                'id': tag.id,
+                'name': tag.name
+            })
+
         })
 
         if (filteredTags.value.length === 0) {
-            filteredTags.value.push('該当項目がありません')
+            filteredTags.value.push({
+                'id': '',
+                'name': '該当項目がありません'
+            })
             isNoTag.value = true
         }
 
@@ -42,6 +52,28 @@ console.log(tags)
     })
 
     const isNoTag = ref(false)
+
+    //タグの削除
+    const deleteTag = (index) => {
+        tags.push({
+            'id': newTags.value[index].id,
+            'name': newTags.value[index].name,
+        })
+        sortTag()
+        newTags.value.splice(index, 1)
+    }
+
+    //タグをid順にソート
+    const sortTag = () => {
+        tags.sort((a, b) => {
+            if (a.id > b.id) {
+                return 1;
+            } else {
+                return -1;
+            }
+        })
+    }
+
 
     return {
         isTagsOpen,
@@ -51,5 +83,6 @@ console.log(tags)
         searchTags,
         isNoTag,
         displayTags,
+        deleteTag,
     }
 }

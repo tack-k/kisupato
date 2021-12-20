@@ -40,9 +40,9 @@ class Tag extends Model
 
     public function scopeGetTags($query)
     {
-        $query->select('name');
+        $query->select('id', 'name');
     }
-    
+
     /**
      * この人材タグに属する専門人材プロフィール
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
