@@ -9,6 +9,8 @@ use App\Http\Requests\ExpertProfileRequest;
 use App\Models\Admins\Admin;
 use App\Models\Admins\Position;
 use App\Models\Admins\Tag;
+use App\Models\ExpertProfilesPosition;
+use App\Models\ExpertProfilesTag;
 use App\Models\Experts\ExpertProfile;
 use App\Services\CommonService;
 use Illuminate\Http\Request;
@@ -41,6 +43,12 @@ class ExpertProfileController extends Controller
         $expert_id = Auth::guard('expert')->id();
         $profile = ExpertProfile::getExpertProfileAllInfo($expert_id)->first();
 
+        $a = ExpertProfilesTag::find(1);
+        dd($a);
+        foreach ($profile->tags as $tag) {
+            dd($tag->pivot);
+        }
+
         if (is_null($profile)) {
             return Redirect::route('expert.profile.input');
         }
@@ -56,7 +64,6 @@ class ExpertProfileController extends Controller
      */
     public function input()
     {
-
         $expert_id = Auth::guard('expert')->id();
         $tags = Tag::getTags()->get();
         $positions = Position::getPositions()->get();

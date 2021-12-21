@@ -2,6 +2,7 @@
 
 namespace App\Models\Admins;
 
+use App\Models\Experts\ExpertProfile;
 use App\Traits\AuthorObservable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +39,11 @@ class Position extends Model
     }
 
     public function scopeGetPositions($query) {
-        $query->select('name');
+        $query->select('id', 'name');
+    }
+
+    public function expertProfiles() {
+        return $this->belongsToMany(ExpertProfile::class, 'expert_profiles_positions')
+            ->withTimestamps();
     }
 }

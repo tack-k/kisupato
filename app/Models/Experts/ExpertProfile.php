@@ -2,7 +2,9 @@
 
 namespace App\Models\Experts;
 
+use App\Models\Admins\Position;
 use App\Models\Admins\Tag;
+use App\Models\ExpertProfilesTag;
 use App\Traits\AuthorObservable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -73,6 +75,16 @@ class ExpertProfile extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tags() {
-        return $this->belongsToMany(Tag::class, 'expert_profiles_tags');
+        return $this->belongsToMany(Tag::class, 'expert_profiles_tags')
+            ->withTimestamps();
+    }
+
+    /**
+     * この専門人材プロフィールに属する人材肩書
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function positions() {
+        return $this->belongsToMany(Position::class, 'expert_profiles_positions')
+            ->withTimestamps();
     }
 }

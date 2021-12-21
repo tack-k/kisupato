@@ -48,6 +48,7 @@ class Tag extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function expertProfiles() {
-        return $this->belongsToMany(ExpertProfile::class, 'expert_profiles_tags');
+        return $this->belongsToMany(ExpertProfile::class, 'expert_profiles_tags')
+            ->withTimestamps();
     }
 }
