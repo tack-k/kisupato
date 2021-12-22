@@ -15,7 +15,6 @@ class CreateAreasTable extends Migration
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('expert_profile_id');
             $table->string('name', 10);
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
