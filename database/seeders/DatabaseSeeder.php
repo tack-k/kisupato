@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\City;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +19,9 @@ class DatabaseSeeder extends Seeder
             AuthoritySeeder::class,
             DepartmentSeeder::class,
             AdminSeeder::class,
+
+            AreaSeeder::class,
+            CitySeeder::class,
         ]);
     }
 }
