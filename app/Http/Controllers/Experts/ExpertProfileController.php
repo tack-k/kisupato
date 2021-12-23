@@ -43,12 +43,6 @@ class ExpertProfileController extends Controller
         $expert_id = Auth::guard('expert')->id();
         $profile = ExpertProfile::getExpertProfileAllInfo($expert_id)->first();
 
-        $a = ExpertProfilesTag::find(1);
-        dd($a);
-        foreach ($profile->tags as $tag) {
-            dd($tag->pivot);
-        }
-
         if (is_null($profile)) {
             return Redirect::route('expert.profile.input');
         }
