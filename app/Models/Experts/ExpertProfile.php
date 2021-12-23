@@ -4,6 +4,7 @@ namespace App\Models\Experts;
 
 use App\Models\Admins\Position;
 use App\Models\Admins\Tag;
+use App\Models\Area;
 use App\Models\ExpertProfilesTag;
 use App\Traits\AuthorObservable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -85,6 +86,15 @@ class ExpertProfile extends Model
      */
     public function positions() {
         return $this->belongsToMany(Position::class, 'expert_profiles_positions')
+            ->withTimestamps();
+    }
+
+    /**
+     * この専門人材プロフィールに属する地域
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function areas() {
+        return $this->belongsToMany(Area::class, 'expert_profiles_areas')
             ->withTimestamps();
     }
 }
