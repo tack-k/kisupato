@@ -22,6 +22,7 @@ class CreateExpertProfilesTable extends Migration
             $table->text('self_introduction')->nullable();
             $table->text('activity_title')->nullable();
             $table->text('activity_content')->nullable();
+            $table->string('activity_base', 10)->nullable();
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();
