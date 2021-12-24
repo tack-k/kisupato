@@ -7,30 +7,34 @@
                     <InputForm id="nickname" type="text" v-model="form.nickname"/>
                 </section>
 
-              <section class="mb-10">
-                <LabelRequired class="label" value="タグ" for="tag"/>
-                <div class="flex">
-                 <div class="">
-                   <div class="flex items-center border-gray-300 hover:cursor-pointer shadow-sm leading-6 py-2 px-3 border" @click="toggleTagsOpen">
-                     <p>タグを選ぶ</p>
-                     <Fa class="ml-4" :icon="faChevronDown"/>
-                   </div>
-                 </div>
-                  <ul v-if="displayTags.value.length >= 1" class="flex items-center">
-                    <li class="rounded-full px-4 py-2 user-bg ml-6 user-text-white base-font-bold relative" v-for="(tag, index) in displayTags.value" :key="index">{{ tag.name }}
-                      <span class="absolute -top-2 -right-1 hover:cursor-pointer text-gray-400" @click="deleteTag(index)">✕</span>
-                    </li>
-                  </ul>
-                </div>
-                <ul v-if="isTagsOpen" @click.self="closeTags"
-                    class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-80">
-                <li v-for="(tag, index) in searchTags.value" :key="tag" @click="getSelectedTag(index)"
-                      class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{
-                      tag.name
-                    }}
-                  </li>
-                </ul>
-              </section>
+                <section class="mb-10">
+                    <LabelRequired class="label" value="タグ" for="tag"/>
+                    <div class="flex">
+                        <div class="">
+                            <div
+                                class="flex items-center border-gray-300 hover:cursor-pointer shadow-sm leading-6 py-2 px-3 border"
+                                @click="toggleTagsOpen">
+                                <p>タグを選ぶ</p>
+                                <Fa class="ml-4" :icon="faChevronDown"/>
+                            </div>
+                        </div>
+                        <ul v-if="displayTags.value.length >= 1" class="flex items-center">
+                            <li class="rounded-full px-4 py-2 user-bg ml-6 user-text-white base-font-bold relative"
+                                v-for="(tag, index) in displayTags.value" :key="index">{{ tag.name }}
+                                <span class="absolute -top-2 -right-1 hover:cursor-pointer text-gray-400"
+                                      @click="deleteTag(index)">✕</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul v-if="isTagsOpen" @click.self="closeTags"
+                        class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-80">
+                        <li v-for="(tag, index) in searchTags.value" :key="tag" @click="getSelectedTag(index)"
+                            class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{
+                                tag.name
+                            }}
+                        </li>
+                    </ul>
+                </section>
 
                 <section class="mb-10">
                     <LabelRequired class="label" value="プロフィール画像"/>
@@ -341,7 +345,16 @@ export default {
         }
 
         //タグの表示
-        const { isTagsOpen, toggleTagsOpen, closeTags, searchTags, getSelectedTag, isNoTag, displayTags, deleteTag } = useTagAction(props.tags, form)
+        const {
+            isTagsOpen,
+            toggleTagsOpen,
+            closeTags,
+            searchTags,
+            getSelectedTag,
+            isNoTag,
+            displayTags,
+            deleteTag
+        } = useTagAction(props.tags, form)
 
         return {
             form,
@@ -377,7 +390,7 @@ export default {
             isNoTag,
             displayTags,
             deleteTag,
-          faChevronDown
+            faChevronDown
         }
     }
 }
