@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\City;
+use App\Models\Experts\Expert;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,6 +23,8 @@ class DatabaseSeeder extends Seeder
 
             AreaSeeder::class,
             CitySeeder::class,
+
+            ExpertSeeder::class,
         ]);
     }
 }
