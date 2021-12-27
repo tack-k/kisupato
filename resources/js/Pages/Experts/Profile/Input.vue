@@ -1,7 +1,7 @@
 <template>
     <my-page-layout>
         <template #content>
-            <form @submit.prevent="submit">
+            <form @submit.prevent>
                 <section class="mb-10">
                     <LabelRequired class="label" value="ニックネーム" for="nickname"/>
                     <InputForm id="nickname" type="text" v-model="form.nickname"/>
@@ -34,6 +34,35 @@
                             }}
                         </li>
                     </ul>
+                </section>
+
+                <section>
+                    <LabelRequired class="label" value="肩書"/>
+
+                </section>
+
+                <section>
+                    <LabelRequired class="label" value="活動拠点"/>
+                    <div class="relative">
+                        <div
+                            class="before:h-10 before:w-0.5 before:bg-gray-100 before:absolute before:top-1/2 before:-translate-y-1/2 after:h-10 after:w-0.5 after:bg-gray-100 after:absolute after:top-1/2 after:-translate-y-1/2">
+                            <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text"
+                                   @click="toggleActivityBasesOpen" v-model="form.activity_base" placeholder="タグから探す">
+                        </div>
+                        <ul v-if="isActivityBasesOpen" @click.self="closeActivityBases"
+                            class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-full">
+                            <li v-for="(activityBase, index) in searchActivityBases.value" :key="index" @click="getSelectedActivityBase(index)"
+                                class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{
+                                    activityBase.name
+                                }}
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <LabelRequired class="label" value="活動範囲"/>
+
                 </section>
 
                 <section class="mb-10">
@@ -176,6 +205,7 @@ import Fa from 'vue-fa';
 import LabelRequired from "@/Components/Labels/LabelRequired";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import useTagAction from "@/Composables/useTagAction";
+import useActivityBaseAction from "@/Composables/useActivityBaseAction";
 
 export default {
     name: "Input",
@@ -195,6 +225,7 @@ export default {
         activityImages: Object,
         tags: Object,
         positions: Object,
+        cities: Object,
     },
 
     setup(props) {
@@ -217,6 +248,7 @@ export default {
             delete_activity_images: [],
             delete_skills: [],
             tag: [],
+            activity_base: '',
         })
 
         const NOT_EXIST = 'undefined'
@@ -345,6 +377,7 @@ export default {
         }
 
         //タグの表示
+
         const {
             isTagsOpen,
             toggleTagsOpen,
@@ -355,6 +388,15 @@ export default {
             displayTags,
             deleteTag
         } = useTagAction(props.tags, form)
+
+        const {
+            isActivityBasesOpen,
+            toggleActivityBasesOpen,
+            closeActivityBases,
+            getSelectedActivityBase,
+            searchActivityBases,
+            isNoActivityBase,
+        } = useActivityBaseAction(props.cities, form)
 
         return {
             form,
@@ -390,7 +432,13 @@ export default {
             isNoTag,
             displayTags,
             deleteTag,
-            faChevronDown
+            faChevronDown,
+            isActivityBasesOpen,
+            toggleActivityBasesOpen,
+            closeActivityBases,
+            getSelectedActivityBase,
+            searchActivityBases,
+            isNoActivityBase,
         }
     }
 }

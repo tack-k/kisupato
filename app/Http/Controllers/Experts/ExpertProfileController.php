@@ -9,6 +9,8 @@ use App\Http\Requests\ExpertProfileRequest;
 use App\Models\Admins\Admin;
 use App\Models\Admins\Position;
 use App\Models\Admins\Tag;
+use App\Models\Area;
+use App\Models\City;
 use App\Models\ExpertProfilesPosition;
 use App\Models\ExpertProfilesTag;
 use App\Models\Experts\ExpertProfile;
@@ -61,6 +63,12 @@ class ExpertProfileController extends Controller
         $expert_id = Auth::guard('expert')->id();
         $tags = Tag::getTags()->get();
         $positions = Position::getPositions()->get();
+//        $areas = Area::select('id', 'name')->get();
+//        foreach ($areas as $area) {
+//            $cities[] = Area::find($area['id'])->cities;
+//        }
+
+        $cities = City::select('id', 'area_id', 'name')->get();
 
         $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
         if ($profile) {
@@ -78,6 +86,7 @@ class ExpertProfileController extends Controller
             'activityImages' => $activity_images,
             'tags' => $tags,
             'positions' => $positions,
+            'cities' => $cities,
         ]);
     }
 
