@@ -36,21 +36,21 @@
                     </ul>
                 </section>
 
-                <section>
+                <section class="mb-10">
                     <LabelRequired class="label" value="肩書"/>
 
                 </section>
 
-                <section>
+                <section class="mb-10">
                     <LabelRequired class="label" value="活動拠点"/>
                     <div class="relative">
                         <div
-                            class="before:h-10 before:w-0.5 before:bg-gray-100 before:absolute before:top-1/2 before:-translate-y-1/2 after:h-10 after:w-0.5 after:bg-gray-100 after:absolute after:top-1/2 after:-translate-y-1/2">
-                            <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text"
+                            class="">
+                            <input class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border" type="text"
                                    @click="toggleActivityBasesOpen" v-model="form.activity_base" placeholder="タグから探す">
                         </div>
                         <ul v-click-away="onClickOutside" v-if="isActivityBasesOpen" @click.self="closeActivityBases"
-                            class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-full">
+                            class="max-h-60 border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-1/2">
                             <li v-for="(activityBase, index) in searchActivityBases.value" :key="index" @click="getSelectedActivityBase($event)"
                                 class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{
                                     activityBase.name
@@ -60,7 +60,7 @@
                     </div>
                 </section>
 
-                <section>
+                <section class="mb-10">
                     <LabelRequired class="label" value="活動範囲"/>
 
                 </section>
