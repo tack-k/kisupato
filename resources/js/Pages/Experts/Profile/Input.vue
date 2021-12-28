@@ -49,9 +49,9 @@
                             <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text"
                                    @click="toggleActivityBasesOpen" v-model="form.activity_base" placeholder="タグから探す">
                         </div>
-                        <ul v-if="isActivityBasesOpen" @click.self="closeActivityBases"
+                        <ul v-click-away="onClickOutside" v-if="isActivityBasesOpen" @click.self="closeActivityBases"
                             class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-full">
-                            <li v-for="(activityBase, index) in searchActivityBases.value" :key="index" @click="getSelectedActivityBase(index)"
+                            <li v-for="(activityBase, index) in searchActivityBases.value" :key="index" @click="getSelectedActivityBase($event)"
                                 class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{
                                     activityBase.name
                                 }}
@@ -206,6 +206,7 @@ import LabelRequired from "@/Components/Labels/LabelRequired";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import useTagAction from "@/Composables/useTagAction";
 import useActivityBaseAction from "@/Composables/useActivityBaseAction";
+import { directive } from "vue3-click-away";
 
 export default {
     name: "Input",
@@ -226,6 +227,9 @@ export default {
         tags: Object,
         positions: Object,
         cities: Object,
+    },
+    directives: {
+        ClickAway: directive
     },
 
     setup(props) {
@@ -396,6 +400,7 @@ export default {
             getSelectedActivityBase,
             searchActivityBases,
             isNoActivityBase,
+            onClickOutside,
         } = useActivityBaseAction(props.cities, form)
 
         return {
@@ -439,6 +444,7 @@ export default {
             getSelectedActivityBase,
             searchActivityBases,
             isNoActivityBase,
+            onClickOutside,
         }
     }
 }

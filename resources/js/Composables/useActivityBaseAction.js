@@ -6,42 +6,44 @@ export default function useActivityBaseAction(activityBases, form) {
     const NO_RESULTS = -1
 
     const isActivityBasesOpen = ref(false)
-    const toggleActivityBasesOpen = () => isActivityBasesOpen.value = !isActivityBasesOpen.value
+    const toggleActivityBasesOpen = () => {
+        if (isActivityBasesOpen.value) {
+            isActivityBasesOpen.value = false
+            closeActivityBases()
+            form.activity_base = ''
+        } else {
+            isActivityBasesOpen.value = true
+        }
+    }
 
     const closeActivityBases = () => isActivityBasesOpen.value = false
 
-//   const newActivityBases = ref([])
 
-    //タグ選択時に追加・リストから削除
-    const getSelectedActivityBase = (index) => {
-        // newActivityBases.value.push(
-        // //     {
-        // //     'id': activityBases[index].id,
-        // //     'area_id': activityBases[index].area_id,
-        // //     'name': activityBases[index].name,
-        // // }
-        // )
-        form.activity_base = activityBases[index].name
-        activityBases.splice(index, 1)
+    //項目選択時に入力フォームに追加
+    const getSelectedActivityBase = e => {
+
+        if (isNoActivityBase.value) {
+            return
+        }
+        form.activity_base = e.target.innerText
         closeActivityBases()
     }
 
 
-    //タグの選択
+    //項目検索機能
     const searchActivityBases = computed(() => {
         const filteredActivityBases = ref([])
 
+        if (isNoActivityBase.value) {
+            isNoActivityBase.value = false
+        }
+
         activityBases.forEach(activityBase => {
-           if(activityBase.name.indexOf(form.activity_base) !== NO_RESULTS) {
-               filteredActivityBases.value.push(
-                   //     {
-                   //     'id': activityBase.id,
-                   //     'area_id': activityBase.area_id,
-                   //     'name': activityBase.name
-                   // }
-                   activityBase
-               )
-           }
+            if (activityBase.name.indexOf(form.activity_base) !== NO_RESULTS) {
+                filteredActivityBases.value.push(
+                    activityBase
+                )
+            }
         })
 
         if (filteredActivityBases.value.length === 0) {
@@ -58,6 +60,12 @@ export default function useActivityBaseAction(activityBases, form) {
 
     const isNoActivityBase = ref(false)
 
+    // 要素外をクリック時に画面を閉じる
+    const onClickOutside = () => {
+        form.activity_base = ''
+        closeActivityBases()
+    }
+
     return {
         isActivityBasesOpen,
         toggleActivityBasesOpen,
@@ -65,5 +73,6 @@ export default function useActivityBaseAction(activityBases, form) {
         getSelectedActivityBase,
         searchActivityBases,
         isNoActivityBase,
+        onClickOutside,
     }
 }
