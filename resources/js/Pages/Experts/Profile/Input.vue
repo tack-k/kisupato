@@ -61,11 +61,6 @@
                 </section>
 
                 <section class="mb-10">
-                    <LabelRequired class="label" value="活動範囲"/>
-
-                </section>
-
-                <section class="mb-10">
                     <LabelRequired class="label" value="プロフィール画像"/>
                     <div class="flex flex-col items-center lg:flex-row">
                         <label class="w-full md:w-1/2">
@@ -182,6 +177,7 @@
                 </section>
                 <div class="flex justify-center">
                     <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
+                            @click="submit"
                             type="submit"
                             class="expert-regular-btn mr-20">保存する
                     </button>
