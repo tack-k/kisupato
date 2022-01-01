@@ -1,9 +1,10 @@
 <template>
     <div>
         <div class="" @click="closeTags">
-            <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text" placeholder="場所から探す" @click="toggleModal" :value="checkedStr">
+            <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text"
+                   placeholder="場所から探す" @click="toggleModal" :value="checkedStr">
         </div>
-        <div v-if="showModal" @click.self="emitChecked"
+        <div v-if="showModal" @click.self="toggleModal"
              class="overflow-x-hidden overflow-y-auto fixed inset-0 z-20 outline-none focus:outline-none justify-center items-center flex">
             <div class="relative w-auto my-6 mx-auto max-w-3xl">
                 <!--content-->
@@ -12,18 +13,36 @@
 
                     <!--body-->
                     <div class="relative p-6 flex-auto">
-                            <div class="border-b border-solid border-blueGray-200 rounded-b pb-4" v-for="value in 4" :key="value">
-                                <label class="flex items-center mb-2 mt-4"><Checkbox v-model="allChecked" :checked="allChecked"/><span class="ml-2">北信</span></label>
-                                <ul class="ml-4 flex flex-wrap">
-                                    <li v-for="expert in experts" :key="expert" class="mr-3 mb-1"><label class="flex items-center"><Checkbox v-model:checked="checked" :value="expert"/><span class="ml-2">{{ expert }}</span></label></li>
-                                </ul>
-                            </div>
+                        <div class="border-b border-solid border-blueGray-200 rounded-b pb-4"
+                             v-for="(area, index) in areas" :key="index">
+                            <label class="flex items-center mb-2 mt-4">
+                                <Checkbox v-if="area.id === 1" v-model="allCheckedNorth" :checked="allCheckedNorth"/>
+                                <Checkbox v-if="area.id === 2" v-model="allCheckedMiddle" :checked="allCheckedMiddle"/>
+                                <Checkbox v-if="area.id === 3" v-model="allCheckedEast" :checked="allCheckedEast"/>
+                                <Checkbox v-if="area.id === 4" v-model="allCheckedSouth" :checked="allCheckedSouth"/>
+                                <span class="ml-2">{{ area.name }}</span>
+                            </label>
+                            <ul class="ml-4 flex flex-wrap">
+                                <li v-for="(city, index) in area.cities" :key="index" class="mr-3 mb-1"><label
+                                    class="flex items-center">
+                                    <Checkbox v-if="area.id === 1" v-model:checked="checked['north']"
+                                              :value="city.name"/>
+                                    <Checkbox v-if="area.id === 2" v-model:checked="checked['middle']"
+                                              :value="city.name"/>
+                                    <Checkbox v-if="area.id === 3" v-model:checked="checked['east']"
+                                              :value="city.name"/>
+                                    <Checkbox v-if="area.id === 4" v-model:checked="checked['south']"
+                                              :value="city.name"/>
+                                    <span class="ml-2">{{ city.name }}</span></label>
+                                </li>
+                            </ul>
+                        </div>
 
-                            <!--footer-->
-                            <div
-                                class="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-                                <button type="button" class="user-regular-btn" @click="emitChecked">決定</button>
-                            </div>
+                        <!--footer-->
+                        <div
+                            class="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                            <button type="button" class="user-regular-btn" @click="emitChecked">決定</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -33,7 +52,7 @@
 </template>
 
 <script>
-import {ref, reactive, computed, watch} from "vue";
+import {ref, reactive, computed, watchEffect} from "vue";
 import BreezeValidationErrors from '@/Components/Validations/ValidationErrors'
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import RegularButton from "@/Components/Buttons/RegularButton";
@@ -42,7 +61,7 @@ import Input from "@/Components/Forms/Input";
 import Select from "@/Components/Forms/Select";
 import {useForm} from '@inertiajs/inertia-vue3'
 import Fa from "vue-fa";
-import { faWindowClose } from "@fortawesome/free-regular-svg-icons";
+import {faWindowClose} from "@fortawesome/free-regular-svg-icons";
 import Checkbox from "@/Components/Forms/Checkbox";
 
 export default {
@@ -58,14 +77,23 @@ export default {
         Fa,
     },
     props: {
-        closeTags:Function
+        closeTags: Function,
+        areas: Object,
+    //    checked: String
     },
-    emits: ['update:checked'],
-    setup(props, { emit }) {
+    emits: [
+        'update:checked',
+        'test'
+    ],
+    setup(props, {emit}) {
 
-
-        let checked = ref([])
-        const experts = ref(['長野市', '須坂市', '中野市', '栄村'])
+        let checked = reactive({
+                'north': [],
+                'middle': [],
+                'east': [],
+                'south': [],
+            }
+        )
 
         const showModal = ref(false)
         const toggleModal = () => {
@@ -73,24 +101,83 @@ export default {
         }
 
         const emitChecked = () => {
-            emit('update:checked', checked.value)
+        //    emit('update:checked', checked)
+            emit('test', checked)
             toggleModal()
         }
 
         const checkedStr = computed(() => {
-            return checked.value.join('・')
+            if (checked['north'].length > 0 ||
+                checked['middle'].length > 0 ||
+                checked['east'].length > 0 ||
+                checked['south'].length > 0
+            ) {
+                return '入力済みです'
+            }
         })
 
-        const allChecked = computed({
+        const allCheckedNorth = computed({
             get: () => {
-              return checked.value.length === experts.value.length
+                return checked['north'].length === props.areas['north'].cities.length
             },
             set: val => {
-                if(val) {
-                    checked.value = experts.value
+                if (val) {
+                    const newCities = props.areas['north'].cities.map(city => city.name)
+                    checked['north'] = newCities
                 } else {
-                    checked.value = []
+                    checked['north'] = []
                 }
+            }
+        })
+
+        const allCheckedEast = computed({
+            get: () => {
+                return checked['east'].length === props.areas['east'].cities.length
+            },
+            set: val => {
+                if (val) {
+                    const newCities = props.areas['east'].cities.map(city => city.name)
+                    checked['east'] = newCities
+                } else {
+                    checked['east'] = []
+                }
+            }
+        })
+
+        const allCheckedSouth = computed({
+            get: () => {
+                return checked['south'].length === props.areas['south'].cities.length
+            },
+            set: val => {
+                if (val) {
+                    const newCities = props.areas['south'].cities.map(city => city.name)
+                    checked['south'] = newCities
+                } else {
+                    checked['south'] = []
+                }
+            }
+        })
+
+        const allCheckedMiddle = computed({
+            get: () => {
+                return checked['middle'].length === props.areas['middle'].cities.length
+            },
+            set: val => {
+                if (val) {
+                    const newCities = props.areas['middle'].cities.map(city => city.name)
+                    checked['middle'] = newCities
+                } else {
+                    checked['middle'] = []
+                }
+            }
+        })
+
+        computed({
+            get: () => {
+
+            },
+            set: () => {
+
             }
         })
 
@@ -99,10 +186,12 @@ export default {
             toggleModal,
             checked,
             faWindowClose,
-            experts,
             emitChecked,
             checkedStr,
-            allChecked,
+            allCheckedNorth,
+            allCheckedMiddle,
+            allCheckedEast,
+            allCheckedSouth,
         }
     },
 
