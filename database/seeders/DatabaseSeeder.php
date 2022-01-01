@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             AuthoritySeeder::class,
             DepartmentSeeder::class,
             AdminSeeder::class,
+            PositionSeeder::class,
 
             AreaSeeder::class,
             CitySeeder::class,
