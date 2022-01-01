@@ -32,8 +32,8 @@
                         <form @submit.prevent="submit()">
                             <div class="mt-4 mb-12">
                                 <div class="mr-2">
-                                    <label-required for="name" value="部署名"/>
-                                    <Input id="name" type="text" class="mt-1 w-full" placeholder="産業労働部"
+                                    <label-required for="name" value="肩書名"/>
+                                    <Input id="name" type="text" class="mt-1 w-full" placeholder="地域づくりコーディネーター"
                                            v-model="form.name" autofocus/>
                                 </div>
                             </div>
