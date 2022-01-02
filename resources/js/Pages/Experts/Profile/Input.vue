@@ -38,7 +38,10 @@
 
                 <section class="mb-10">
                     <LabelRequired class="label" value="肩書"/>
-
+                    <select name="" id="" class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border w-full sm:w-1/2">
+                        <option value="">選択してください</option>
+                        <option :value="position.id" v-for="(position, index) in positions" :key="index">{{ position.name }}</option>
+                    </select>
                 </section>
 
                 <section class="mb-10">
