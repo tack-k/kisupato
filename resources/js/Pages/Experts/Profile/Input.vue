@@ -4,7 +4,7 @@
             <form @submit.prevent>
                 <section class="mb-10">
                     <LabelRequired class="label" value="ニックネーム" for="nickname"/>
-                    <InputForm id="nickname" type="text" v-model="form.nickname"/>
+                    <InputForm id="nickname" type="text" class="w-full sm:w-1/2" v-model="form.nickname"/>
                 </section>
 
                 <section class="mb-10">
@@ -38,9 +38,12 @@
 
                 <section class="mb-10">
                     <LabelRequired class="label" value="肩書"/>
-                    <select name="" id="" class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border w-full sm:w-1/2">
+                    <select name="" id=""
+                            class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border w-full sm:w-1/2">
                         <option value="">選択してください</option>
-                        <option :value="position.id" v-for="(position, index) in positions" :key="index">{{ position.name }}</option>
+                        <option :value="position.id" v-for="(position, index) in positions" :key="index">
+                            {{ position.name }}
+                        </option>
                     </select>
                 </section>
 
@@ -49,12 +52,15 @@
                     <div class="relative">
                         <div
                             class="">
-                            <input class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border" type="text"
-                                   @click="toggleActivityBasesOpen" v-model="form.activity_base" placeholder="タグから探す">
+                            <input
+                                class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border w-full sm:w-1/2"
+                                type="text"
+                                @click="toggleActivityBasesOpen" v-model="form.activity_base" placeholder="市町村を検索する">
                         </div>
                         <ul v-click-away="onClickOutside" v-if="isActivityBasesOpen" @click.self="closeActivityBases"
                             class="max-h-60 border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-1/2">
-                            <li v-for="(activityBase, index) in searchActivityBases.value" :key="index" @click="getSelectedActivityBase($event)"
+                            <li v-for="(activityBase, index) in searchActivityBases.value" :key="index"
+                                @click="getSelectedActivityBase($event)"
                                 class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{
                                     activityBase.name
                                 }}
@@ -205,7 +211,7 @@ import LabelRequired from "@/Components/Labels/LabelRequired";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import useTagAction from "@/Composables/useTagAction";
 import useActivityBaseAction from "@/Composables/useActivityBaseAction";
-import { directive } from "vue3-click-away";
+import {directive} from "vue3-click-away";
 
 export default {
     name: "Input",
