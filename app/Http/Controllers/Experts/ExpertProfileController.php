@@ -63,13 +63,7 @@ class ExpertProfileController extends Controller
         $expert_id = Auth::guard('expert')->id();
         $tags = Tag::getTags()->get();
         $positions = Position::getPositions()->get();
-//        $areas = Area::select('id', 'name')->get();
-//        foreach ($areas as $area) {
-//            $cities[] = Area::find($area['id'])->cities;
-//        }
-
         $cities = City::select('id', 'area_id', 'name')->get();
-
         $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
         if ($profile) {
             $skills = $profile->skills()->select('id', 'skill_title', 'skill_content')->where('expert_profile_id', $profile->id)->get();
