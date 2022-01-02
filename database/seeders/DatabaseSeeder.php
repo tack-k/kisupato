@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             AdminSeeder::class,
             PositionSeeder::class,
+            TagSeeder::class,
 
             AreaSeeder::class,
             CitySeeder::class,
