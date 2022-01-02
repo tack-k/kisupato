@@ -13,8 +13,10 @@
                         <div class="">
                             <div
                                 class="flex items-center border-gray-300 hover:cursor-pointer shadow-sm leading-6 py-2 px-3 border"
-                                @click="toggleTagsOpen">
-                                <p>タグを選ぶ</p>
+                                @click="toggleTagsOpen"
+                                v-click-away="closeTags"
+                            >
+                                <p>タグを選択する</p>
                                 <Fa class="ml-4" :icon="faChevronDown"/>
                             </div>
                         </div>
@@ -40,7 +42,7 @@
                     <LabelRequired class="label" value="肩書"/>
                     <select name="" id=""
                             class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border w-full sm:w-1/2">
-                        <option value="">選択してください</option>
+                        <option value="">肩書を選択する</option>
                         <option :value="position.id" v-for="(position, index) in positions" :key="index">
                             {{ position.name }}
                         </option>
