@@ -9,13 +9,15 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class ExpertProfileRequest extends FormRequest {
+class ExpertProfileRequest extends FormRequest
+{
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize() {
+    public function authorize()
+    {
         return true;
     }
 
@@ -24,44 +26,46 @@ class ExpertProfileRequest extends FormRequest {
      *
      * @return array
      */
-    public function rules() {
+    public function rules()
+    {
 
-            $expert_id = Auth::guard('expert')->id();
-             $profile = ExpertProfile::find($expert_id);
+        $expert_id = Auth::guard('expert')->id();
+        $profile = ExpertProfile::find($expert_id);
 
-             if(isset($profile) && $profile->status === ExpertConst::PUBLIC) {
-                 return [
-                     'nickname' => ['required', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
-                     'self_introduction' => ['required', 'string', 'max:500'],
-                     'activity_title' => 'required|string|max:30',
-                     'activity_content' => 'required|string|max:500',
-                     'activity_images.*' => ['required', 'file', 'image', 'max:5000'],
-                     'skills.*.skill_title' => ['required', 'max:30'],
-                     'skills.*.skill_content' => ['required', 'max:300'],
-                 ];
-             } else {
-                 return [
-                     'nickname' => ['nullable', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
-                     'profile_image.*' => ['file', 'image', 'max:5000'],
-                     'self_introduction' => ['nullable', 'string', 'max:500'],
-                     'activity_title' => 'nullable|string|max:30',
-                     'activity_content' => 'nullable|string|max:500',
-                     'activity_images.*' => ['nullable', 'file', 'image', 'max:5000'],
-                     'skills.*.skill_title' => ['nullable', 'max:30'],
-                     'skills.*.skill_content' => ['nullable', 'max:300'],
-                 ];
-             }
+        if (isset($profile) && $profile->status === ExpertConst::PUBLIC) {
+            return [
+                'nickname' => ['required', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
+                'self_introduction' => ['required', 'string', 'max:500'],
+                'activity_title' => 'required|string|max:30',
+                'activity_content' => 'required|string|max:500',
+                'activity_images.*' => ['required', 'file', 'image', 'max:5000'],
+                'skills.*.skill_title' => ['required', 'max:30'],
+                'skills.*.skill_content' => ['required', 'max:300'],
+            ];
+        } else {
+            return [
+                'nickname' => ['nullable', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
+                'profile_image.*' => ['file', 'image', 'max:5000'],
+                'self_introduction' => ['nullable', 'string', 'max:500'],
+                'activity_title' => 'nullable|string|max:30',
+                'activity_content' => 'nullable|string|max:500',
+                'activity_images.*' => ['nullable', 'file', 'image', 'max:5000'],
+                'skills.*.skill_title' => ['nullable', 'max:30'],
+                'skills.*.skill_content' => ['nullable', 'max:300'],
+            ];
+        }
 
     }
 
-    public function withValidator($validator) {
+    public function withValidator($validator)
+    {
 
         $validator->after(function ($validator) {
 
             $expert_id = Auth::guard('expert')->id();
             $profile = ExpertProfile::find($expert_id);
 
-            if(isset($profile) && $profile->status === ExpertConst::PUBLIC) {
+            if (isset($profile) && $profile->status === ExpertConst::PUBLIC) {
                 if (!$this->hasAny(['profile_image', 'saved_profile_image'])) {
                     $validator->errors()->add('profile_image', 'プロフィール画像は必ず設定してください。');
                 }
@@ -74,7 +78,8 @@ class ExpertProfileRequest extends FormRequest {
     }
 
 
-    public function attributes() {
+    public function attributes()
+    {
         return [
             'status' => 'ステータス',
             'nickname' => 'ニックネーム',
