@@ -39,8 +39,11 @@ class ExpertProfileRequest extends FormRequest
                 'activity_title' => 'required|string|max:30',
                 'activity_content' => 'required|string|max:500',
                 'activity_images.*' => ['required', 'file', 'image', 'max:5000'],
+                'activity_base' => ['required', 'integer', 'numeric', 'exists:cities,id'],
                 'skills.*.skill_title' => ['required', 'max:30'],
                 'skills.*.skill_content' => ['required', 'max:300'],
+                'tag.*' => ['required', 'integer', 'numeric', 'exists:tags,id'],
+                'position' => ['required', 'integer', 'numeric', 'exists:positions,id'],
             ];
         } else {
             return [
@@ -50,8 +53,11 @@ class ExpertProfileRequest extends FormRequest
                 'activity_title' => 'nullable|string|max:30',
                 'activity_content' => 'nullable|string|max:500',
                 'activity_images.*' => ['nullable', 'file', 'image', 'max:5000'],
+                'activity_base' => ['nullable', 'integer', 'numeric', 'exists:cities,id'],
                 'skills.*.skill_title' => ['nullable', 'max:30'],
                 'skills.*.skill_content' => ['nullable', 'max:300'],
+                'tag.*' => ['nullable', 'integer', 'numeric', 'exists:tags,id'],
+                'position' => ['nullable', 'integer', 'numeric', 'exists:positions,id'],
             ];
         }
 
@@ -73,6 +79,10 @@ class ExpertProfileRequest extends FormRequest
                 if (!$this->hasAny(['activity_images', 'saved_activity_images'])) {
                     $validator->errors()->add('activity_images', '活動写真は必ず設定してください。');
                 }
+
+                if (!$this->hasAny(['tag'])) {
+                    $validator->errors()->add('tag', 'タグは必ず設定してください。');
+                }
             }
         });
     }
@@ -89,8 +99,11 @@ class ExpertProfileRequest extends FormRequest
             'activity_images' => '活動写真',
             'activity_images.*' => '活動写真',
             'activity_content' => '活動内容',
+            'activity_base' => '活動拠点',
             'skills.*.skill_title' => '提供スキルタイトル',
             'skills.*.skill_content' => '提供スキル内容',
+            'tag.*' => 'タグ',
+            'position' => '肩書',
         ];
     }
 }
