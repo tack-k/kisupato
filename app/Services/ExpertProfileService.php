@@ -136,36 +136,36 @@ class ExpertProfileService {
     public function checkProfileExistence($profile, $messages) {
 
 
-            if (is_null($profile->profile_image)) {
-                $messages[] = MessageConst::PROFILE_IMAGE . MessageConst::E_00004;
-            }
+        if (is_null($profile->profile_image)) {
+            $messages[] = MessageConst::PROFILE_IMAGE . MessageConst::E_00004;
+        }
 
-            if (is_null($profile->self_introduction)) {
-                $messages[] = MessageConst::SELF_INTRODUCTION . MessageConst::E_00004;
-            }
+        if (is_null($profile->self_introduction)) {
+            $messages[] = MessageConst::SELF_INTRODUCTION . MessageConst::E_00004;
+        }
 
-            if (is_null($profile->activity_title)) {
-                $messages[] = MessageConst::ACTIVITY_TITLE . MessageConst::E_00004;
-            }
+        if (is_null($profile->activity_title)) {
+            $messages[] = MessageConst::ACTIVITY_TITLE . MessageConst::E_00004;
+        }
 
-            if (is_null($profile->activity_content)) {
-                $messages[] = MessageConst::ACTIVITY_CONTENT . MessageConst::E_00004;
-            }
+        if (is_null($profile->activity_content)) {
+            $messages[] = MessageConst::ACTIVITY_CONTENT . MessageConst::E_00004;
+        }
 
-            if ($profile->activityImages->isEmpty()) {
-                $messages[] = MessageConst::ACTIVITY_IMAGE . MessageConst::E_00004;
-            }
+        if ($profile->activityImages->isEmpty()) {
+            $messages[] = MessageConst::ACTIVITY_IMAGE . MessageConst::E_00004;
+        }
 
-            foreach ($profile->skills as $key => $skill) {
-                if (is_null($skill['skill_title'])) {
-                    $messages[] = MessageConst::SKILL_TITLE . ($key + 1) . MessageConst::E_00004;
-                }
-                if (is_null($skill['skill_content'])) {
-                    $messages[] = MessageConst::SKILL_CONTENT . ($key + 1) . MessageConst::E_00004;
-                }
+        foreach ($profile->skills as $key => $skill) {
+            if (is_null($skill['skill_title'])) {
+                $messages[] = MessageConst::SKILL_TITLE . ($key + 1) . MessageConst::E_00004;
             }
+            if (is_null($skill['skill_content'])) {
+                $messages[] = MessageConst::SKILL_CONTENT . ($key + 1) . MessageConst::E_00004;
+            }
+        }
 
-            return $messages;
+        return $messages;
 
     }
 
