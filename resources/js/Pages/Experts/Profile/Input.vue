@@ -57,7 +57,7 @@
                             <input
                                 class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border w-full sm:w-1/2"
                                 type="text"
-                                @click="toggleActivityBasesOpen" v-model="form.activity_base" placeholder="市町村を検索する">
+                                @click="toggleActivityBasesOpen" v-model="displayActivityBase" placeholder="市町村を検索する">
                         </div>
                         <ul v-click-away="onClickOutside" v-if="isActivityBasesOpen" @click.self="closeActivityBases"
                             class="max-h-60 border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-1/2">
@@ -408,6 +408,7 @@ export default {
             searchActivityBases,
             isNoActivityBase,
             onClickOutside,
+            displayActivityBase,
         } = useActivityBaseAction(props.cities, form)
 
         return {
@@ -452,6 +453,7 @@ export default {
             searchActivityBases,
             isNoActivityBase,
             onClickOutside,
+            displayActivityBase,
         }
     }
 }

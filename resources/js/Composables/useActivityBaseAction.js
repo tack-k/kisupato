@@ -11,6 +11,7 @@ export default function useActivityBaseAction(activityBases, form) {
             isActivityBasesOpen.value = false
             closeActivityBases()
             form.activity_base = ''
+            displayActivityBase.value = ''
         } else {
             isActivityBasesOpen.value = true
         }
@@ -25,7 +26,15 @@ export default function useActivityBaseAction(activityBases, form) {
         if (isNoActivityBase.value) {
             return
         }
-        form.activity_base = e.target.innerText
+        activityBases.forEach(activityBase => {
+            if(activityBase.name.indexOf(e.target.innerText) !== NO_RESULTS) {
+                console.log(activityBase)
+                form.activity_base = activityBase.id
+                displayActivityBase.value = activityBase.name
+            }
+        })
+
+
         closeActivityBases()
     }
 
@@ -39,7 +48,7 @@ export default function useActivityBaseAction(activityBases, form) {
         }
 
         activityBases.forEach(activityBase => {
-            if (activityBase.name.indexOf(form.activity_base) !== NO_RESULTS) {
+            if (activityBase.name.indexOf(displayActivityBase.value) !== NO_RESULTS) {
                 filteredActivityBases.value.push(
                     activityBase
                 )
@@ -60,11 +69,15 @@ export default function useActivityBaseAction(activityBases, form) {
 
     const isNoActivityBase = ref(false)
 
+
     // 要素外をクリック時に画面を閉じる
     const onClickOutside = () => {
         form.activity_base = ''
+        displayActivityBase.value = ''
         closeActivityBases()
     }
+
+    let displayActivityBase = ref('')
 
     return {
         isActivityBasesOpen,
@@ -74,5 +87,6 @@ export default function useActivityBaseAction(activityBases, form) {
         searchActivityBases,
         isNoActivityBase,
         onClickOutside,
+        displayActivityBase,
     }
 }
