@@ -40,9 +40,9 @@
 
                 <section class="mb-10">
                     <LabelRequired class="label" value="肩書"/>
-                    <select name="" id=""
+                    <select v-model="form.position"
                             class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border w-full sm:w-1/2">
-                        <option value="">肩書を選択する</option>
+                        <option value="" disabled>肩書を選択する</option>
                         <option :value="position.id" v-for="(position, index) in positions" :key="index">
                             {{ position.name }}
                         </option>
@@ -260,6 +260,7 @@ export default {
             delete_skills: [],
             tag: [],
             activity_base: '',
+            position: '',
         })
 
         const NOT_EXIST = 'undefined'
