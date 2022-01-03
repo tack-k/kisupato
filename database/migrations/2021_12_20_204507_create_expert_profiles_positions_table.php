@@ -21,8 +21,6 @@ class CreateExpertProfilesPositionsTable extends Migration
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();
             $table->string('updated_by')->nullable();
-            $table->dateTimeTz('deleted_at')->nullable();
-            $table->string('deleted_by')->nullable();
         });
     }
 

@@ -34,6 +34,7 @@ class ExpertProfileService {
             'self_introduction',
             'activity_title',
             'activity_content',
+            'activity_base',
         ]);
 
 
@@ -55,6 +56,17 @@ class ExpertProfileService {
         }
 
         $profile = ExpertProfile::updateOrCreate(['expert_id' => $expert_id], $params);
+
+        $tagIds = $request->only('tag');
+
+        if ($tagIds) {
+            $profile->tags()->sync($tagIds['tag']);
+        }
+
+        $positionId = $request->only('position');
+        if ($positionId) {
+            $profile->positions()->sync($positionId['position']);
+        }
 
         if ($request->has('delete_activity_images')) {
             //ファイルの削除

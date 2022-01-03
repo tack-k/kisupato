@@ -24,6 +24,7 @@ class ExpertProfile extends Model
         'self_introduction',
         'activity_title',
         'activity_content',
+        'activity_base',
     ];
 
     /**
