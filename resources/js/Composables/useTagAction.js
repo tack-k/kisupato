@@ -14,7 +14,6 @@ export default function useTagAction(tags, form) {
 
     //表示させるタグの監視
     const displayTags = computed(() => {
-        form.tag = newTags
         return newTags
     })
 
@@ -24,6 +23,7 @@ export default function useTagAction(tags, form) {
             'id': tags[index].id,
             'name': tags[index].name,
         })
+        form.tag.push(tags[index].id)
         tags.splice(index, 1)
         closeTags()
     }
@@ -61,6 +61,7 @@ export default function useTagAction(tags, form) {
         })
         sortTag()
         newTags.value.splice(index, 1)
+        form.tag.splice(index, 1)
     }
 
     //タグをid順にソート
