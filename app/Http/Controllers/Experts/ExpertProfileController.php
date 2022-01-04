@@ -65,19 +65,12 @@ class ExpertProfileController extends Controller
         $positions = Position::getPositions()->get();
         $cities = City::select('id', 'area_id', 'name')->get();
         $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
-        if ($profile) {
-            $skills = $profile->skills()->select('id', 'skill_title', 'skill_content')->where('expert_profile_id', $profile->id)->get();
-            $activity_images = $profile->activityImages;
-        } else {
+        if (!$profile) {
             $profile = ['profile_image' => 'default_profile.png'];
-            $skills = [];
-            $activity_images = [];
         }
 
         return Inertia::render(('Experts/Profile/Input'), [
             'profile' => $profile,
-            'skills' => $skills,
-            'activityImages' => $activity_images,
             'tags' => $tags,
             'positions' => $positions,
             'cities' => $cities,

@@ -47,8 +47,13 @@ class ExpertProfile extends Model
      * @return mixed
      */
     public function scopeGetExpertProfileInfo($query, $expert_id) {
-        return $query->select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content')
-            ->where('expert_id', $expert_id);
+        return $query->select('expert_profiles.id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content', 'c.id AS city_id', 'c.name AS city_name')
+            ->where('expert_id', $expert_id)
+            ->leftjoin('cities AS c', 'expert_profiles.activity_base', '=', 'c.id')
+            ->with('tags:id,name')
+            ->with('positions:id,name')
+            ->with('activityImages')
+            ->with('skills');
     }
 
     public function scopeCheckSameImage($query, $image) {
