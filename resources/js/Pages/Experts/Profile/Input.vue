@@ -397,8 +397,9 @@ export default {
             getSelectedTag,
             isNoTag,
             displayTags,
-            deleteTag
-        } = useTagAction(props.tags, form)
+            deleteTag,
+            initTag,
+        } = useTagAction(props.tags, form, props.profile.tags)
 
         const {
             isActivityBasesOpen,
@@ -454,6 +455,7 @@ export default {
             isNoActivityBase,
             onClickOutside,
             displayActivityBase,
+            initTag,
         }
     }
 }

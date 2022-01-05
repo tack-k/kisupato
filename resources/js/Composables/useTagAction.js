@@ -1,7 +1,7 @@
 import {computed, ref} from "vue";
 
 
-export default function useTagAction(tags, form) {
+export default function useTagAction(tags, form, profileTags) {
 
     const isTagsOpen = ref(false)
     const toggleTagsOpen = () => {
@@ -10,7 +10,7 @@ export default function useTagAction(tags, form) {
 
     const closeTags = () => isTagsOpen.value = false
 
-    const newTags = ref([])
+    const newTags = ref(profileTags ?? [])
 
     //表示させるタグの監視
     const displayTags = computed(() => {
@@ -31,6 +31,16 @@ export default function useTagAction(tags, form) {
     //タグの選択
     const searchTags = computed(() => {
         const filteredTags = ref([])
+
+        if (initTag.length > 0 && initFlag.value) {
+
+            initTag.forEach(init => {
+                const tagId = tags.map(tag => tag.id)
+                tags.splice(tagId.indexOf(init), 1)
+            })
+
+            initFlag.value = false
+        }
 
         tags.forEach(tag => {
             filteredTags.value.push({
@@ -75,6 +85,14 @@ export default function useTagAction(tags, form) {
         })
     }
 
+    //タグの初期データ
+    const initFlag = ref(false)
+
+    const initTag = profileTags.map(tag => tag.id)
+    if (initTag) {
+        form.tag = initTag
+        initFlag.value = true
+    }
 
     return {
         isTagsOpen,
@@ -85,5 +103,6 @@ export default function useTagAction(tags, form) {
         isNoTag,
         displayTags,
         deleteTag,
+        initTag,
     }
 }
