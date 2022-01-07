@@ -229,7 +229,6 @@ export default {
     },
     props: {
         profile: Object,
-        skills: Object,
         tags: Object,
         positions: Object,
         cities: Object,
@@ -251,7 +250,7 @@ export default {
             activity_title: props.profile.activity_title ?? '',
             activity_content: props.profile.activity_content ?? [],
             activity_images: [],
-            skills: props.profile.skills.length != 0 ? props.profile.skills : [{id: null, skill_title: '', skill_content: ''}],
+            skills: props.profile.skills ?? [],
             saved_profile_image: props.profile.profile_image.length === 0 ? [] : [props.profile.profile_image],
             saved_activity_images: props.profile.activity_images ?? [],
             delete_profile_image: [],
@@ -398,7 +397,6 @@ export default {
             isNoTag,
             displayTags,
             deleteTag,
-            initTag,
         } = useTagAction(props.tags, form, props.profile.tags)
 
         const {
@@ -455,7 +453,6 @@ export default {
             isNoActivityBase,
             onClickOutside,
             displayActivityBase,
-            initTag,
         }
     }
 }

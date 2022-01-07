@@ -88,8 +88,9 @@ export default function useTagAction(tags, form, profileTags) {
     //タグの初期データ
     const initFlag = ref(false)
 
-    const initTag = profileTags.map(tag => tag.id)
-    if (initTag) {
+    const initTag = profileTags ? profileTags.map(tag => tag.id) : []
+
+    if (initTag.length > 0) {
         form.tag = initTag
         initFlag.value = true
     }
@@ -103,6 +104,5 @@ export default function useTagAction(tags, form, profileTags) {
         isNoTag,
         displayTags,
         deleteTag,
-        initTag,
     }
 }
