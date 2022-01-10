@@ -91,6 +91,9 @@ export default {
     setup(props) {
         const PROFILE_PATH = '/storage/profile_images/'
         const ACTIVITY_PATH = '/storage/activity_images/'
+        const NO_SKILL_TITLE = '提供技術タイトルを入力してください'
+        const NO_SKILL_CONTENT = '提供技術内容を入力してください'
+
         const options = reactive([
             {'id': 0, 'name': '公開'},
             {'id': 1, 'name': '非公開'},
@@ -107,7 +110,10 @@ export default {
             activity_images: props.profile.activity_images.length === 0 ? [{'activity_image': 'default_activity.png'}] : props.profile.activity_images,
             activity_title: props.profile.activity_title ?? '活動タイトルを入力してください',
             activity_content: props.profile.activity_content ?? '活動内容を入力してください',
-            skills: props.profile.skills
+            skills: props.profile.skills.length === 0 ? [{
+                skill_title: NO_SKILL_TITLE,
+                skill_content: NO_SKILL_CONTENT,
+            }] : props.profile.skills
 
         })
 
@@ -116,8 +122,8 @@ export default {
         })
 
         profile.skills.map((skill, index) => {
-            skill.skill_title = skill.skill_title ?? "提供技術タイトルを入力してください"
-            skill.skill_content = skill.skill_content ?? "提供技術内容を入力してください"
+            skill.skill_title = skill.skill_title ?? NO_SKILL_TITLE
+            skill.skill_content = skill.skill_content ?? NO_SKILL_CONTENT
         })
 
         const submitStatus = () => {
