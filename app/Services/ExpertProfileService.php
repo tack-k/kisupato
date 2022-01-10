@@ -11,12 +11,14 @@ use App\Consts\CommonConst;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
-class ExpertProfileService {
+class ExpertProfileService
+{
 
     //共通サービスクラス
     protected $_commonService;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_commonService = new CommonService();
     }
 
@@ -25,7 +27,8 @@ class ExpertProfileService {
      * @param $request
      * @param $expert_id
      */
-    public function updateExpertProfile($request, $expert_id) {
+    public function updateExpertProfile($request, $expert_id)
+    {
 
         $params = $request->only([
             'status',
@@ -135,7 +138,8 @@ class ExpertProfileService {
      * @param $messages
      * @return mixed
      */
-    public function checkProfileExistence($profile, $messages) {
+    public function checkProfileExistence($profile, $messages)
+    {
 
 
         if (is_null($profile->profile_image)) {
