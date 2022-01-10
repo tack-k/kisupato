@@ -117,13 +117,15 @@ class ExpertProfileService {
         $delete_skills_id = $request->delete_skills;
         Skill::destroy($delete_skills_id);
 
-        $skills_params = $request->skills;
-        foreach ($skills_params as $skills_param) {
-            $skills_param['expert_profile_id'] = $profile->id;
-            $skills[] = $skills_param;
-        }
+        if ($request->has('skills')) {
+            $skills_params = $request->skills;
+            foreach ($skills_params as $skills_param) {
+                $skills_param['expert_profile_id'] = $profile->id;
+                $skills[] = $skills_param;
+            }
 
-        Skill::upsert($skills, 'id', ['skill_title', 'skill_content']);
+            Skill::upsert($skills, 'id', ['skill_title', 'skill_content']);
+        }
 
     }
 
