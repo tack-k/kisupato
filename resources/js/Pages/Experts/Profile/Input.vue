@@ -250,7 +250,7 @@ export default {
             activity_title: props.profile.activity_title ?? '',
             activity_content: props.profile.activity_content ?? [],
             activity_images: [],
-            skills: props.profile.skills ?? [],
+            skills: props.profile.skills.length === 0 ? [{'skill_title': '', 'skill_content': ''}] : props.profile.skills,
             saved_profile_image: props.profile.profile_image.length === 0 ? [] : [props.profile.profile_image],
             saved_activity_images: props.profile.activity_images ?? [],
             delete_profile_image: [],
