@@ -122,9 +122,12 @@ class ExpertProfileService
 
         if ($request->has('skills')) {
             $skills_params = $request->skills;
+            $skills = [];
             foreach ($skills_params as $skills_param) {
-                $skills_param['expert_profile_id'] = $profile->id;
-                $skills[] = $skills_param;
+                $skills['id'] = $skills_param['id'];
+                $skills['skill_title'] = $skills_param['skill_title'];
+                $skills['skill_content'] = $skills_param['skill_content'];
+                $skills['expert_profile_id'] = $profile->id;
             }
 
             Skill::upsert($skills, 'id', ['skill_title', 'skill_content']);
