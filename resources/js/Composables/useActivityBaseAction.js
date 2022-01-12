@@ -1,7 +1,7 @@
 import {computed, ref} from "vue";
 
 
-export default function useActivityBaseAction(activityBases, form) {
+export default function useActivityBaseAction(activityBases, form, initActivityBase) {
 
     const NO_RESULTS = -1
 
@@ -77,7 +77,7 @@ export default function useActivityBaseAction(activityBases, form) {
         closeActivityBases()
     }
 
-    let displayActivityBase = ref('')
+    let displayActivityBase = ref(initActivityBase ?? '')
 
     return {
         isActivityBasesOpen,

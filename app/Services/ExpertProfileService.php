@@ -68,7 +68,7 @@ class ExpertProfileService
 
         $positionId = $request->only('position');
         if ($positionId) {
-            $profile->positions()->sync($positionId['position']);
+            $profile->positions()->sync(array($positionId['position']));
         }
 
         if ($request->has('delete_activity_images')) {

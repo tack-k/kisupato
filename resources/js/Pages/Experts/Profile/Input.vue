@@ -257,8 +257,8 @@ export default {
             delete_activity_images: [],
             delete_skills: [],
             tag: [],
-            activity_base: '',
-            position: '',
+            activity_base: props.profile.activity_base ?? '',
+            position: props.profile.positions[0].id ?? '',
         })
 
         const NOT_EXIST = 'undefined'
@@ -408,7 +408,7 @@ export default {
             isNoActivityBase,
             onClickOutside,
             displayActivityBase,
-        } = useActivityBaseAction(props.cities, form)
+        } = useActivityBaseAction(props.cities, form, props.profile.city_name)
 
         return {
             form,
