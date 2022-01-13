@@ -43,7 +43,7 @@ class ExpertProfileController extends Controller
     public function show()
     {
         $expert_id = Auth::guard('expert')->id();
-        $profile = ExpertProfile::getExpertProfileAllInfo($expert_id)->first();
+        $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
 
         if (is_null($profile)) {
             return Redirect::route('expert.profile.input');

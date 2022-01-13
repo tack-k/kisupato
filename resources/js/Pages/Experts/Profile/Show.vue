@@ -30,6 +30,25 @@
             </section>
 
             <section class="mb-10">
+                <h2 class="base-font-m base-font-bold mb-4">タグ</h2>
+                <ul>
+                    <li v-for="(tag, index) in profile.tags" :key="index">{{ tag.name }}</li>
+                </ul>
+            </section>
+
+            <section class="mb-10">
+                <h2 class="base-font-m base-font-bold mb-4">肩書</h2>
+                <ul>
+                    <li v-for="(position, index) in profile.positions" :key="index">{{ position.name }}</li>
+                </ul>
+            </section>
+
+            <section class="mb-10">
+                <h2 class="base-font-m base-font-bold mb-4">活動拠点</h2>
+                <p>{{ profile.activity_base }}</p>
+            </section>
+
+            <section class="mb-10">
                 <h2 class="base-font-m base-font-bold mb-4">活動タイトル</h2>
                 <p>{{ profile.activity_title }}</p>
             </section>
@@ -113,7 +132,10 @@ export default {
             skills: props.profile.skills.length === 0 ? [{
                 skill_title: NO_SKILL_TITLE,
                 skill_content: NO_SKILL_CONTENT,
-            }] : props.profile.skills
+            }] : props.profile.skills,
+            activity_base: props.profile.city_name ?? '活動市町村を入力してください',
+            tags: props.profile.tags ?? [{name: 'タグを入力してください'}],
+            positions: props.profile.positions ?? [{name: '肩書を入力してください'}]
 
         })
 

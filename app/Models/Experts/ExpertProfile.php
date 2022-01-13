@@ -28,19 +28,6 @@ class ExpertProfile extends Model
     ];
 
     /**
-     * 専門人材のプロフィール、提供スキル、活動写真を取得する
-     * @param $query
-     * @param $expert_id
-     * @return mixed
-     */
-    public function scopeGetExpertProfileAllInfo($query, $expert_id) {
-        return $query->select('id', 'expert_id', 'status', 'nickname', 'profile_image', 'self_introduction', 'activity_title', 'activity_content')
-            ->with(['activityImages:id,expert_profile_id,activity_image', 'skills:id,expert_profile_id,skill_title,skill_content'])
-            ->where('expert_id', $expert_id);
-
-    }
-
-    /**
      * 専門人材のプロフィール情報を取得する
      * @param $query
      * @param $expert_id
@@ -52,8 +39,7 @@ class ExpertProfile extends Model
             ->leftjoin('cities AS c', 'expert_profiles.activity_base', '=', 'c.id')
             ->with('tags:id,name')
             ->with('positions:id,name')
-            ->with('activityImages')
-            ->with('skills');
+            ->with(['activityImages:id,expert_profile_id,activity_image', 'skills:id,expert_profile_id,skill_title,skill_content']);
     }
 
     public function scopeCheckSameImage($query, $image) {
