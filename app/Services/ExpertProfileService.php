@@ -64,11 +64,15 @@ class ExpertProfileService
 
         if ($tagIds) {
             $profile->tags()->sync($tagIds['tag']);
+        }else {
+            $profile->tags()->detach();
         }
 
         $positionId = $request->only('position');
         if ($positionId) {
             $profile->positions()->sync(array($positionId['position']));
+        } else {
+            $profile->positions()->detach();
         }
 
         if ($request->has('delete_activity_images')) {
