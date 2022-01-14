@@ -106,7 +106,7 @@ class ExpertProfileController extends Controller
             'status' => ['required', 'string', 'between:0,1']
         ]);
         $expert_id = Auth::guard('expert')->id();
-        $profile = ExpertProfile::getExpertProfileAllInfo($expert_id)->first();
+        $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
 
         $messages = [];
         if ($params['status'] === ExpertConst::PUBLIC) {
