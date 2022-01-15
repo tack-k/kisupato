@@ -178,6 +178,18 @@ class ExpertProfileService
             }
         }
 
+        if(is_null($profile->activity_base)) {
+            $messages[] = MessageConst::ACTIVITY_BASE . MessageConst::E_00004;
+        }
+
+        if($profile->tags->isEmpty()) {
+            $messages[] = MessageConst::TAGS . MessageConst::E_00004;
+        }
+
+        if($profile->positions->isEmpty()) {
+            $messages[] = MessageConst::POSITIONS . MessageConst::E_00004;
+        }
+
         return $messages;
 
     }

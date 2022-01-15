@@ -29,6 +29,9 @@ class MessageConst
     public const ACTIVITY_IMAGE = '活動写真';
     public const SKILL_TITLE = '提供スキルタイトル';
     public const SKILL_CONTENT = '提供スキル内容';
+    public const ACTIVITY_BASE = '活動拠点';
+    public const TAGS = 'タグ';
+    public const POSITIONS = '肩書';
 
 
     //エラーメッセージ
