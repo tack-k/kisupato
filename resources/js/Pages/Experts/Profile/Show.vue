@@ -122,6 +122,10 @@ export default {
             status: props.profile.status
         })
 
+        watchEffect(() => {
+            form.status = props.profile.status
+        })
+
         let profile = reactive({
             status: props.profile.status,
             nickname: props.profile.nickname ?? 'ニックネームを入力してください',
@@ -149,10 +153,10 @@ export default {
         })
 
         const submitStatus = () => {
-           form.status = form.status === '1' ? '0' : '1'
+         //  form.status = form.status === '1' ? '0' : '1'
             form.post(route('expert.profile.status'), {
                 onError: () => {
-                    form.status = props.profile.status
+               //     form.status = props.profile.status
                     alert('ステータスを変更できませんでした。時間をおいて再度お試しください')
                 }
             })
