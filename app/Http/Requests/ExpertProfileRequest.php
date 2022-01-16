@@ -30,7 +30,7 @@ class ExpertProfileRequest extends FormRequest
     {
 
         $expert_id = Auth::guard('expert')->id();
-        $profile = ExpertProfile::find($expert_id);
+        $profile = ExpertProfile::where('expert_id', $expert_id)->first();
 
         if (isset($profile) && $profile->status === ExpertConst::PUBLIC) {
             return [
