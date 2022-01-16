@@ -1,6 +1,7 @@
 <template>
     <my-page-layout>
         <template #content>
+            <p v-if="profile.status === '0'" class="font-medium text-red-600 mb-10">※プロフィール公開中のため、すべての項目を入力してください</p>
             <form @submit.prevent>
                 <section class="mb-10">
                     <LabelRequired class="label" value="ニックネーム" for="nickname"/>
