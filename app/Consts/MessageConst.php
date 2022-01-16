@@ -21,6 +21,7 @@ class MessageConst
     public const USER_BY = 'user:';
     public const EXPERT_BY = 'expert:';
 
+    public const NICKNAME = 'ニックネーム';
     public const PROFILE = 'プロフィール';
     public const PROFILE_IMAGE = 'プロフィール画像';
     public const SELF_INTRODUCTION = '自己紹介';

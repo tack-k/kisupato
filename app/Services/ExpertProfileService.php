@@ -148,6 +148,9 @@ class ExpertProfileService
     public function checkProfileExistence($profile, $messages)
     {
 
+        if (is_null($profile->nickname)) {
+            $messages[] = MessageConst::NICKNAME . MessageConst::E_00004;
+        }
 
         if (is_null($profile->profile_image)) {
             $messages[] = MessageConst::PROFILE_IMAGE . MessageConst::E_00004;
