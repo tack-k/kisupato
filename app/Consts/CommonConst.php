@@ -14,4 +14,9 @@ class CommonConst {
 
     //下書きプロフィール画像の保存パス
     public const DRAFT_PROFILE_PATH = 'draft_profile_images/';
+    //地域idの定数
+    public const NORTH = 1;
+    public const MIDDLE = 2;
+    public const EAST = 3;
+    public const SOUTH = 4;
 }

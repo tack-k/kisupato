@@ -9,7 +9,7 @@
                 </div>
                 <div class="flex items-center">
                     <div class="flex border-1 rounded-full bg-white border-gray-100">
-                        <SearchPlaceModal @click.self="closeTags" v-model:checked="form.checked"
+                        <SearchPlaceModal @click.self="closeTags" v-model:checked="form.checked" :areas="areas"
                                           :closeTags="closeTags"/>
                         <div class="relative">
                             <div
@@ -162,8 +162,12 @@ export default {
         RegularButton,
         Fa,
     },
-    setup() {
+    props: {
+      areas: Object,
+    },
+    setup(props) {
         const NO_RESULTS = -1
+        const { areas } = props;
 
         let form = useForm({
             checked: [],
@@ -217,7 +221,8 @@ export default {
             searchTags,
             isNoTag,
             faSearch,
-            faMapMarkedAlt
+            faMapMarkedAlt,
+            areas,
         }
     }
 }

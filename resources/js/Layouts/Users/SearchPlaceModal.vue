@@ -33,7 +33,7 @@
                                               :value="city.name"/>
                                     <Checkbox v-if="area.id === 4" v-model:checked="checked['south']"
                                               :value="city.name"/>
-                                    <span class="ml-2">{{ city.name }}</span></label>
+                                    <span class="ml-2">{{ city.name }}</span><span class="ml-2">{{ city.count }}</span></label>
                                 </li>
                             </ul>
                         </div>
@@ -87,6 +87,8 @@ export default {
     ],
     setup(props, {emit}) {
 
+        let { areas } = props;
+
         let checked = reactive({
                 'north': [],
                 'middle': [],
@@ -118,11 +120,11 @@ export default {
 
         const allCheckedNorth = computed({
             get: () => {
-                return checked['north'].length === props.areas['north'].cities.length
+                return checked['north'].length === areas['north'].cities.length
             },
             set: val => {
                 if (val) {
-                    const newCities = props.areas['north'].cities.map(city => city.name)
+                    const newCities = areas['north'].cities.map(city => city.name)
                     checked['north'] = newCities
                 } else {
                     checked['north'] = []
@@ -132,11 +134,11 @@ export default {
 
         const allCheckedEast = computed({
             get: () => {
-                return checked['east'].length === props.areas['east'].cities.length
+                return checked['east'].length === areas['east'].cities.length
             },
             set: val => {
                 if (val) {
-                    const newCities = props.areas['east'].cities.map(city => city.name)
+                    const newCities = areas['east'].cities.map(city => city.name)
                     checked['east'] = newCities
                 } else {
                     checked['east'] = []
@@ -146,11 +148,11 @@ export default {
 
         const allCheckedSouth = computed({
             get: () => {
-                return checked['south'].length === props.areas['south'].cities.length
+                return checked['south'].length === areas['south'].cities.length
             },
             set: val => {
                 if (val) {
-                    const newCities = props.areas['south'].cities.map(city => city.name)
+                    const newCities = areas['south'].cities.map(city => city.name)
                     checked['south'] = newCities
                 } else {
                     checked['south'] = []
@@ -160,11 +162,11 @@ export default {
 
         const allCheckedMiddle = computed({
             get: () => {
-                return checked['middle'].length === props.areas['middle'].cities.length
+                return checked['middle'].length === areas['middle'].cities.length
             },
             set: val => {
                 if (val) {
-                    const newCities = props.areas['middle'].cities.map(city => city.name)
+                    const newCities = areas['middle'].cities.map(city => city.name)
                     checked['middle'] = newCities
                 } else {
                     checked['middle'] = []
