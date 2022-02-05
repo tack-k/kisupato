@@ -4,7 +4,7 @@
             <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text"
                    placeholder="場所から探す" @click="toggleModal" :value="checkedStr">
         </div>
-        <div v-if="showModal" @click.self="toggleModal"
+        <div v-if="showModal" @click.self="onClickOutsideModal"
              class="overflow-x-hidden overflow-y-auto fixed inset-0 z-20 outline-none focus:outline-none justify-center items-center flex">
             <div class="relative w-auto my-6 mx-auto max-w-3xl">
                 <!--content-->
@@ -101,6 +101,14 @@ export default {
             showModal.value = !showModal.value
         }
 
+        const onClickOutsideModal = () => {
+            showModal.value = false;
+            checked['north'] = [];
+            checked['middle'] = [];
+            checked['east'] = [];
+            checked['south'] = [];
+        }
+
         const emitChecked = () => {
         //    emit('update:checked', checked)
             emit('test', checked)
@@ -184,6 +192,7 @@ export default {
             allCheckedMiddle,
             allCheckedEast,
             allCheckedSouth,
+            onClickOutsideModal,
         }
     },
 
