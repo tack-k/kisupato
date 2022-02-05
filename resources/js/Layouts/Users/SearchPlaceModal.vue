@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="" @click="closeTags">
+        <div class="">
             <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text"
                    placeholder="場所から探す" @click="toggleModal" :value="checkedStr">
         </div>
@@ -77,7 +77,6 @@ export default {
         Fa,
     },
     props: {
-        closeTags: Function,
         areas: Object,
     //    checked: String
     },
@@ -174,15 +173,6 @@ export default {
             }
         })
 
-        computed({
-            get: () => {
-
-            },
-            set: () => {
-
-            }
-        })
-
         return {
             showModal,
             toggleModal,
@@ -196,29 +186,6 @@ export default {
             allCheckedSouth,
         }
     },
-
-    // data() {
-    //     return {
-    //         form: this.$inertia.form({
-    //             staff_number: '',
-    //             last_name_kana: '',
-    //             first_name_kana: '',
-    //             last_name: '',
-    //             first_name: '',
-    //             department: '',
-    //             authority: '',
-    //             email: '',
-    //         })
-    //     }
-    // },
-    //
-    // methods: {
-    //     submit() {
-    //         this.form.post(this.route('admin.store'), {
-    //             onSuccess: () => this.form.reset()
-    //         })
-    //     }
-    // }
 
 }
 </script>

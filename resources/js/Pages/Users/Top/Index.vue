@@ -9,8 +9,7 @@
                 </div>
                 <div class="flex items-center">
                     <div class="flex border-1 rounded-full bg-white border-gray-100">
-                        <SearchPlaceModal v-model:checked="form.checked" :areas="areas"
-                                          :closeTags="closeTags"/>
+                        <SearchPlaceModal v-model:checked="form.checked" :areas="areas"/>
                         <div class="relative">
                             <div
                                 class="before:h-10 before:w-0.5 before:bg-gray-100 before:absolute before:top-1/2 before:-translate-y-1/2 after:h-10 after:w-0.5 after:bg-gray-100 after:absolute after:top-1/2 after:-translate-y-1/2">
