@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admins\Tag;
 use App\Models\Experts\ExpertProfile;
 use App\Services\TopService;
 use Illuminate\Http\Request;
@@ -28,9 +29,11 @@ class TopController extends Controller
 
         $formatAreaData = $this->_service->formatAreaData($areas, $areaAndCities);
 
+        $tags = Tag::getTags()->get();
 
         return Inertia::render('Users/Top/Index', [
             'areas' => $formatAreaData,
+            'tags' => $tags,
         ]);
     }
 }

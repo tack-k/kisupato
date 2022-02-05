@@ -1,7 +1,7 @@
 <template>
     <full-page-layout>
         <template #content>
-            <div class="top-image flex items-center justify-center flex-col" @click.self="closeTags">
+            <div class="top-image flex items-center justify-center flex-col">
                 <h1 class="text-6xl expert-text-white mb-10 base-font-bold">新たな出会いはいつもここから</h1>
                 <div class="user-bg rounded mb-12 hover:cursor-pointer">
                     <Fa :icon="faMapMarkedAlt" class="text-9xl text-white p-4"/>
@@ -9,19 +9,19 @@
                 </div>
                 <div class="flex items-center">
                     <div class="flex border-1 rounded-full bg-white border-gray-100">
-                        <SearchPlaceModal @click.self="closeTags" v-model:checked="form.checked" :areas="areas"
+                        <SearchPlaceModal v-model:checked="form.checked" :areas="areas"
                                           :closeTags="closeTags"/>
                         <div class="relative">
                             <div
                                 class="before:h-10 before:w-0.5 before:bg-gray-100 before:absolute before:top-1/2 before:-translate-y-1/2 after:h-10 after:w-0.5 after:bg-gray-100 after:absolute after:top-1/2 after:-translate-y-1/2">
                                 <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text"
-                                       @click="toggleTagsOpen" v-model="form.tag" placeholder="タグから探す">
+                                       @click="toggleTagsOpen" v-model="displayTag" placeholder="タグから探す">
                             </div>
-                            <ul v-if="isTagsOpen" @click.self="closeTags"
+                            <ul v-if="isTagsOpen" v-click-away="onClickOutsideTag"
                                 class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-full">
-                                <li v-for="(tag, index) in searchTags.value" :key="tag" @click="getSelectedTag(index)"
+                                <li v-for="(tag, index) in searchTags.value" :key="tag" @click="getSelectedTag"
                                     class="px-2 py-0.5 hover:bg-blue-500 hover:text-white hover:cursor-pointer">{{
-                                        tag
+                                        tag.name
                                     }}
                                 </li>
                             </ul>
@@ -153,6 +153,7 @@ import {faHeart, faSearch, faMapMarkedAlt} from "@fortawesome/free-solid-svg-ico
 import Fa from 'vue-fa';
 import {useForm} from "@inertiajs/inertia-vue3";
 import {computed, ref} from "vue";
+import {directive} from "vue3-click-away";
 
 export default {
     name: "Index",
@@ -164,19 +165,25 @@ export default {
     },
     props: {
       areas: Object,
+        tags: Array,
+    },
+    directives: {
+        ClickAway: directive
     },
     setup(props) {
         const NO_RESULTS = -1
-        const { areas } = props;
+        const { areas, tags } = props;
 
-        let form = useForm({
+        const form = useForm({
             checked: [],
             tag: '',
             keyword: '',
 
         })
 
-        const tags = ref(['農業', '地域づくり', '林業士', '建築士'])
+
+        const displayTag = ref("")
+
         const isTagsOpen = ref(false)
         const toggleTagsOpen = () => {
             isTagsOpen.value = !isTagsOpen.value
@@ -184,8 +191,19 @@ export default {
 
         const closeTags = () => isTagsOpen.value = false
 
-        const getSelectedTag = (index) => {
-            form.tag = tags.value[index]
+        const getSelectedTag = e => {
+            
+            if(isNoTag.value) {
+                return
+            }
+
+            tags.forEach(tag => {
+                if(tag.name.indexOf(e.target.innerText) !== NO_RESULTS) {
+                    form.tag = tag.id;
+                    displayTag.value = tag.name;
+                }
+            })
+
             closeTags()
         }
 
@@ -193,14 +211,21 @@ export default {
         const searchTags = computed(() => {
             const filteredTags = ref([])
 
-            tags.value.forEach(tag => {
-                if (tag.indexOf(form.tag) !== NO_RESULTS) {
+            if(isNoTag.value) {
+                isNoTag.value = false;
+            }
+
+            tags.forEach(tag => {
+                if (tag.name.indexOf(displayTag.value) !== NO_RESULTS) {
                     filteredTags.value.push(tag)
                 }
             })
 
             if (filteredTags.value.length === 0) {
-                filteredTags.value.push('該当項目がありません')
+                filteredTags.value.push({
+                    'id': '',
+                    'name': '該当項目がありません'
+                })
                 isNoTag.value = true
             }
 
@@ -208,6 +233,13 @@ export default {
         })
 
         const isNoTag = ref(false)
+
+        const onClickOutsideTag = () => {
+            console.log(1111)
+            form.tag = '';
+            displayTag.value = '';
+            closeTags();
+        }
 
 
         return {
@@ -223,6 +255,8 @@ export default {
             faSearch,
             faMapMarkedAlt,
             areas,
+            displayTag,
+            onClickOutsideTag,
         }
     }
 }
