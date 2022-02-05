@@ -28,7 +28,6 @@ export default function useActivityBaseAction(activityBases, form, initActivityB
         }
         activityBases.forEach(activityBase => {
             if(activityBase.name.indexOf(e.target.innerText) !== NO_RESULTS) {
-                console.log(activityBase)
                 form.activity_base = activityBase.id
                 displayActivityBase.value = activityBase.name
             }
