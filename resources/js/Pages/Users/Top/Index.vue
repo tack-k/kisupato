@@ -59,38 +59,47 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
                         <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto"
-                             v-for="value in 4" key="value">
-                            <a href="#" class="w-full block h-full">
-                                <img alt="blog photo" :src="'/images/users/activity.jpeg'"
+                             v-for="(profile, key) in profiles" :key="key">
+                            <a href="#" class="w-full block h-full">                                <div class="relative">
+                                <Fa :icon="faHeart" class="text-lg absolute right-2 top-2 text-red-400"/>
+                                <!--                                最終的には活動画像の配列をカルーセルで表示させる-->
+                                <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image[0]"
                                      class="max-h-40 w-full object-cover"/>
+                            </div>
                                 <div class="bg-white dark:bg-gray-800 w-full p-4">
-                                    <p class="text-indigo-500 text-md font-medium">
-                                        Video
-                                    </p>
+                                    <ul>
+                                        <li class="text-indigo-500 text-md font-medium" v-for="(position, index) in profile.positions" :key="index">
+                                            {{ position.position }}
+                                        </li>
+                                    </ul>
                                     <p class="text-gray-800 dark:text-white text-xl font-medium mb-2">
-                                        Work at home
+                                        {{ profile.activity_title }}
                                     </p>
                                     <p class="text-gray-400 dark:text-gray-300 font-light text-md">
-                                        Work at home, remote, is the new age of the job, every person can work at
-                                        home....
+                                        {{ profile.activity_content }}
                                     </p>
                                     <div class="flex items-center mt-4">
                                         <a href="#" class="block relative">
-                                            <img alt="profil" :src="'/images/users/profile.png'"
+                                            <img alt="profile" :src="PROFILE_PATH + profile.profile_image"
                                                  class="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                         <div class="flex flex-col justify-between ml-4 text-sm">
                                             <p class="text-gray-800 dark:text-white">
-                                                Jean Jacques
+                                                {{ profile.nickname }}
                                             </p>
-                                            <p class="text-gray-400 dark:text-gray-300">
-                                                20 mars 2029 - 6 min read
-                                            </p>
+                                            <ul class="flex">
+                                                <li class="text-gray-400 dark:text-gray-300 ml-4" v-for="(tag, index) in profile.tags" :key="index">
+                                                    {{ tag.tag }}
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         </div>
+                    </div>
+                    <div class="mt-16 text-center">
+                       <Link href="/" v-if="profiles.length >= 4" class="text-xl base-font-bold user-bg user-text-white px-4 py-2 rounded-full">もっとみる</Link>
                     </div>
                 </div>
 
@@ -150,9 +159,10 @@ import SearchPlaceModal from "@/Layouts/Users/SearchPlaceModal";
 import RegularButton from "@/Components/Buttons/RegularButton";
 import {faHeart, faSearch, faMapMarkedAlt} from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
-import {useForm} from "@inertiajs/inertia-vue3";
+import {useForm, Link} from "@inertiajs/inertia-vue3";
 import {computed, ref} from "vue";
 import {directive} from "vue3-click-away";
+import { commonConst } from "@/Consts/commonConst"
 
 export default {
     name: "Index",
@@ -161,17 +171,20 @@ export default {
         SearchPlaceModal,
         RegularButton,
         Fa,
+        Link,
     },
     props: {
       areas: Object,
         tags: Array,
+        profiles: Object,
     },
     directives: {
         ClickAway: directive
     },
     setup(props) {
         const NO_RESULTS = -1
-        const { areas, tags } = props;
+        const { areas, tags, profiles } = props;
+        const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
 
         const form = useForm({
             checked: [],
@@ -191,7 +204,7 @@ export default {
         const closeTags = () => isTagsOpen.value = false
 
         const getSelectedTag = e => {
-            
+
             if(isNoTag.value) {
                 return
             }
@@ -234,7 +247,6 @@ export default {
         const isNoTag = ref(false)
 
         const onClickOutsideTag = () => {
-            console.log(1111)
             form.tag = '';
             displayTag.value = '';
             closeTags();
@@ -256,6 +268,9 @@ export default {
             areas,
             displayTag,
             onClickOutsideTag,
+            profiles,
+            ACTIVITY_PATH,
+            PROFILE_PATH,
         }
     }
 }

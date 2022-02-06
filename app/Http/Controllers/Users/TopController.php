@@ -31,9 +31,16 @@ class TopController extends Controller
 
         $tags = Tag::getTags()->get();
 
+        $profiles = ExpertProfile::getExpertProfileCardInfo()->get() ?? null;
+
+        foreach ($profiles as $profile) {
+            $profile->activity_image = explode(',', $profile->activity_image);
+        }
+
         return Inertia::render('Users/Top/Index', [
             'areas' => $formatAreaData,
             'tags' => $tags,
+            'profiles' => $profiles,
         ]);
     }
 }

@@ -75,6 +75,22 @@ class ExpertProfile extends Model
     }
 
     /**
+     * カードに表示する専門人材プロフィール情報を取得
+     * @param $query
+     * @return mixed
+     */
+    public function scopeGetExpertProfileCardInfo($query) {
+        return $query->selectRaw('GROUP_CONCAT(ai.activity_image) as activity_image, expert_profiles.id, nickname, profile_image, activity_title, activity_content')
+            ->join('activity_images as ai', 'expert_profiles.id', '=', 'ai.expert_profile_id')
+            ->with(['tags:name as tag', 'positions:name as position'])
+            ->where('status', '0')
+            ->take(6)
+            ->groupBy('ai.expert_profile_id')
+            ->groupBy('expert_profiles.id')
+            ->orderBy('expert_profiles.created_at', 'desc');
+    }
+
+    /**
      * プロフィールが持つ提供技術を取得
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
