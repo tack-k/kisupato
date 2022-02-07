@@ -13,8 +13,10 @@
                         <div class="relative">
                             <div
                                 class="before:h-10 before:w-0.5 before:bg-gray-100 before:absolute before:top-1/2 before:-translate-y-1/2 after:h-10 after:w-0.5 after:bg-gray-100 after:absolute after:top-1/2 after:-translate-y-1/2">
-                                <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer" type="text"
-                                       @click="toggleTagsOpen" v-model="displayTag" placeholder="タグから探す">
+                                <input
+                                    class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 hover:cursor-pointer"
+                                    type="text"
+                                    @click="toggleTagsOpen" v-model="displayTag" placeholder="タグから探す">
                             </div>
                             <ul v-if="isTagsOpen" v-click-away="onClickOutsideTag"
                                 class="border rounded shadow-lg user-bg-white overflow-y-scroll absolute fixed z-50 w-full">
@@ -27,8 +29,10 @@
                         </div>
                         <div class="flex items-center relative">
                             <div class="">
-                                <input class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 pr-16 hover:cursor-pointer" type="text"
-                                       v-model="form.keyword" placeholder="キーワード検索">
+                                <input
+                                    class="rounded-full border-0 hover:bg-gray-100 focus:ring-0 py-4 pr-16 hover:cursor-pointer"
+                                    type="text"
+                                    v-model="form.keyword" placeholder="キーワード検索">
                             </div>
                             <div class="p-4 bg-red-400 rounded-full absolute right-0.5 hover:cursor-pointer">
                                 <Fa :icon="faSearch" class="text-lg text-white"/>
@@ -60,15 +64,17 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
                         <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto"
                              v-for="(profile, key) in profiles" :key="key">
-                            <a href="#" class="w-full block h-full">                                <div class="relative">
-                                <Fa :icon="faHeart" class="text-lg absolute right-2 top-2 text-red-400"/>
-                                <!--                                最終的には活動画像の配列をカルーセルで表示させる-->
-                                <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image[0]"
-                                     class="max-h-40 w-full object-cover"/>
-                            </div>
+                            <a href="#" class="w-full block h-full">
+                                <div class="relative">
+                                    <Fa :icon="faHeart" class="text-lg absolute right-2 top-2 text-red-400"/>
+                                    <!--                                最終的には活動画像の配列をカルーセルで表示させる-->
+                                    <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image[0]"
+                                         class="max-h-40 w-full object-cover"/>
+                                </div>
                                 <div class="bg-white dark:bg-gray-800 w-full p-4">
                                     <ul>
-                                        <li class="text-indigo-500 text-md font-medium" v-for="(position, index) in profile.positions" :key="index">
+                                        <li class="text-indigo-500 text-md font-medium"
+                                            v-for="(position, index) in profile.positions" :key="index">
                                             {{ position.position }}
                                         </li>
                                     </ul>
@@ -88,7 +94,8 @@
                                                 {{ profile.nickname }}
                                             </p>
                                             <ul class="flex">
-                                                <li class="text-gray-400 dark:text-gray-300 ml-4" v-for="(tag, index) in profile.tags" :key="index">
+                                                <li class="text-gray-400 dark:text-gray-300 ml-4"
+                                                    v-for="(tag, index) in profile.tags" :key="index">
                                                     {{ tag.tag }}
                                                 </li>
                                             </ul>
@@ -99,7 +106,9 @@
                         </div>
                     </div>
                     <div class="mt-16 text-center">
-                       <Link href="/" v-if="profiles.length >= 4" class="text-xl base-font-bold user-bg user-text-white px-4 py-2 rounded-full">もっとみる</Link>
+                        <Link href="/" v-if="profiles.length >= MAX_PROFILE_COUNT"
+                              class="text-xl base-font-bold user-bg user-text-white px-4 py-2 rounded-full">もっとみる
+                        </Link>
                     </div>
                 </div>
 
@@ -157,11 +166,11 @@
 import FullPageLayout from "@/Layouts/Users/FullPageLayout";
 import SearchPlaceModal from "@/Layouts/Users/SearchPlaceModal";
 import RegularButton from "@/Components/Buttons/RegularButton";
-import {faHeart, faSearch, faMapMarkedAlt} from "@fortawesome/free-solid-svg-icons"
+import { faHeart, faSearch, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
-import {useForm, Link} from "@inertiajs/inertia-vue3";
-import {computed, ref} from "vue";
-import {directive} from "vue3-click-away";
+import { useForm, Link } from "@inertiajs/inertia-vue3";
+import { computed, ref } from "vue";
+import { directive } from "vue3-click-away";
 import { commonConst } from "@/Consts/commonConst"
 
 export default {
@@ -174,7 +183,7 @@ export default {
         Link,
     },
     props: {
-      areas: Object,
+        areas: Object,
         tags: Array,
         profiles: Object,
     },
@@ -183,6 +192,7 @@ export default {
     },
     setup(props) {
         const NO_RESULTS = -1
+        const MAX_PROFILE_COUNT = 6;
         const { areas, tags, profiles } = props;
         const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
 
@@ -205,12 +215,12 @@ export default {
 
         const getSelectedTag = e => {
 
-            if(isNoTag.value) {
+            if (isNoTag.value) {
                 return
             }
 
             tags.forEach(tag => {
-                if(tag.name.indexOf(e.target.innerText) !== NO_RESULTS) {
+                if (tag.name.indexOf(e.target.innerText) !== NO_RESULTS) {
                     form.tag = tag.id;
                     displayTag.value = tag.name;
                 }
@@ -223,7 +233,7 @@ export default {
         const searchTags = computed(() => {
             const filteredTags = ref([])
 
-            if(isNoTag.value) {
+            if (isNoTag.value) {
                 isNoTag.value = false;
             }
 
@@ -271,6 +281,7 @@ export default {
             profiles,
             ACTIVITY_PATH,
             PROFILE_PATH,
+            MAX_PROFILE_COUNT,
         }
     }
 }

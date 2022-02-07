@@ -203,18 +203,20 @@
 
 <script>
 import MyPageLayout from "@/Layouts/Experts/MyPageLayout";
-import {useForm, Link} from "@inertiajs/inertia-vue3";
+import { useForm, Link } from "@inertiajs/inertia-vue3";
 import RegularButton from "@/Components/Buttons/RegularButton";
 import Select from "@/Components/Forms/Select";
-import {ref, reactive, watch, onMounted, computed} from "vue"
+import { ref, reactive, watch, onMounted, computed } from "vue"
 import InputForm from "@/Components/Forms/Input";
-import {faTimes, faChevronDown} from "@fortawesome/free-solid-svg-icons"
+import { faTimes, faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import LabelRequired from "@/Components/Labels/LabelRequired";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import useTagAction from "@/Composables/useTagAction";
 import useActivityBaseAction from "@/Composables/useActivityBaseAction";
-import {directive} from "vue3-click-away";
+import { directive } from "vue3-click-away";
+import { commonConst } from "@/Consts/commonConst"
+
 
 export default {
     name: "Input",
@@ -240,8 +242,8 @@ export default {
 
     setup(props) {
         const options = reactive([
-            {'id': 0, 'name': '公開'},
-            {'id': 1, 'name': '非公開'},
+            { 'id': 0, 'name': '公開' },
+            { 'id': 1, 'name': '非公開' },
         ])
 
         const form = useForm({
@@ -251,7 +253,10 @@ export default {
             activity_title: props.profile.activity_title ?? '',
             activity_content: props.profile.activity_content ?? [],
             activity_images: [],
-            skills: props.profile.skills.length === 0 ? [{'skill_title': '', 'skill_content': ''}] : props.profile.skills,
+            skills: props.profile.skills.length === 0 ? [{
+                'skill_title': '',
+                'skill_content': ''
+            }] : props.profile.skills,
             saved_profile_image: props.profile.profile_image.length === 0 ? [] : [props.profile.profile_image],
             saved_activity_images: props.profile.activity_images ?? [],
             delete_profile_image: [],
@@ -263,8 +268,7 @@ export default {
         })
 
         const NOT_EXIST = 'undefined'
-        const PROFILE_PATH = '/storage/profile_images/'
-        const ACTIVITY_PATH = '/storage/activity_images/'
+        const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
         const DRAFT_PROFILE_PATH = '/storage/draft_profile_images/'
         const DRAFT_ACTIVITY_PATH = '/storage/draft_activity_images/'
         const NOT_SAVED = '0'
@@ -285,7 +289,7 @@ export default {
 
             isEnterProfile.value = false
             if (event.dataTransfer.files.length >= 2) {
-                return alert(`アップロードできる写真は${MAX_PROFILE_FILES}枚です。`)
+                return alert(`アップロードできる写真は${ MAX_PROFILE_FILES }枚です。`)
             }
             form.profile_image = [...event.dataTransfer.files]
 
@@ -318,7 +322,7 @@ export default {
             if (event.dataTransfer.files.length + form.saved_activity_images.length + form.activity_images.length > MAX_ACTIVITY_FILES
                 || form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES
             ) {
-                return alert(`アップロードできる写真は${MAX_ACTIVITY_FILES}枚です。`)
+                return alert(`アップロードできる写真は${ MAX_ACTIVITY_FILES }枚です。`)
             }
             isEnterActivity.value = false
             form.activity_images.push(...event.dataTransfer.files)
@@ -339,7 +343,7 @@ export default {
             if (event.target.files.length + form.saved_activity_images.length + form.activity_images.length > MAX_ACTIVITY_FILES
                 || form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES
             ) {
-                return alert(`アップロードできる写真は${MAX_ACTIVITY_FILES}枚です。`)
+                return alert(`アップロードできる写真は${ MAX_ACTIVITY_FILES }枚です。`)
             }
             form.activity_images.push(...event.target.files)
             form.activity_images.forEach(activityFile => activityFile['url'] = URL.createObjectURL(activityFile))
@@ -353,7 +357,7 @@ export default {
         let isDeleteSkill = form.skills.length <= MIN_SKILLS ? ref(false) : ref(true)
 
         const addSkill = () => {
-            form.skills.push({id: '', skill_title: '', skill_content: ''})
+            form.skills.push({ id: '', skill_title: '', skill_content: '' })
             if (form.skills.length === MAX_SKILLS) {
                 isAddSkill.value = false
             }
