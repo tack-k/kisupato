@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Consts\ExpertConst;
 use App\Consts\MessageConst;
+use App\Models\City;
 use App\Models\Experts\ActivityImage;
 use App\Models\Experts\ExpertProfile;
 use App\Models\Experts\Skill;
@@ -57,6 +58,15 @@ class ExpertProfileService
         if ($request->has('saved_profile_image')) {
             $params['profile_image'] = $request->saved_profile_image[0];
         }
+
+
+        $sameActivityBaseExist = ExpertProfile::where('expert_id', $expert_id)->where('activity_base', $params['activity_base'])->exists();
+        if(!$sameActivityBaseExist) {
+            $city = City::select('id', 'latitude', 'longitude')->where('id', $params['activity_base'])->first();
+            $params['latitude'] = $city['latitude'] . $this->_commonService->generateRandomNumbers(4);
+            $params['longitude'] = $city['longitude'] . $this->_commonService->generateRandomNumbers(4);
+        }
+
 
         $profile = ExpertProfile::updateOrCreate(['expert_id' => $expert_id], $params);
 

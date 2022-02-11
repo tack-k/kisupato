@@ -26,6 +26,8 @@ class ExpertProfile extends Model
         'activity_title',
         'activity_content',
         'activity_base',
+        'latitude',
+        'longitude',
     ];
 
     /**
