@@ -13,7 +13,7 @@ class CommonService {
      * @return string
      */
     public function imageNameFormat($image): string {
-        return Carbon::now()->format('Ymd_') . mt_rand() . '.' . $image->getClientOriginalExtension();
+        return Carbon::now()->format('Ymd_') . $this->generateRandomNumbers(8) . '.' . $image->getClientOriginalExtension();
     }
 
     /**
