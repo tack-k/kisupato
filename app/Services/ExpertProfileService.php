@@ -138,7 +138,7 @@ class ExpertProfileService
             $skills_params = $request->skills;
             $skills = [];
             foreach ($skills_params as $skills_param) {
-                $skills['id'] = $skills_param['id'];
+                $skills['id'] = $skills_param['id'] ?? null;
                 $skills['skill_title'] = $skills_param['skill_title'];
                 $skills['skill_content'] = $skills_param['skill_content'];
                 $skills['expert_profile_id'] = $profile->id;
