@@ -54,8 +54,12 @@ Route::get('/dashboard', function () {
 Route::group(['middleware' => 'guest'], function() {
     Route::get('/register', [UserController::class, 'create'])->name('create');
     Route::post('/register', [UserController::class, 'store'])->name('store');
-    Route::get('/resource', [ResourceController::class, 'index'])->name('resource.index');
     Route::get('/', [TopController::class, 'index'])->name('home');
+
+    Route::group(['prefix' => 'resource', 'as' => 'resource.'], function() {
+         Route::get('/', [ResourceController::class, 'index'])->name('index');
+         Route::post('/card', [ResourceController::class, 'card'])->name('card');
+    });
 });
 
 

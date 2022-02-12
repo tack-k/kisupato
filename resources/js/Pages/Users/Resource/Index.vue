@@ -3,7 +3,7 @@
         <template #content>
             <div>
                 <div class="flex">
-                    <div class="py-6 w-1/2">
+                    <div class="py-6 w-1/2" @click="showProfileCard">
                         <div class="flex max-w-md bg-white shadow-lg rounded-lg overflow-hidden">
                             <div class="w-1/3 bg-cover" style="background-image: url('https://images.unsplash.com/photo-1494726161322-5360d4d0eeae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80')">
                             </div>
@@ -53,8 +53,12 @@
                             :center="center"
                             :zoom="9"
                         >
-                            <Marker :options="markerOption" v-for="(markerOption, index) in markerOptions" :key="index"/>
+                            <Marker :options="markerOption.map" v-for="(markerOption, index) in markerOptions" :key="index" @click="showProfileCard(markerOption.card)"/>
                         </GoogleMap>
+                        <div v-show="isCardOpen">
+                            <VerticalCard :profile="profileCard"/>
+                            <!--                            <VerticalCard />-->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,11 +72,13 @@ import FullPageLayout from "@/Layouts/Users/FullPageLayout"
 import {GoogleMap, Marker, IControlPosition} from 'vue3-google-map'
 import {ref, computed} from "vue";
 import {commonConst} from "@/Consts/commonConst"
+import VerticalCard from "@/Components/Cards/VerticalCard";
 
 
 export default {
     name: "Index",
     components: {
+        VerticalCard,
         FullPageLayout,
         Header,
         Marker,
@@ -88,12 +94,16 @@ export default {
         const GOOGLE_MAP_API_KEY = process.env.MIX_GOOGLE_MAP_API_KEY;
         const center = {lat: 36.197910809248135, lng: 138.06393209955368}
         let initMarkerOptions = ref([]);
+        let isCardOpen = ref(false);
+        let profileCard = ref({});
 
+        //GoogleMap API
         const mapProfiles = profiles.map(profile => {
             return {
                 url: PROFILE_PATH + profile.profile_image,
                 lat: profile.latitude,
                 lng: profile.longitude,
+                id: profile.id
             }
         })
 
@@ -102,11 +112,16 @@ export default {
 
                 initMarkerOptions = mapProfiles.map((mapProfile) => {
                     return {
-                        position: {lat: mapProfile.lat, lng: mapProfile.lng},
-                        icon: {
-                            url: mapProfile.url,
-                            scaledSize: new mapRef.value.api.Size(30, 30),
+                        map: {
+                            position: {lat: mapProfile.lat, lng: mapProfile.lng},
+                            icon: {
+                                url: mapProfile.url,
+                                scaledSize: new mapRef.value.api.Size(30, 30),
+                            },
                         },
+                        card: {
+                            id: mapProfile.id
+                        }
                     }
                 })
 
@@ -117,12 +132,24 @@ export default {
             return initMarkerOptions
         })
 
+        //Google Map プロフィールカード表示
+        const showProfileCard = (id) => {
+            isCardOpen.value = true
+            axios.post(route('resource.card'), id).then(res => {
+                profileCard.value = res.data
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+
         return {
             center,
             GOOGLE_MAP_API_KEY,
             markerOptions,
             mapRef,
-
+            isCardOpen,
+            showProfileCard,
+            profileCard,
         }
     }
 }
