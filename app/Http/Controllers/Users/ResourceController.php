@@ -13,7 +13,11 @@ class ResourceController extends Controller
     public function index() {
 
         $profiles = ExpertProfile::getExpertProfileCardInfo()->addSelect(['longitude', 'latitude'])->get();
-
+        foreach ($profiles as $profile) {
+            $profile->activity_image = explode(',', $profile->activity_image);
+            //カルーセル作成まで暫定的に一番最初の画像だけを設定する
+            $profile->activity_image = $profile->activity_image[0];
+        }
 
        return Inertia::render('Users/Resource/Index', [
            'profiles' => $profiles,
