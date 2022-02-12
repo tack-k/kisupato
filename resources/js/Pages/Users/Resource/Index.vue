@@ -2,14 +2,14 @@
     <full-page-map-layout>
         <template #content>
             <div >
-                <div class="flex">
-                    <div class="p-3 w-1/2 h-screen absolute top-16 z-0">
+                <div class="flex flex-col sm:flex-row">
+                    <div class="p-3 w-full sm:w-1/2 sm:h-screen sm:absolute top-16 z-0">
                         <template v-for="(profile, index) in profiles" :key="index" class="overflow-y-auto">
                             <SideCard :profile="profile" class="mb-2"/>
                         </template>
                     </div>
 
-                    <div class="w-1/2 fixed top-16 right-0 h-screen">
+                    <div class="w-full sm:w-1/2 sm:fixed top-16 sm:right-0 sm:h-screen h-96">
                         <GoogleMap
                             ref="mapRef"
                             :api-key="GOOGLE_MAP_API_KEY"
@@ -135,6 +135,6 @@ export default {
 <style scoped lang="scss">
 .card-wrapper {
     transform: translate(-50%, -50%);
-    @apply absolute right-1/2 top-1/2 z-50
+    @apply fixed left-1/2 top-1/2 z-50
 }
 </style>
