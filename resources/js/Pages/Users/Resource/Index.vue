@@ -56,9 +56,11 @@
                             <Marker :options="markerOption.map" v-for="(markerOption, index) in markerOptions" :key="index" @click="showProfileCard(markerOption.card)"/>
                         </GoogleMap>
                         <div v-show="isCardOpen">
-                            <VerticalCard :profile="profileCard"/>
-                            <!--                            <VerticalCard />-->
+                            <div class="card-wrapper">
+                                <VerticalCard :profile="profileCard"/>
+                            </div>
                         </div>
+                        <div v-if="isCardOpen" @click="onClickCardOutside" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </div>
                 </div>
             </div>
@@ -142,6 +144,9 @@ export default {
             })
         }
 
+        const onClickCardOutside = () => isCardOpen.value = false
+
+
         return {
             center,
             GOOGLE_MAP_API_KEY,
@@ -150,11 +155,15 @@ export default {
             isCardOpen,
             showProfileCard,
             profileCard,
+            onClickCardOutside,
         }
     }
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.card-wrapper {
+    transform: translateY(-50%);
+    @apply absolute right-1/2 top-1/2 z-50
+}
 </style>
