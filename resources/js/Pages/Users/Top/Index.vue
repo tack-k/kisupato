@@ -62,10 +62,9 @@
                         </h2>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
-                        <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto"
-                             v-for="(profile, key) in profiles" :key="key">
-                            <VerticalCard :profile="profile" :tags="tags" />
-                        </div>
+                        <template v-for="(profile, key) in profiles" :key="key">
+                            <VerticalCard :profile="profile" />
+                        </template>
                     </div>
                     <div class="mt-16 text-center">
                         <Link href="/" v-if="profiles.length >= MAX_PROFILE_COUNT"

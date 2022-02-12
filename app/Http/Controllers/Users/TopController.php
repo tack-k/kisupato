@@ -35,6 +35,8 @@ class TopController extends Controller
 
         foreach ($profiles as $profile) {
             $profile->activity_image = explode(',', $profile->activity_image);
+            //カルーセル作成まで暫定的に一番最初の画像だけを設定する
+            $profile->activity_image = $profile->activity_image[0];
         }
 
         return Inertia::render('Users/Top/Index', [
