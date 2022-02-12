@@ -1,7 +1,7 @@
 <template>
     <full-page-map-layout>
         <template #content>
-            <div class="h-screen" >
+            <div >
                 <div class="flex">
                     <div class="p-3 w-1/2 h-screen absolute top-16 z-0">
                         <template v-for="(profile, index) in profiles" :key="index" class="overflow-y-auto">
@@ -134,7 +134,7 @@ export default {
 
 <style scoped lang="scss">
 .card-wrapper {
-    transform: translateY(-50%);
+    transform: translate(-50%, -50%);
     @apply absolute right-1/2 top-1/2 z-50
 }
 </style>
