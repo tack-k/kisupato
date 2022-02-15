@@ -1,8 +1,8 @@
 <template>
     <full-page-layout>
         <template #content>
-            <div class="container">
-                <div class="max-w-screen-lg sm:px-8">
+            <div class="container my-0 mx-auto">
+                <div class="max-w-screen-lg sm:px-8 my-0 mx-auto">
                     <section class="section-common">
                         <div class="mt-10">
                             <SearchInput/>
