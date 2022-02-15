@@ -59,6 +59,7 @@ Route::group(['middleware' => 'guest'], function() {
     Route::group(['prefix' => 'resource', 'as' => 'resource.'], function() {
          Route::get('/', [ResourceController::class, 'index'])->name('index');
          Route::post('/card', [ResourceController::class, 'card'])->name('card');
+         Route::get('/show/{id}', [ResourceController::class, 'show'])->name('show');
     });
 });
 

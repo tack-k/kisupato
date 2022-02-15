@@ -37,4 +37,10 @@ class ResourceController extends Controller
         return $profile;
 
     }
+
+    public function show(Request $request, $id) {
+
+        return Inertia::render('Users/Resource/Show');
+    }
+
 }
