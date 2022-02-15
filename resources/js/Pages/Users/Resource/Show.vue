@@ -7,7 +7,7 @@
                         <div class="mt-10">
                             <SearchInput/>
                         </div>
-                        <h1 class="base-font-l base-font-bold my-20 text-center">活動タイトル 活動タイトル 活動タイトル 活動タイトル 活動タイトル</h1>
+                        <h1 class="base-font-l base-font-bold my-20 text-center">{{ profile.activity_title }}</h1>
                         <ImageGrid/>
                         <div class="flex max-w-screen-lg flex-col sm:flex-row my-0 mx-auto items-center :items-start mt-8">
                             <div class="flex w-full sm:w-3/5 flex-col sm:flex-row">
@@ -15,11 +15,11 @@
                                     <div class="mb-5">
                                         <img :src="'/images/users/profile.png'" alt="" class="w-40 sm:w-24 h-40 sm:h-24 rounded-full">
                                     </div>
-                                    <p>山田　太郎</p>
+                                    <p>{{ profile.nickname }}</p>
                                 </div>
                                 <div class="p-3 w-full sm:w-3/4">
                                     <span class="base-font-bold mb-5 user-text-white user-bg-active py-0.5 px-1 text-xs rounded">スーパー人材</span>
-                                    <p class="pt-2">自己紹介　テキスト　テキスト　テキスト　テキスト　テキスト　テキスト　テキスト</p>
+                                    <p class="pt-2">{{ profile.self_introduction }}</p>
                                 </div>
                             </div>
                             <div class="flex justify-center items-center w-full sm:w-2/5">
@@ -29,17 +29,13 @@
                     </section>
                     <section class="section-common px-4 sm:px-0">
                         <h2 class="section-title">活動内容</h2>
-                        <p>活動内容 テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト 活動内容 テキスト テキスト テキスト テキスト テキスト テキスト テキスト
-                            テキスト テキスト 活動内容 テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト 活動内容 テキスト テキスト テキスト テキスト テキスト
-                            テキスト テキスト テキスト テキスト 活動内容 テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト </p>
+                        <p>{{ profile.activity_content }}</p>
                     </section>
                     <section class="section-common px-4 sm:px-0">
                         <h2 class="section-title">提供技術</h2>
-                        <div v-for="(value, index) in 3" :key="index" class="mb-5">
-                            <h3 class="base-font-s base-font-bold mb-2">スキルタイトル</h3>
-                            <p>スキル内容 テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト 活動内容 テキスト テキスト テキスト テキスト テキスト テキスト
-                                テキスト テキスト テキスト 活動内容 テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト 活動内容 テキスト テキスト テキスト
-                                テキスト テキスト テキスト テキスト テキスト テキスト 活動内容 テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト テキスト </p>
+                        <div v-for="(skill, index) in profile.skills" :key="index" class="mb-5">
+                            <h3 class="base-font-s base-font-bold mb-2">{{ skill.skill_title }}</h3>
+                            <p>{{ skill.skill_content }}</p>
                         </div>
                         <div class="flex justify-center items-center w-full">
                             <regular-button class="px-16 py-4 font-medium">相談する</regular-button>
@@ -81,10 +77,21 @@ import SearchInput from "@/Components/Forms/RoundSearch";
 import ImageGrid from "@/Components/Cards/ImageGrid";
 import RegularButton from "@/Components/Buttons/RegularButton";
 import ReviewCard from "@/Components/Cards/ReviewCard";
+import {toRefs} from "vue";
 
 export default {
     name: "Show",
-    components: {ReviewCard, RegularButton, ImageGrid, SearchInput, FullPageLayout}
+    components: {ReviewCard, RegularButton, ImageGrid, SearchInput, FullPageLayout},
+    props: {
+        profile: Object,
+    },
+    setup(props) {
+        const {profile} = toRefs(props)
+
+        return {
+            profile,
+        }
+    }
 }
 </script>
 

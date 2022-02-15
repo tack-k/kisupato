@@ -38,9 +38,13 @@ class ResourceController extends Controller
 
     }
 
-    public function show(Request $request, $id) {
+    public function show(Request $request, $expert_id) {
 
-        return Inertia::render('Users/Resource/Show');
+        $expertProfile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
+
+        return Inertia::render('Users/Resource/Show', [
+            'profile' => $expertProfile,
+        ]);
     }
 
 }
