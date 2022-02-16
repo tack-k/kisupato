@@ -40,7 +40,11 @@ class ResourceController extends Controller
 
     public function show(Request $request, $expert_id) {
 
-        $expertProfile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
+        $expertProfile = ExpertProfile::getExpertProfileInfo($expert_id)->where('expert_profiles.status', '0')->first();
+
+        if(is_null($expertProfile)) {
+            return redirect(route('home'));
+        }
 
         return Inertia::render('Users/Resource/Show', [
             'profile' => $expertProfile,
