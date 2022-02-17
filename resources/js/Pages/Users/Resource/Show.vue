@@ -8,7 +8,7 @@
                             <SearchInput/>
                         </div>
                         <h1 class="base-font-l base-font-bold my-20 text-center">{{ profile.activity_title }}</h1>
-                        <ImageGrid :activityImages="profile.activity_images"/>
+                        <ImageCarousel :activityImages="profile.activity_images"/>
                         <div class="flex max-w-screen-lg flex-col sm:flex-row my-0 mx-auto items-center :items-start mt-8">
                             <div class="flex w-full sm:w-3/5 flex-col sm:flex-row">
                                 <div class="w-full sm:w-1/4 flex flex-col items-center">
@@ -74,7 +74,7 @@
 <script>
 import FullPageLayout from "@/Layouts/Users/FullPageLayout";
 import SearchInput from "@/Components/Forms/RoundSearch";
-import ImageGrid from "@/Components/Cards/ImageGrid";
+import ImageCarousel from "@/Components/Cards/ImageCarousel";
 import RegularButton from "@/Components/Buttons/RegularButton";
 import ReviewCard from "@/Components/Cards/ReviewCard";
 import {toRefs} from "vue";
@@ -82,7 +82,7 @@ import {commonConst} from "@/Consts/commonConst";
 
 export default {
     name: "Show",
-    components: {ReviewCard, RegularButton, ImageGrid, SearchInput, FullPageLayout},
+    components: {ReviewCard, RegularButton, ImageCarousel, SearchInput, FullPageLayout},
     props: {
         profile: Object,
     },

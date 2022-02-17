@@ -21,7 +21,7 @@ import {commonConst} from "@/Consts/commonConst";
 
 
 export default {
-    name: "ImageGrid",
+    name: "ImageCarousel",
     components: {
         Carousel,
         Slide,
