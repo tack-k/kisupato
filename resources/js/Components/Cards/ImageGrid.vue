@@ -1,47 +1,48 @@
 <template>
-    <div class="container mx-auto">
-        <div class="flex flex-row flex-wrap -mx-2">
-            <div class="w-full md:w-1/2 h-64 md:h-auto mb-4 px-2">
-                <a class="block w-full h-full bg-grey-dark bg-no-repeat bg-center bg-cover" href="#" title="Link" style="background-image: url(https://via.placeholder.com/800x600/EDF2F7/E2E8F0/&amp;text=Image);">
-                    Link
-                </a>
-            </div>
-            <div class="w-full md:w-1/2 mb-4 px-2">
-                <div class="flex flex-col sm:flex-row md:flex-col -mx-2">
-                    <div class="w-full sm:w-1/2 md:w-full h-48 xl:h-64 mb-4 sm:mb-0 md:mb-4 px-2">
-                        <a class="block w-full h-full bg-grey-dark bg-no-repeat bg-center bg-cover" href="#" title="Link" style="background-image: url(https://via.placeholder.com/800x600/EDF2F7/E2E8F0/&amp;text=Image);">
-                            Link
-                        </a>
-                    </div>
-                    <div class="w-full sm:w-1/2 md:w-full h-48 xl:h-64 px-2">
-                        <a class="block w-full h-full bg-grey-dark bg-no-repeat bg-center bg-cover" href="#" title="Link" style="background-image: url(https://via.placeholder.com/800x600/EDF2F7/E2E8F0/&amp;text=Image);">
-                            Link
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="w-full sm:w-1/3 h-32 md:h-48 mb-4 sm:mb-0 px-2">
-                <a class="block w-full h-full bg-grey-dark bg-no-repeat bg-center bg-cover" href="#" title="Link" style="background-image: url(https://via.placeholder.com/800x600/EDF2F7/E2E8F0/&amp;text=Image);">
-                    Link
-                </a>
-            </div>
-            <div class="w-full sm:w-1/3 h-32 md:h-48 mb-4 sm:mb-0 px-2">
-                <a class="block w-full h-full bg-grey-dark bg-no-repeat bg-center bg-cover" href="#" title="Link" style="background-image: url(https://via.placeholder.com/800x600/EDF2F7/E2E8F0/&amp;text=Image);">
-                    Link
-                </a>
-            </div>
-            <div class="w-full sm:w-1/3 h-32 md:h-48 px-2">
-                <a class="block w-full h-full bg-grey-dark bg-no-repeat bg-center bg-cover" href="#" title="Link" style="background-image: url(https://via.placeholder.com/800x600/EDF2F7/E2E8F0/&amp;text=Image);">
-                    Link
-                </a>
-            </div>
-        </div>
-    </div>
+    <carousel :items-to-show="1" :wrap-around="true">
+        <template #slides>
+            <slide v-for="(activityImage, index) in activityImages" :key="index">
+                <img :src="ACTIVITY_PATH + activityImage.activity_image" alt="">
+            </slide>
+        </template>
+
+        <template #addons>
+            <navigation/>
+            <pagination/>
+        </template>
+    </carousel>
 </template>
 
 <script>
+import 'vue3-carousel/dist/carousel.css';
+import {Carousel, Slide, Pagination, Navigation} from 'vue3-carousel';
+import {toRefs} from "vue";
+import {commonConst} from "@/Consts/commonConst";
+
+
 export default {
-    name: "ImageGrid"
+    name: "ImageGrid",
+    components: {
+        Carousel,
+        Slide,
+        Pagination,
+        Navigation,
+    },
+    props: {
+        activityImages: Array,
+    },
+    setup(props) {
+        const {activityImages} = toRefs(props);
+        const {ACTIVITY_PATH} = commonConst;
+        const slideWidth = 100;
+
+
+        return {
+            activityImages,
+            ACTIVITY_PATH,
+            slideWidth
+        }
+    }
 }
 </script>
 

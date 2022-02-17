@@ -8,12 +8,12 @@
                             <SearchInput/>
                         </div>
                         <h1 class="base-font-l base-font-bold my-20 text-center">{{ profile.activity_title }}</h1>
-                        <ImageGrid/>
+                        <ImageGrid :activityImages="profile.activity_images"/>
                         <div class="flex max-w-screen-lg flex-col sm:flex-row my-0 mx-auto items-center :items-start mt-8">
                             <div class="flex w-full sm:w-3/5 flex-col sm:flex-row">
                                 <div class="w-full sm:w-1/4 flex flex-col items-center">
                                     <div class="mb-5">
-                                        <img :src="'/images/users/profile.png'" alt="" class="w-40 sm:w-24 h-40 sm:h-24 rounded-full">
+                                        <img :src="PROFILE_PATH + profile.profile_image" alt="" class="w-40 sm:w-24 h-40 sm:h-24 rounded-full">
                                     </div>
                                     <p>{{ profile.nickname }}</p>
                                 </div>
@@ -78,6 +78,7 @@ import ImageGrid from "@/Components/Cards/ImageGrid";
 import RegularButton from "@/Components/Buttons/RegularButton";
 import ReviewCard from "@/Components/Cards/ReviewCard";
 import {toRefs} from "vue";
+import {commonConst} from "@/Consts/commonConst";
 
 export default {
     name: "Show",
@@ -87,9 +88,12 @@ export default {
     },
     setup(props) {
         const {profile} = toRefs(props)
+        const {PROFILE_PATH, ACTIVITY_PATH} = commonConst;
 
         return {
             profile,
+            PROFILE_PATH,
+            ACTIVITY_PATH,
         }
     }
 }
