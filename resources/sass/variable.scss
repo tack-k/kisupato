@@ -49,6 +49,30 @@
     @apply table-cell px-3 py-4
 }
 
+//カルーセルの左右アイコン
+.carousel__prev, .carousel__next {
+    background-color: #d5d5d5 !important;
+}
+
+//カルーセルのページネーション
+.carousel__pagination-button {
+    background-color: #d5d5d5 !important;
+}
+
+//カルーセルのページネーション（選択中）
+.carousel__pagination-button--active {
+    background-color: #fdbaab !important;
+}
+
+//カルーセルアイコンの位置
+.carousel__next {
+    right: 1% !important;
+}
+
+.carousel__prev {
+    left: 1% !important;
+}
+
 
 /**** 管理者 ****/
 /** color **/
