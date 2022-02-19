@@ -1,5 +1,5 @@
 <template>
-    <div class="flex bg-white shadow-lg rounded-lg overflow-hidden">
+    <Link :href="route('resource.show', [profile.expert_id])" class="flex bg-white shadow-lg rounded-lg overflow-hidden" >
         <div class="w-1/2 bg-cover bg-center" :style="{backgroundImage: 'url(' + ACTIVITY_PATH + profile.activity_image + ')'}">
         </div>
         <div class="w-1/2 p-4">
@@ -43,15 +43,20 @@
             </div>
 
         </div>
-    </div>
+    </Link>
 </template>
 
 <script>
 import {toRefs} from "vue";
 import {commonConst} from "@/Consts/commonConst";
+import { Link } from "@inertiajs/inertia-vue3"
+
 
 export default {
     name: "SideCard",
+    components: {
+      Link,
+    },
     props: {
         profile: Object,
     },
