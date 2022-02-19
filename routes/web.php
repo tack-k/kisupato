@@ -7,6 +7,7 @@ use App\Consts;
 use \App\Http\Controllers\Users\UserController;
 use \App\Http\Controllers\Users\ResourceController;
 use \App\Http\Controllers\Users\TopController;
+use \App\Http\Controllers\Users\ChatroomController;
 use \App\Http\Controllers\Admins\AdminController;
 use \App\Http\Controllers\Admins\DepartmentController;
 use \App\Http\Controllers\Admins\PositionController;
@@ -67,6 +68,9 @@ Route::group(['middleware' => 'guest'], function() {
 
 //ユーザー:認証あり
 Route::group(['middleware' => 'auth:user'], function() {
+    Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function() {
+       Route::get('/show/{id}', [ChatroomController::class, 'show'])->name('show');
+    });
 
 });
 
