@@ -7,6 +7,7 @@ use App\Consts;
 use \App\Http\Controllers\Users\UserController;
 use \App\Http\Controllers\Users\ResourceController;
 use \App\Http\Controllers\Users\TopController;
+use \App\Http\Controllers\Users\UserContactController;
 use \App\Http\Controllers\Admins\AdminController;
 use \App\Http\Controllers\Admins\DepartmentController;
 use \App\Http\Controllers\Admins\PositionController;
@@ -48,6 +49,12 @@ Route::get('/dashboard', function () {
 //        'phpVersion' => PHP_VERSION,
 //    ]);
 //})->name('home');
+
+Route::group(['prefix' => 'contact', 'as' => 'contact.'], function() {
+    Route::get('/create', [UserContactController::class, 'create'])->name('create');
+});
+
+
 
 
 //ユーザー:認証なし
