@@ -1,5 +1,5 @@
 <template>
-    <textarea @input="emitInputValue" class="base-form rounded-sm"></textarea>
+    <textarea @input="emitInputValue" class="base-form rounded-sm" :value="modelValue"></textarea>
 </template>
 
 <script>
