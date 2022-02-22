@@ -52,8 +52,11 @@ Route::get('/dashboard', function () {
 
 Route::group(['prefix' => 'contact', 'as' => 'contact.'], function() {
     Route::get('/create', [UserContactController::class, 'create'])->name('create');
+    Route::post('/confirm', [UserContactController::class, 'confirm'])->name('confirm');
+    Route::post('/finish', [UserContactController::class, 'finish'])->name('finish');
 });
 
+    Route::get('/', [TopController::class, 'index'])->name('home');
 
 
 
@@ -61,7 +64,6 @@ Route::group(['prefix' => 'contact', 'as' => 'contact.'], function() {
 Route::group(['middleware' => 'guest'], function() {
     Route::get('/register', [UserController::class, 'create'])->name('create');
     Route::post('/register', [UserController::class, 'store'])->name('store');
-    Route::get('/', [TopController::class, 'index'])->name('home');
 
     Route::group(['prefix' => 'resource', 'as' => 'resource.'], function() {
          Route::get('/', [ResourceController::class, 'index'])->name('index');

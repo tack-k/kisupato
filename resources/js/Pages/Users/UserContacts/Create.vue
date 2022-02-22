@@ -26,7 +26,7 @@
 
                     <div class="mt-4">
                         <label-required for="title" value="項目"/>
-                        <Select name="title" id="title" class="mt-1 w-full" :options="options" v-model="form.titleId"/>
+                        <Select name="title" id="title" class="mt-1 w-full" :options="options" v-model="form.user_contact_title_id"/>
                     </div>
 
                     <div class="mt-4">
@@ -37,7 +37,9 @@
                     <div class="flex items-center justify-center mt-4">
                         <OutlineButton>戻る</OutlineButton>
 
-                        <RegularButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">内容を確認</RegularButton>
+                        <RegularButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                            内容を確認
+                        </RegularButton>
                     </div>
                 </form>
             </div>
@@ -56,10 +58,15 @@ import Select from "@/Components/Forms/Select";
 import TextArea from "@/Components/Forms/TextArea";
 import { Link } from "@inertiajs/inertia-vue3"
 import OutlineButton from "@/Components/Buttons/OutlineButton";
+import { toRefs } from "vue";
 
 
 export default {
     name: "Create",
+    props: {
+        params: Object,
+        userContactTitle: Object,
+    },
     components: {
         OutlineButton,
         FullPageLayout,
@@ -71,21 +78,27 @@ export default {
         TextArea,
         Link,
     },
-    setup() {
-
-        const options = [{ 'id': 1, 'name': 'aaa' }, { 'id': 2, 'name': 'iii' }];
+    setup(props) {
+        const { params, userContactTitle } = toRefs(props);
+        const options = userContactTitle.value;
 
         const form = useForm({
-            name: '',
-            email: '',
-            tel: '',
-            titleId: '',
-            content: '',
+            name: params.value.name ?? '',
+            email: params.value.email ?? '',
+            tel: params.value.tel ?? '',
+            user_contact_title_id: params.value.user_contact_title_id ?? '',
+            content: params.value.content ?? '',
         })
+
+
+        const submit = () => {
+            form.post(route('contact.confirm'))
+        }
 
         return {
             form,
             options,
+            submit,
         }
     }
 }
