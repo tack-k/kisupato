@@ -11,8 +11,6 @@ import { useFavoriteAction } from "@/Composables/useFavoriteAction";
 import { toRefs, computed } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 
-
-
 export default {
     name: "FavoriteButton",
     props: {
@@ -23,7 +21,7 @@ export default {
         Fa,
     },
     setup(props) {
-        const {expertId, favoriteId} = toRefs(props);
+        const { expertId, favoriteId } = toRefs(props);
         const user = computed(() => usePage().props.value.auth.user)
 
         //お気に入り登録・解除
