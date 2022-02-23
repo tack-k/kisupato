@@ -49,7 +49,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import { commonConst } from "@/Consts/commonConst"
 import { toRefs } from "vue";
-import {useFavoriteAction} from "@/Composables/useFavoriteAction"
+import { useFavoriteAction } from "@/Composables/useFavoriteAction"
 
 
 export default {
@@ -66,7 +66,7 @@ export default {
         const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
 
         //お気に入り登録・解除
-        const {isFavorite, isDisabled, switchFavorite} = useFavoriteAction(profile);
+        const { isFavorite, isDisabled, switchFavorite } = useFavoriteAction(profile);
 
         return {
             profile,
