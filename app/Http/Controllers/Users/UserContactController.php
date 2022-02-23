@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserContactRequest;
+use App\Mail\UserContactToAdminMail;
 use App\Models\Admins\UserContactTitle;
 use App\Models\Users\UserContact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -62,7 +64,16 @@ class UserContactController extends Controller {
             $params['user_id'] = $userId;
         }
 
-        UserContact::create($params);
+        try {
+            $userContact = UserContact::create($params);
+            Mail::to(env('MAIL_TO_ADDRESS', 'test-company@test.com'))->send(new UserContactToAdminMail($userContact));
+        }catch (\Exception $e) {
+            report($e);
+            session()->forget('contactInput');
+            session()->flash('message', 'お問い合わせができませんでした。しばらくしてから再度お試しください。');
+            return redirect()->route('contact.create');
+        }
+
         session()->forget('contactInput');
 
         return Inertia::render('Users/UserContacts/Finish');
