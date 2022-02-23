@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserContactRequest;
 use App\Mail\UserContactToAdminMail;
+use App\Mail\UserContactToUserMail;
 use App\Models\Admins\UserContactTitle;
 use App\Models\Users\UserContact;
 use Illuminate\Http\Request;
@@ -69,6 +70,7 @@ class UserContactController extends Controller {
             $title = UserContactTitle::find($userContact['user_contact_title_id']);
             $userContact['title'] = $title['name'];
             Mail::to(env('MAIL_TO_ADDRESS', 'test-company@test.com'))->send(new UserContactToAdminMail($userContact));
+            Mail::to($params['email'])->send(new UserContactToUserMail($userContact));
         }catch (\Exception $e) {
             report($e);
             session()->forget('contactInput');
