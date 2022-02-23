@@ -48,7 +48,8 @@
 import { faHeart } from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import { commonConst } from "@/Consts/commonConst"
-import { reactive, ref, toRefs } from "vue";
+import { toRefs } from "vue";
+import {useFavoriteAction} from "@/Composables/useFavoriteAction"
 
 
 export default {
@@ -63,25 +64,9 @@ export default {
     setup(props) {
         let { profile } = toRefs(props);
         const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
-        let isFavorite = ref(profile.value.favorite_id !== null);
-        let isDisabled = ref(false);
 
-        const switchFavorite = (expertId) => {
-            isDisabled.value = true;
-            const params = reactive({
-                expert_id: expertId,
-            })
-
-            axios.post(
-                route('favorite.switch'),
-                params
-            ).then((res) => {
-                isFavorite.value = !isFavorite.value
-            }).catch((res) => {
-                alert('エラーが発生しました。時間をおいてから再度お試しください')
-            })
-            isDisabled.value = false;
-        }
+        //お気に入り登録・解除
+        const {isFavorite, isDisabled, switchFavorite} = useFavoriteAction(profile);
 
         return {
             profile,
