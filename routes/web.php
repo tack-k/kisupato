@@ -51,26 +51,27 @@ Route::get('/dashboard', function () {
 //    ]);
 //})->name('home');
 
+//ユーザー認証なし
 Route::group(['prefix' => 'contact', 'as' => 'contact.'], function() {
     Route::get('/create', [UserContactController::class, 'create'])->name('create');
     Route::post('/confirm', [UserContactController::class, 'confirm'])->name('confirm');
     Route::post('/finish', [UserContactController::class, 'finish'])->name('finish');
 });
 
+Route::group(['prefix' => 'resource', 'as' => 'resource.'], function() {
+    Route::get('/', [ResourceController::class, 'index'])->name('index');
+    Route::post('/card', [ResourceController::class, 'card'])->name('card');
+    Route::get('/show/{id}', [ResourceController::class, 'show'])->name('show');
+});
+
     Route::get('/', [TopController::class, 'index'])->name('home');
 
 
 
-//ユーザー:認証なし
+//ユーザー:認証なし（認証時リダイレクト）
 Route::group(['middleware' => 'guest'], function() {
     Route::get('/register', [UserController::class, 'create'])->name('create');
     Route::post('/register', [UserController::class, 'store'])->name('store');
-
-    Route::group(['prefix' => 'resource', 'as' => 'resource.'], function() {
-         Route::get('/', [ResourceController::class, 'index'])->name('index');
-         Route::post('/card', [ResourceController::class, 'card'])->name('card');
-         Route::get('/show/{id}', [ResourceController::class, 'show'])->name('show');
-    });
 });
 
 
