@@ -10,12 +10,15 @@ class CreateUserContactsTable extends Migration {
             $table->id();
             $table->foreignId('user_contact_title_id')->constrained();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('name', 20);
+            $table->string('email', 255);
+            $table->string('tel', 11);
             $table->text('content');
             $table->string('status', 5)->default('0');
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by', 20)->nullable();
             $table->dateTimeTz('updated_at')->nullable();
-            $table->string('updated_by', user_contacts20)->nullable();
+            $table->string('updated_by', 20)->nullable();
             $table->dateTimeTz('deleted_at')->nullable();
             $table->string('deleted_by', 20)->nullable();
         });
