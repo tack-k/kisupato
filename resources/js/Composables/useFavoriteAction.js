@@ -1,8 +1,8 @@
 import { reactive, ref } from "vue";
 
-export const useFavoriteAction = (profile) => {
+export const useFavoriteAction = (favoriteId) => {
 
-    let isFavorite = ref(profile.value.favorite_id !== null);
+    let isFavorite = ref(favoriteId != null);
     let isDisabled = ref(false);
 
     const switchFavorite = (expertId) => {

@@ -2,9 +2,7 @@
     <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto">
         <a href="#" class="w-full block h-full">
             <div class="relative">
-                <button v-if="user" class="block" :disabled="isDisabled" @click="switchFavorite(profile.expert_id)">
-                    <Fa :icon="faHeart" class="text-lg absolute right-2 top-2" :class="{'text-red-400': isFavorite}"/>
-                </button>
+                <FavoriteButton :expertId="profile.expert_id" :favoriteId="profile.favorite_id"/>
                 <!--                                最終的には活動画像の配列をカルーセルで表示させる-->
                 <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image"
                      class="max-h-40 w-full object-cover"/>
@@ -45,40 +43,24 @@
 </template>
 
 <script>
-import { faHeart } from "@fortawesome/free-solid-svg-icons"
-import Fa from 'vue-fa';
 import { commonConst } from "@/Consts/commonConst"
-import { computed, toRefs } from "vue";
-import { useFavoriteAction } from "@/Composables/useFavoriteAction"
-import { usePage } from "@inertiajs/inertia-vue3";
-
+import { toRefs } from "vue";
+import FavoriteButton from "@/Components/Buttons/FavoriteButton";
 
 export default {
     name: "VerticalCard",
-    components: {
-        Fa,
-
-    },
+    components: { FavoriteButton },
     props: {
         profile: Object,
     },
     setup(props) {
         let { profile } = toRefs(props);
         const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
-        const user = computed(() => usePage().props.value.auth.user)
-
-        //お気に入り登録・解除
-        const { isFavorite, isDisabled, switchFavorite } = useFavoriteAction(profile);
 
         return {
             profile,
             PROFILE_PATH,
             ACTIVITY_PATH,
-            faHeart,
-            switchFavorite,
-            isFavorite,
-            isDisabled,
-            user,
         }
     }
 }
