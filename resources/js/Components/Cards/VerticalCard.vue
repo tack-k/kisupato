@@ -2,10 +2,12 @@
     <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto">
         <a href="#" class="w-full block h-full">
             <div class="relative">
-                <Fa :icon="faHeart" class="text-lg absolute right-2 top-2 text-red-400"/>
+                <button class="block" :disabled="isDisabled" @click="switchFavorite(profile.expert_id)">
+                    <Fa :icon="faHeart" class="text-lg absolute right-2 top-2" :class="{'text-red-400': isFavorite}"/>
+                </button>
                 <!--                                最終的には活動画像の配列をカルーセルで表示させる-->
-                            <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image"
-                                 class="max-h-40 w-full object-cover"/>
+                <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image"
+                     class="max-h-40 w-full object-cover"/>
             </div>
             <div class="bg-white dark:bg-gray-800 w-full p-4">
                 <ul>
@@ -43,10 +45,10 @@
 </template>
 
 <script>
-import {faHeart} from "@fortawesome/free-solid-svg-icons"
+import { faHeart } from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
-import {commonConst} from "@/Consts/commonConst"
-import {toRefs} from "vue";
+import { commonConst } from "@/Consts/commonConst"
+import { reactive, ref, toRefs } from "vue";
 
 
 export default {
@@ -59,14 +61,36 @@ export default {
         profile: Object,
     },
     setup(props) {
-        let {profile} = toRefs(props);
-        const {PROFILE_PATH, ACTIVITY_PATH} = commonConst;
+        let { profile } = toRefs(props);
+        const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
+        let isFavorite = ref(profile.value.favorite_id !== null);
+        let isDisabled = ref(false);
+
+        const switchFavorite = (expertId) => {
+            isDisabled.value = true;
+            const params = reactive({
+                expert_id: expertId,
+            })
+
+            axios.post(
+                route('favorite.switch'),
+                params
+            ).then((res) => {
+                isFavorite.value = !isFavorite.value
+            }).catch((res) => {
+                alert('エラーが発生しました。時間をおいてから再度お試しください')
+            })
+            isDisabled.value = false;
+        }
 
         return {
             profile,
             PROFILE_PATH,
             ACTIVITY_PATH,
             faHeart,
+            switchFavorite,
+            isFavorite,
+            isDisabled,
         }
     }
 }

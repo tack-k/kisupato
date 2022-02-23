@@ -82,13 +82,15 @@ class ExpertProfile extends Model
      * @return mixed
      */
     public function scopeGetExpertProfileCardInfo($query) {
-        return $query->selectRaw('GROUP_CONCAT(ai.activity_image) as activity_image, expert_profiles.id, nickname, profile_image, activity_title, activity_content')
+        return $query->selectRaw('GROUP_CONCAT(ai.activity_image) as activity_image, expert_profiles.expert_id, expert_profiles.id as expert_profile_id, nickname, profile_image, activity_title, activity_content, f.id as favorite_id')
             ->join('activity_images as ai', 'expert_profiles.id', '=', 'ai.expert_profile_id')
+            ->leftjoin('favorites as f', 'expert_profiles.expert_id', '=', 'f.expert_id')
             ->with(['tags:name as tag', 'positions:name as position'])
             ->where('status', '0')
             ->take(6)
             ->groupBy('ai.expert_profile_id')
             ->groupBy('expert_profiles.id')
+            ->groupBy('f.id')
             ->orderBy('expert_profiles.created_at', 'desc');
     }
 

@@ -8,6 +8,7 @@ use \App\Http\Controllers\Users\UserController;
 use \App\Http\Controllers\Users\ResourceController;
 use \App\Http\Controllers\Users\TopController;
 use \App\Http\Controllers\Users\UserContactController;
+use \App\Http\Controllers\Users\FavoritesController;
 use \App\Http\Controllers\Admins\AdminController;
 use \App\Http\Controllers\Admins\DepartmentController;
 use \App\Http\Controllers\Admins\PositionController;
@@ -76,7 +77,9 @@ Route::group(['middleware' => 'guest'], function() {
 
 //ユーザー:認証あり
 Route::group(['middleware' => 'auth:user'], function() {
-
+    Route::group(['prefix' => 'favorite', 'as' => 'favorite.'], function() {
+       Route::post('switch', [FavoritesController::class, 'switch'])->name('switch');
+    });
 });
 
 
