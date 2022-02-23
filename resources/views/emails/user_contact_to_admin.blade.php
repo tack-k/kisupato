@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <body>
-<h1 class="base-font-bold base-font-m">【ユーザー】お問い合わせのお知らせ</h1>
+<h3 class="base-font-bold base-font-m">【ユーザー】お問い合わせのお知らせ</h3>
 <p class="mb-8">以下内容で、お問い合わせがありました。</p>
 <p>氏名:{{ $userContact->name }}</p>
 <p>メールアドレス:{{ $userContact->email }}</p>

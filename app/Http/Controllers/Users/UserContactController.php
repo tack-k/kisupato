@@ -66,6 +66,8 @@ class UserContactController extends Controller {
 
         try {
             $userContact = UserContact::create($params);
+            $title = UserContactTitle::find($userContact['user_contact_title_id']);
+            $userContact['title'] = $title['name'];
             Mail::to(env('MAIL_TO_ADDRESS', 'test-company@test.com'))->send(new UserContactToAdminMail($userContact));
         }catch (\Exception $e) {
             report($e);
