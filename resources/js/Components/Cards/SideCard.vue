@@ -1,8 +1,9 @@
 <template>
-    <Link :href="route('resource.show', [profile.expert_id])" class="flex bg-white shadow-lg rounded-lg overflow-hidden" >
+    <Link :href="route('resource.show', [profile.expert_id])" class="flex bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="w-1/2 bg-cover bg-center" :style="{backgroundImage: 'url(' + ACTIVITY_PATH + profile.activity_image + ')'}">
         </div>
-        <div class="w-1/2 p-4">
+        <div class="w-1/2 p-4 relative">
+            <FavoriteButton @emitFavorite="handleFavorite" :expertId="profile.expert_id" :isFavorite="isFavorite"/>
             <h1 class="text-gray-900 font-bold text-2xl">{{ profile.activity_title }}</h1>
             <p class="mt-2 text-gray-600 text-sm">{{ profile.activity_content }}</p>
             <div class="flex item-center mt-2">
@@ -47,27 +48,38 @@
 </template>
 
 <script>
-import {toRefs} from "vue";
-import {commonConst} from "@/Consts/commonConst";
+
+import { toRefs } from "vue";
+import { commonConst } from "@/Consts/commonConst";
+import FavoriteButton from "@/Components/Buttons/FavoriteButton";
 import { Link } from "@inertiajs/inertia-vue3"
 
 
 export default {
     name: "SideCard",
     components: {
-      Link,
+        FavoriteButton,
+        Link,
     },
     props: {
         profile: Object,
+        isFavorite: Boolean,
     },
-    setup(props) {
-        const {profile} = toRefs(props)
-        const {PROFILE_PATH, ACTIVITY_PATH} = commonConst;
+    setup(props, { emit }) {
+        const { profile, isFavorite } = toRefs(props)
+        const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
+
+
+        const handleFavorite = (favorites) => {
+            emit('emitFavorite', favorites);
+        }
 
         return {
             profile,
             ACTIVITY_PATH,
             PROFILE_PATH,
+            handleFavorite,
+            isFavorite,
         }
     }
 }

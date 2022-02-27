@@ -2,10 +2,10 @@
     <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto">
         <a href="#" class="w-full block h-full">
             <div class="relative">
-                <Fa :icon="faHeart" class="text-lg absolute right-2 top-2 text-red-400"/>
+                <FavoriteButton @emitFavorite="handleFavorite" :expertId="profile.expert_id" :isFavorite="isFavorite"/>
                 <!--                                最終的には活動画像の配列をカルーセルで表示させる-->
-                            <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image"
-                                 class="max-h-40 w-full object-cover"/>
+                <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image"
+                     class="max-h-40 w-full object-cover"/>
             </div>
             <div class="bg-white dark:bg-gray-800 w-full p-4">
                 <ul>
@@ -43,30 +43,31 @@
 </template>
 
 <script>
-import {faHeart} from "@fortawesome/free-solid-svg-icons"
-import Fa from 'vue-fa';
-import {commonConst} from "@/Consts/commonConst"
-import {toRefs} from "vue";
-
+import { commonConst } from "@/Consts/commonConst"
+import { ref, toRefs, watch } from "vue";
+import FavoriteButton from "@/Components/Buttons/FavoriteButton";
 
 export default {
     name: "VerticalCard",
-    components: {
-        Fa,
-
-    },
+    components: { FavoriteButton },
     props: {
         profile: Object,
+        isFavorite: Boolean,
     },
-    setup(props) {
-        let {profile} = toRefs(props);
-        const {PROFILE_PATH, ACTIVITY_PATH} = commonConst;
+    setup(props, { emit }) {
+        let { profile, isFavorite } = toRefs(props);
+        const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
+
+        const handleFavorite = (favorites) => {
+            emit('emitFavorite', favorites);
+        }
 
         return {
             profile,
             PROFILE_PATH,
             ACTIVITY_PATH,
-            faHeart,
+            handleFavorite,
+            isFavorite,
         }
     }
 }

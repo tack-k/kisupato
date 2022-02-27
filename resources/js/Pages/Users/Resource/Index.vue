@@ -1,11 +1,11 @@
 <template>
     <full-page-map-layout>
         <template #content>
-            <div >
+            <div>
                 <div class="flex flex-col sm:flex-row">
                     <div class="p-3 w-full sm:w-1/2 sm:h-screen sm:absolute top-16 z-0">
                         <template v-for="(profile, index) in profiles" :key="index" class="overflow-y-auto">
-                            <SideCard :profile="profile" class="mb-2"/>
+                            <SideCard @emitFavorite="handleFavorite" :profile="profile" :isFavorite="isFavorites[profile.expert_id]" class="mb-2"/>
                         </template>
                     </div>
 
@@ -21,7 +21,7 @@
                         </GoogleMap>
                         <div v-show="isCardOpen">
                             <div class="card-wrapper">
-                                <VerticalCard :profile="profileCard"/>
+                                <VerticalCard @emitFavorite="handleFavorite" :profile="profileCard" :isFavorite="isFavorites[profileCard.expert_id]"/>
                             </div>
                         </div>
                         <div v-if="isCardOpen" @click="onClickCardOutside" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
@@ -35,12 +35,13 @@
 <script>
 import Header from "@/Layouts/Users/Header"
 
-import {GoogleMap, Marker, IControlPosition} from 'vue3-google-map'
-import {ref, computed} from "vue";
-import {commonConst} from "@/Consts/commonConst"
+import { GoogleMap, Marker, IControlPosition } from 'vue3-google-map'
+import { ref, computed, toRefs } from "vue";
+import { commonConst } from "@/Consts/commonConst"
 import VerticalCard from "@/Components/Cards/VerticalCard";
 import SideCard from "@/Components/Cards/SideCard";
 import FullPageMapLayout from "@/Layouts/Users/FullPageMapLayout";
+import { useFavoriteAction } from "@/Composables/useFavoriteAction"
 
 
 export default {
@@ -57,26 +58,28 @@ export default {
         profiles: Array,
     },
     setup(props) {
-        const {profiles} = props;
-        const {PROFILE_PATH} = commonConst;
+        const { profiles } = toRefs(props);
+        const { PROFILE_PATH } = commonConst;
         const mapRef = ref(null)
         const GOOGLE_MAP_API_KEY = process.env.MIX_GOOGLE_MAP_API_KEY;
         const DEFAULT_LAT = 36.23908157359135
         const DEFAULT_LNG = 137.97533854505457
         const DEFAULT_ZOOM = 8.5
-        const center = {lat: DEFAULT_LAT, lng: DEFAULT_LNG}
+        const center = { lat: DEFAULT_LAT, lng: DEFAULT_LNG }
         let initMarkerOptions = ref([]);
         let isCardOpen = ref(false);
         let profileCard = ref({});
         //GoogleMap API
-        const mapProfiles = profiles.map(profile => {
+        const mapProfiles = profiles.value.map(profile => {
             return {
                 url: PROFILE_PATH + profile.profile_image,
                 lat: profile.latitude,
                 lng: profile.longitude,
-                id: profile.id
+                id: profile.expert_profile_id,
             }
         })
+
+        let isFavorites = ref([]);
 
         const markerOptions = computed(() => {
             if (mapRef.value?.ready) {
@@ -84,14 +87,14 @@ export default {
                 initMarkerOptions = mapProfiles.map((mapProfile) => {
                     return {
                         map: {
-                            position: {lat: mapProfile.lat, lng: mapProfile.lng},
+                            position: { lat: mapProfile.lat, lng: mapProfile.lng },
                             icon: {
                                 url: mapProfile.url,
                                 scaledSize: new mapRef.value.api.Size(30, 30),
                             },
                         },
                         card: {
-                            id: mapProfile.id
+                            id: mapProfile.id,
                         }
                     }
                 })
@@ -113,6 +116,9 @@ export default {
             })
         }
 
+        //お気に入りの状態を最新に変更
+        const { handleFavorite, setIsFavorites } = useFavoriteAction(profiles, isFavorites)
+        setIsFavorites()
         const onClickCardOutside = () => isCardOpen.value = false
 
 
@@ -127,6 +133,9 @@ export default {
             onClickCardOutside,
             DEFAULT_ZOOM,
             profiles,
+            mapProfiles,
+            isFavorites,
+            handleFavorite,
         }
     }
 }

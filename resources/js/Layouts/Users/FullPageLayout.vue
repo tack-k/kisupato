@@ -1,16 +1,22 @@
 <template>
     <Header/>
-    <div class="overflow-y-scroll h-screen w-full">
+    <div class="w-full">
+        <flash-message/>
         <slot name="content"/>
     </div>
+    <Footer/>
 </template>
 
 <script>
 import Header from '@/Layouts/Users/Header'
+import FlashMessage from "@/Components/Messages/FlashMessage";
+import Footer from "@/Layouts/Users/Footer";
 
 export default {
     name: "FullPageLayout",
     components: {
+        Footer,
+        FlashMessage,
         Header,
     }
 }

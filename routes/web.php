@@ -8,6 +8,8 @@ use \App\Http\Controllers\Users\UserController;
 use \App\Http\Controllers\Users\ResourceController;
 use \App\Http\Controllers\Users\TopController;
 use \App\Http\Controllers\Users\ChatroomController;
+use \App\Http\Controllers\Users\UserContactController;
+use \App\Http\Controllers\Users\FavoritesController;
 use \App\Http\Controllers\Admins\AdminController;
 use \App\Http\Controllers\Admins\DepartmentController;
 use \App\Http\Controllers\Admins\PositionController;
@@ -50,18 +52,27 @@ Route::get('/dashboard', function () {
 //    ]);
 //})->name('home');
 
+//ユーザー認証なし
+Route::group(['prefix' => 'contact', 'as' => 'contact.'], function() {
+    Route::get('/create', [UserContactController::class, 'create'])->name('create');
+    Route::post('/confirm', [UserContactController::class, 'confirm'])->name('confirm');
+    Route::post('/finish', [UserContactController::class, 'finish'])->name('finish');
+});
 
-//ユーザー:認証なし
+Route::group(['prefix' => 'resource', 'as' => 'resource.'], function() {
+    Route::get('/', [ResourceController::class, 'index'])->name('index');
+    Route::post('/card', [ResourceController::class, 'card'])->name('card');
+    Route::get('/show/{id}', [ResourceController::class, 'show'])->name('show');
+});
+
+    Route::get('/', [TopController::class, 'index'])->name('home');
+
+
+
+//ユーザー:認証なし（認証時リダイレクト）
 Route::group(['middleware' => 'guest'], function() {
     Route::get('/register', [UserController::class, 'create'])->name('create');
     Route::post('/register', [UserController::class, 'store'])->name('store');
-    Route::get('/', [TopController::class, 'index'])->name('home');
-
-    Route::group(['prefix' => 'resource', 'as' => 'resource.'], function() {
-         Route::get('/', [ResourceController::class, 'index'])->name('index');
-         Route::post('/card', [ResourceController::class, 'card'])->name('card');
-         Route::get('/show/{id}', [ResourceController::class, 'show'])->name('show');
-    });
 });
 
 
@@ -71,7 +82,9 @@ Route::group(['middleware' => 'auth:user'], function() {
     Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function() {
        Route::get('/show/{id}', [ChatroomController::class, 'show'])->name('show');
     });
-
+    Route::group(['prefix' => 'favorite', 'as' => 'favorite.'], function() {
+       Route::post('switch', [FavoritesController::class, 'switch'])->name('switch');
+    });
 });
 
 
