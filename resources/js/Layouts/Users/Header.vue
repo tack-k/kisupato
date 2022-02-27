@@ -11,14 +11,14 @@
             </div>
             <div v-bind:class="{'hidden': !showMenu, 'flex': showMenu}" class="lg:flex lg:flex-grow items-center">
                 <ul class="flex flex-col lg:flex-row list-none ml-auto">
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="user">
                         <Link :href="route('logout')" method="post" as="button" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
                             ログアウト
                         </Link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="user">
                         <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#pablo">
-                            <Fa :icon="faUser" class="text-lg leading-lg text-white opacity-7"/><span class="ml-2">ユーザー名</span>
+                            <Fa :icon="faUser" class="text-lg leading-lg text-white opacity-7"/><span class="ml-2">{{ user?.last_name }}{{ user?.first_name }}</span>
                         </a>
                     </li>
                 </ul>
@@ -30,9 +30,10 @@
 <script>
 import Fa from "vue-fa";
 import { Link } from "@inertiajs/inertia-vue3";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons"
+import { usePage } from "@inertiajs/inertia-vue3"
 
 export default {
     name: "Header",
@@ -44,6 +45,7 @@ export default {
     setup() {
         let showMenu = ref(false)
         const toggleNavbar = () => showMenu.value = !showMenu.value
+        const user = computed(() => usePage().props?.value.auth.user);
 
 
         return {
@@ -51,6 +53,7 @@ export default {
             toggleNavbar,
             faUser,
             faBars,
+            user,
         }
     },
 }
