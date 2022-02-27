@@ -30,8 +30,10 @@ class FavoritesController extends Controller {
         if (isset($favorite)) {
             $favorite->delete();
         } else {
-            Favorite::create($params);
+           Favorite::create($params);
         }
+
+        return Favorite::getUserFavorite($params['user_id'])->get();
 
     }
 
