@@ -41,6 +41,7 @@ import { commonConst } from "@/Consts/commonConst"
 import VerticalCard from "@/Components/Cards/VerticalCard";
 import SideCard from "@/Components/Cards/SideCard";
 import FullPageMapLayout from "@/Layouts/Users/FullPageMapLayout";
+import { useFavoriteAction } from "@/Composables/useFavoriteAction"
 
 
 export default {
@@ -79,10 +80,7 @@ export default {
         })
 
         let isFavorites = ref([]);
-        profiles.value.map(profile => {
-            isFavorites.value[profile.expert_id] = profile.favorite_id !== null;
-        })
-
+        setIsFavorites()
 
         const markerOptions = computed(() => {
             if (mapRef.value?.ready) {
@@ -120,23 +118,7 @@ export default {
         }
 
         //お気に入りの状態を最新に変更
-        const handleFavorite = (favorites) => {
-
-            const expertIds = profiles.value.map(profile => {
-                return profile.expert_id;
-            })
-
-            const favoriteExpertId = favorites.map(favorite => {
-                return favorite.expert_id;
-            })
-
-            expertIds.map(expertId => {
-                isFavorites.value[expertId] = favoriteExpertId.includes(expertId);
-            })
-
-            return isFavorites;
-
-        }
+        const { handleFavorite, setIsFavorites } = useFavoriteAction(profiles, isFavorites)
 
         const onClickCardOutside = () => isCardOpen.value = false
 
