@@ -80,7 +80,6 @@ export default {
         })
 
         let isFavorites = ref([]);
-        setIsFavorites()
 
         const markerOptions = computed(() => {
             if (mapRef.value?.ready) {
@@ -119,7 +118,7 @@ export default {
 
         //お気に入りの状態を最新に変更
         const { handleFavorite, setIsFavorites } = useFavoriteAction(profiles, isFavorites)
-
+        setIsFavorites()
         const onClickCardOutside = () => isCardOpen.value = false
 
 
