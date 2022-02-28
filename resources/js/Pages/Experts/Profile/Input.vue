@@ -44,7 +44,7 @@
                     <select v-model="form.position"
                             class="flex items-center border-gray-300 focus:ring-1 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm py-2 px-3 border w-full sm:w-1/2">
                         <option value="" disabled>肩書を選択する</option>
-                        <option :value="position.id" v-for="(position, index) in positions" :key="index">
+                        <option :value="position.id" v-for="(position, index) in positions" :key="index" :selected="position.id == form.position">
                             {{ position.name }}
                         </option>
                     </select>
@@ -206,7 +206,7 @@ import MyPageLayout from "@/Layouts/Experts/MyPageLayout";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
 import RegularButton from "@/Components/Buttons/RegularButton";
 import Select from "@/Components/Forms/Select";
-import { ref, reactive, watch, onMounted, computed } from "vue"
+import { ref, reactive, watch, onMounted, computed, toRefs } from "vue"
 import InputForm from "@/Components/Forms/Input";
 import { faTimes, faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
@@ -246,25 +246,32 @@ export default {
             { 'id': 1, 'name': '非公開' },
         ])
 
+        const {profile, tags, cities, positions} = toRefs(props)
+
+        let initPosition = ref('');
+        if(profile.value.positions) {
+            initPosition.value = profile.value.positions[0].id
+        }
+
         const form = useForm({
-            nickname: props.profile.nickname ?? '',
+            nickname: profile.value.nickname ?? '',
             profile_image: [],
-            self_introduction: props.profile.self_introduction ?? '',
-            activity_title: props.profile.activity_title ?? '',
-            activity_content: props.profile.activity_content ?? [],
+            self_introduction: profile.value.self_introduction ?? '',
+            activity_title: profile.value.activity_title ?? '',
+            activity_content: profile.value.activity_content ?? [],
             activity_images: [],
-            skills: props.profile.skills.length === 0 ? [{
+            skills: profile.value.skills ?? [{
                 'skill_title': '',
                 'skill_content': ''
-            }] : props.profile.skills,
-            saved_profile_image: props.profile.profile_image.length === 0 ? [] : [props.profile.profile_image],
-            saved_activity_images: props.profile.activity_images ?? [],
+            }],
+            saved_profile_image: profile.value.profile_image.length === 0 ? [] : [profile.value.profile_image],
+            saved_activity_images: profile.value.activity_images ?? [],
             delete_profile_image: [],
             delete_activity_images: [],
             delete_skills: [],
             tag: [],
-            activity_base: props.profile.activity_base ?? '',
-            position: props.profile.positions[0].id ?? '',
+            activity_base: profile.value.activity_base ?? '',
+            position: initPosition,
         })
 
         const NOT_EXIST = 'undefined'
@@ -276,6 +283,8 @@ export default {
 
         let displayedProfilePath = props.saved === SAVED ? DRAFT_PROFILE_PATH : PROFILE_PATH
         let displayedActivityPath = props.saved === SAVED ? DRAFT_ACTIVITY_PATH : ACTIVITY_PATH
+
+
 
 
         //プロフィール画像ドラッグ&ドロップ
@@ -402,7 +411,7 @@ export default {
             isNoTag,
             displayTags,
             deleteTag,
-        } = useTagAction(props.tags, form, props.profile.tags)
+        } = useTagAction(tags.value, form, profile.value.tags)
 
         const {
             isActivityBasesOpen,
@@ -413,7 +422,7 @@ export default {
             isNoActivityBase,
             onClickOutside,
             displayActivityBase,
-        } = useActivityBaseAction(props.cities, form, props.profile.city_name)
+        } = useActivityBaseAction(cities.value, form, profile.value.city_name)
 
         return {
             form,
@@ -458,6 +467,7 @@ export default {
             isNoActivityBase,
             onClickOutside,
             displayActivityBase,
+            positions,
         }
     }
 }
