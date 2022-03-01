@@ -246,10 +246,10 @@ export default {
             { 'id': 1, 'name': '非公開' },
         ])
 
-        const {profile, tags, cities, positions} = toRefs(props)
+        const { profile, tags, cities, positions } = toRefs(props)
 
         let initPosition = ref('');
-        if(profile.value.positions) {
+        if (profile.value.positions && profile.value.positions.length > 0) {
             initPosition.value = profile.value.positions[0].id
         }
 
