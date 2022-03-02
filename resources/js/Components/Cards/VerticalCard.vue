@@ -1,8 +1,8 @@
 <template>
     <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto">
-        <Link :href="route('resource.show', profile.expert_profile_id)" class="w-full block h-full">
+        <Link @click.prevent :href="route('resource.show', profile.expert_id)" class="w-full block h-full">
             <div class="relative">
-                <FavoriteButton @emitFavorite="handleFavorite" :expertId="profile.expert_id" :isFavorite="isFavorite"/>
+                <FavoriteButton @click.prevent @emitFavorite="handleFavorite" :expertId="profile.expert_id" :isFavorite="isFavorite"/>
                 <!--                                最終的には活動画像の配列をカルーセルで表示させる-->
                 <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image"
                      class="max-h-40 w-full object-cover"/>
