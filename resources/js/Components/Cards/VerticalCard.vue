@@ -1,6 +1,6 @@
 <template>
     <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto">
-        <a href="#" class="w-full block h-full">
+        <Link :href="route('resource.show', profile.expert_profile_id)" class="w-full block h-full">
             <div class="relative">
                 <FavoriteButton @emitFavorite="handleFavorite" :expertId="profile.expert_id" :isFavorite="isFavorite"/>
                 <!--                                最終的には活動画像の配列をカルーセルで表示させる-->
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-        </a>
+        </Link>
     </div>
 </template>
 
@@ -46,10 +46,11 @@
 import { commonConst } from "@/Consts/commonConst"
 import { ref, toRefs, watch } from "vue";
 import FavoriteButton from "@/Components/Buttons/FavoriteButton";
+import {Link} from '@inertiajs/inertia-vue3'
 
 export default {
     name: "VerticalCard",
-    components: { FavoriteButton },
+    components: { FavoriteButton, Link },
     props: {
         profile: Object,
         isFavorite: Boolean,
