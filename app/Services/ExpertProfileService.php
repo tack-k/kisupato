@@ -61,7 +61,7 @@ class ExpertProfileService
 
 
         $sameActivityBaseExist = ExpertProfile::where('expert_id', $expert_id)->where('activity_base', $params['activity_base'])->exists();
-        if(!$sameActivityBaseExist) {
+        if(!$sameActivityBaseExist && isset($params['activity_base'])) {
             $city = City::select('id', 'latitude', 'longitude')->where('id', $params['activity_base'])->first();
             $params['latitude'] = $city['latitude'] . $this->_commonService->generateRandomNumbers(4);
             $params['longitude'] = $city['longitude'] . $this->_commonService->generateRandomNumbers(4);
