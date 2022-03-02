@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Schema;
 class AddLatitudeOther1ToExpertProfilesTable extends Migration {
     public function up() {
         Schema::table('expert_profiles', function (Blueprint $table) {
-            $table->double('latitude', 8, 6);
-            $table->double('longitude', 9, 6);
+            $table->float('latitude', 8, 6)->nullable();
+            $table->float('longitude', 9, 6)->nullable();
         });
     }
 
