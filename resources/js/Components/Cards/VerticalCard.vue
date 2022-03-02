@@ -59,6 +59,11 @@ export default {
         let { profile, isFavorite } = toRefs(props);
         const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
 
+        if (!Object.keys(profile.value).length) {
+            profile.value.expert_id = 1;
+        }
+
+
         const handleFavorite = (favorites) => {
             emit('emitFavorite', favorites);
         }
