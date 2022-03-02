@@ -46,7 +46,7 @@
 import { commonConst } from "@/Consts/commonConst"
 import { ref, toRefs, watch } from "vue";
 import FavoriteButton from "@/Components/Buttons/FavoriteButton";
-import {Link} from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/inertia-vue3'
 
 export default {
     name: "VerticalCard",
