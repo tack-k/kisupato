@@ -53,6 +53,8 @@ Route::get('/dashboard', function () {
 //})->name('home');
 
 //ユーザー認証なし
+Route::get('/', [TopController::class, 'index'])->name('home');
+
 Route::group(['prefix' => 'contact', 'as' => 'contact.'], function() {
     Route::get('/create', [UserContactController::class, 'create'])->name('create');
     Route::post('/confirm', [UserContactController::class, 'confirm'])->name('confirm');
@@ -65,8 +67,6 @@ Route::group(['prefix' => 'resource', 'as' => 'resource.'], function() {
     Route::get('/show/{id}', [ResourceController::class, 'show'])->name('show');
 });
 
-    Route::get('/', [TopController::class, 'index'])->name('home');
-
 
 
 //ユーザー:認証なし（認証時リダイレクト）
@@ -76,11 +76,11 @@ Route::group(['middleware' => 'guest'], function() {
 });
 
 
-
 //ユーザー:認証あり
-Route::group(['middleware' => 'auth:user'], function() {
-    Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function() {
-       Route::get('/show/{id}', [ChatroomController::class, 'show'])->name('show');
+Route::group(['middleware' => 'auth:user'], function () {
+    Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function () {
+        Route::get('/show/{id}', [ChatroomController::class, 'show'])->name('show');
+        Route::post('/store', [ChatroomController::class, 'store'])->name('store');
     });
     Route::group(['prefix' => 'favorite', 'as' => 'favorite.'], function() {
        Route::post('switch', [FavoritesController::class, 'switch'])->name('switch');
@@ -88,16 +88,15 @@ Route::group(['middleware' => 'auth:user'], function() {
 });
 
 
-
 //専門家:認証なし
-Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'guest'], function() {
+Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'guest'], function () {
     Route::get('/register', [ExpertController::class, 'create'])->name('create');
     Route::post('/register', [ExpertController::class, 'store'])->name('store');
 });
 
 
 //専門家:認証あり
-Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:expert'], function() {
+Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:expert'], function () {
     //トップページ
     Route::get('/', [HomeController::class, 'top'])->middleware(['verified'])->name('home');
     Route::get('/my_page', [MyPageController::class, 'top'])->name('myPage.top');
@@ -109,14 +108,14 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
 });
 
 //管理者:認証なし
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'guest'], function() {
-   Route::get('/init_password', [AdminController::class, 'inputInitPassword'])->name('inputInitPassword');
-   Route::post('/init_password', [AdminController::class, 'initializePassword'])->name('initializePassword');
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'guest'], function () {
+    Route::get('/init_password', [AdminController::class, 'inputInitPassword'])->name('inputInitPassword');
+    Route::post('/init_password', [AdminController::class, 'initializePassword'])->name('initializePassword');
 });
 
 //管理者:認証あり
 Route::resource('admin', AdminController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin'], function() {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
     Route::post('/delete', [AdminController::class, 'delete'])->name('delete');
     Route::resource('department', DepartmentController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
     Route::post('/department/delete', [DepartmentController::class, 'delete'])->name('department.delete');
