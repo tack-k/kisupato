@@ -63,7 +63,7 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
                         <template v-for="(profile, key) in profiles" :key="key">
-                            <VerticalCard :profile="profile" />
+                            <VerticalCard @emitFavorite="handleFavorite" :profile="profile" :isFavorite="isFavorites[profile.expert_id]"/>
                         </template>
                     </div>
                     <div class="mt-16 text-center">
@@ -84,10 +84,11 @@ import RegularButton from "@/Components/Buttons/RegularButton";
 import { faSearch, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import { useForm, Link } from "@inertiajs/inertia-vue3";
-import { computed, ref } from "vue";
+import { computed, ref, toRefs } from "vue";
 import { directive } from "vue3-click-away";
 import { commonConst } from "@/Consts/commonConst"
 import VerticalCard from "@/Components/Cards/VerticalCard";
+import { useFavoriteAction } from '@/Composables/useFavoriteAction'
 
 export default {
     name: "Index",
@@ -110,7 +111,7 @@ export default {
     setup(props) {
         const NO_RESULTS = -1
         const MAX_PROFILE_COUNT = 6;
-        const { areas, tags, profiles } = props;
+        const { areas, tags, profiles } = toRefs(props);
 
         const form = useForm({
             checked: [],
@@ -178,6 +179,10 @@ export default {
             closeTags();
         }
 
+        //お気に入り登録
+        let isFavorites = ref([]);
+        const { handleFavorite, setIsFavorites } = useFavoriteAction(profiles, isFavorites)
+        setIsFavorites()
 
         return {
             form,
@@ -195,6 +200,8 @@ export default {
             onClickOutsideTag,
             profiles,
             MAX_PROFILE_COUNT,
+            handleFavorite,
+            isFavorites,
         }
     }
 }
