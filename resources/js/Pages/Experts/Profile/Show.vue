@@ -139,7 +139,7 @@ export default {
             }] : props.profile.skills,
             activity_base: props.profile.city_name ?? '活動市町村を入力してください',
             tags: props.profile.tags.length === 0 ? [{name: 'タグを入力してください'}] : props.profile.tags,
-            positions: props.profile.positions ?? [{name: '肩書を入力してください'}]
+            positions: props.profile.positions.length === 0 ? [{name: '肩書を入力してください'}] : props.profile.positions,
 
         })
 
