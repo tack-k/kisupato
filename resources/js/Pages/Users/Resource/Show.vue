@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="flex justify-center items-center w-full sm:w-2/5">
-                            <regular-button class="px-16 py-4 font-medium">相談する</regular-button>
+                            <regular-button @click="submit" class="px-16 py-4 font-medium" :disabled="form.processing" :class="{ 'opacity-25': form.processing }">相談する</regular-button>
                         </div>
                     </div>
                 </section>
@@ -41,7 +41,7 @@
                         <p>{{ skill.skill_content }}</p>
                     </div>
                     <div class="flex justify-center items-center w-full">
-                        <regular-button class="px-16 py-4 font-medium">相談する</regular-button>
+                        <regular-button @click="submit" class="px-16 py-4 font-medium" :disabled="form.processing" :class="{ 'opacity-25': form.processing }">相談する</regular-button>
                     </div>
                 </section>
 
@@ -82,6 +82,7 @@ import RegularButton from "@/Components/Buttons/RegularButton";
 import ReviewCard from "@/Components/Cards/ReviewCard";
 import { toRefs } from "vue";
 import { commonConst } from "@/Consts/commonConst";
+import { useForm } from "@inertiajs/inertia-vue3"
 
 export default {
     name: "Show",
@@ -92,11 +93,20 @@ export default {
     setup(props) {
         const { profile } = toRefs(props)
         const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
+        const form = useForm({
+           'expert_id': profile.value.expert_id
+        });
+
+        const submit = () => {
+            form.post(route('chatroom.store'))
+        }
 
         return {
             profile,
             PROFILE_PATH,
             ACTIVITY_PATH,
+            form,
+            submit,
         }
     }
 }

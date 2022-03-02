@@ -158,10 +158,10 @@
             </div>
         </div>
 
-        <script>
-            const el = document.getElementById('messages')
-            el.scrollTop = el.scrollHeight
-        </script>
+<!--        <script>-->
+<!--            const el = document.getElementById('messages')-->
+<!--            el.scrollTop = el.scrollHeight-->
+<!--        </script>-->
     </template>
 </my-page-layout>
 </template>
