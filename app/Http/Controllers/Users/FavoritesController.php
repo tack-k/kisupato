@@ -3,12 +3,24 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Experts\ExpertProfile;
 use App\Models\Users\Favorite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class FavoritesController extends Controller {
     public function index() {
-        //
+        $userId = Auth::id();
+        $profiles = Favorite::getFavoriteAndExpertProfileInfo($userId)->get();
+        foreach ($profiles as $profile) {
+            $profile->tags = explode(',', $profile->tags);
+            $profile->positions = explode(',', $profile->positions);
+        }
+
+        return Inertia::render('Users/Favorite/Index', [
+             'profiles' => $profiles,
+        ]);
     }
 
     public function switch(Request $request) {
