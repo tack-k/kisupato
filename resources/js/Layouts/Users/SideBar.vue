@@ -57,43 +57,43 @@ export default {
                 "id": 0,
                 'icon': faPortrait,
                 "title": "プロフィール",
-                "link": "expert.profile.show",
+                "link": "home",
             },
             "talk_room": {
                 "id": 1,
                 'icon': faComments,
                 "title": "トークルーム",
-                "link": "expert.home",
+                "link": "home",
             },
             "favorite": {
                 "id": 2,
                 'icon': faGratipay,
                 "title": "お気に入り",
-                "link": "expert.home",
+                "link": "favorite.index",
             },
             "review": {
                 "id": 3,
                 'icon': faStar,
                 "title": "レビュー",
-                "link": "expert.home"
+                "link": "home"
             },
             "account": {
                 "id": 4,
                 'icon': faUserCircle,
                 "title": "アカウント",
-                "link": "expert.home",
+                "link": "home",
             },
             "mail_setting": {
                 "id": 5,
                 'icon': faEnvelope,
                 "title": "メール配信設定",
-                "link": "expert.home",
+                "link": "home",
             },
             "logout": {
                 "id": 6,
                 'icon': faSignOutAlt,
                 "title": "ログアウト",
-                "link": "expert.logout",
+                "link": "logout",
             }
         }
 
