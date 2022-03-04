@@ -10,13 +10,25 @@
                 </button>
             </div>
             <div v-bind:class="{'hidden': !showMenu, 'flex': showMenu}" class="lg:flex lg:flex-grow items-center">
-                <ul class="flex flex-col lg:flex-row list-none ml-auto">
-                    <li class="nav-item" v-if="user">
+                <ul class="flex flex-col lg:flex-row list-none ml-auto" v-if="!user">
+                    <li class="nav-item">
+                        <Link :href="route('login')" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
+                            ログイン
+                        </Link>
+                    </li>
+                    <li class="nav-item">
+                        <Link :href="route('create')" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
+                            ユーザー登録
+                        </Link>
+                    </li>
+                </ul>
+                <ul class="flex flex-col lg:flex-row list-none ml-auto" v-if="user">
+                    <li class="nav-item">
                         <Link :href="route('logout')" method="post" as="button" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
                             ログアウト
                         </Link>
                     </li>
-                    <li class="nav-item" v-if="user">
+                    <li class="nav-item">
                         <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#pablo">
                             <Fa :icon="faUser" class="text-lg leading-lg text-white opacity-7"/><span class="ml-2">{{ user?.last_name }}{{ user?.first_name }}</span>
                         </a>
