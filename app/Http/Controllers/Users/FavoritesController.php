@@ -16,8 +16,8 @@ class FavoritesController extends Controller {
         foreach ($profiles as $profile) {
             $profile->tags = explode(',', $profile->tags);
             $profile->positions = explode(',', $profile->positions);
+            $profile->activity_image = explode(',', $profile->activity_image)[0];
         }
-
         return Inertia::render('Users/Favorite/Index', [
              'profiles' => $profiles,
         ]);
