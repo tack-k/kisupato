@@ -2,9 +2,9 @@
     <my-page-layout>
         <template #content>
             <h2 class="mb-8 base-font-m base-font-bold">お気に入り一覧</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
                 <template v-for="(profile, key) in profiles" :key="key">
-                    <VerticalCardNoFavoriteButton :profile="profile"/>
+                    <VerticalCardNoFavoriteButton :profile="profile" @emitDeleteFavorite="handleDeleteFavorite"/>
                 </template>
             </div>
         </template>
@@ -25,10 +25,17 @@ export default {
     },
     setup(props) {
         const { profiles } = toRefs(props);
-
+        const handleDeleteFavorite = (favoriteId) => {
+            profiles.value = profiles.value.some((profile, index) => {
+                if (profile.favorite_id === favoriteId) {
+                    profiles.value.splice(index, 1)
+                }
+            })
+        }
 
         return {
             profiles,
+            handleDeleteFavorite,
         }
     }
 }

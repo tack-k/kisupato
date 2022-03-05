@@ -49,5 +49,16 @@ class FavoritesController extends Controller {
 
     }
 
+    public function delete(Request $request) {
+
+        $params = $request->validate([
+            'id' => 'required|exists:favorites'
+        ]);
+
+        Favorite::destroy($params['id']);
+
+
+    }
+
 
 }

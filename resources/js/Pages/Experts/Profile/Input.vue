@@ -326,7 +326,7 @@ export default {
         const dragEnterActivity = () => isEnterActivity.value = true
         const dragLeaveActivity = () => isEnterActivity.value = false
 
-        const MAX_ACTIVITY_FILES = 3
+        const MAX_ACTIVITY_FILES = 7
         const dropActivityFile = () => {
             if (event.dataTransfer.files.length + form.saved_activity_images.length + form.activity_images.length > MAX_ACTIVITY_FILES
                 || form.activity_images.length + form.saved_activity_images.length >= MAX_ACTIVITY_FILES

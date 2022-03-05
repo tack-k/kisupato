@@ -1,7 +1,8 @@
 <template>
-    <div class="overflow-hidden shadow-lg rounded-lg h-90 w-60 md:w-80 cursor-pointer m-auto">
+    <div class="overflow-hidden shadow-lg rounded-lg h-full w-full cursor-pointer m-auto">
         <Link @click.prevent :href="route('resource.show', profile.expert_id)" class="w-full block h-full">
             <div class="relative">
+                <Fa @click.prevent="submitDeleteFavorite(profile.favorite_id)" :icon="faBackspace" class="absolute right-2 top-2 text-lg"/>
                 <!--                                最終的には活動画像の配列をカルーセルで表示させる-->
                 <img alt="blog photo" :src="ACTIVITY_PATH + profile.activity_image"
                      class="max-h-40 w-full object-cover"/>
@@ -46,22 +47,37 @@ import FavoriteButton from '@/Components/Buttons/FavoriteButton'
 import { Link } from '@inertiajs/inertia-vue3'
 import { toRefs } from 'vue'
 import { commonConst } from '@/Consts/commonConst'
+import Fa from "vue-fa";
+import { faBackspace } from "@fortawesome/free-solid-svg-icons"
+
 
 export default {
     name: "VerticalCardNoFavoriteButton",
-    components: { FavoriteButton, Link },
+    components: { FavoriteButton, Link, Fa },
     props: {
         profile: Object,
     },
-    setup(props) {
+    setup(props, { emit }) {
         let { profile } = toRefs(props);
         const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
+
+        const submitDeleteFavorite = (favoriteId) => {
+            const params = { id: favoriteId }
+            axios.post(route('favorite.delete'), params)
+                .then(res => {
+                    emit('emitDeleteFavorite', favoriteId)
+                }).catch(res => {
+                alert('お気に入りの削除ができませんでした。時間をおいてから再度お試しください')
+            })
+        }
 
 
         return {
             profile,
             PROFILE_PATH,
             ACTIVITY_PATH,
+            faBackspace,
+            submitDeleteFavorite,
         }
     }
 }

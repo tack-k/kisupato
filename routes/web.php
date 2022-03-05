@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::group(['prefix' => 'favorite', 'as' => 'favorite.'], function() {
        Route::post('/switch', [FavoritesController::class, 'switch'])->name('switch');
        Route::get('/', [FavoritesController::class, 'index'])->name('index');
+       Route::post('/delete', [FavoritesController::class, 'delete'])->name('delete');
     });
 });
 
