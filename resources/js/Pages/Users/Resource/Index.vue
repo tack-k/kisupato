@@ -108,11 +108,11 @@ export default {
 
         //Google Map プロフィールカード表示
         const showProfileCard = (id) => {
-            isCardOpen.value = true
             axios.post(route('resource.card'), id).then(res => {
                 profileCard.value = res.data
+                isCardOpen.value = true
             }).catch(err => {
-                console.log(err)
+                alert('プロフィール情報が取得できませんでした。時間をおいてから再度お試しください')
             })
         }
 
