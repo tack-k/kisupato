@@ -3,10 +3,10 @@
         <template #content>
             <div class="top-image flex items-center justify-center flex-col">
                 <h1 class="text-6xl expert-text-white mb-10 base-font-bold">新たな出会いはいつもここから</h1>
-                <div class="user-bg rounded mb-12 hover:cursor-pointer">
+                <Link :href="route('resource.index')" class="user-bg rounded mb-12 hover:cursor-pointer">
                     <Fa :icon="faMapMarkedAlt" class="text-9xl text-white p-4"/>
                     <p class="text-center text-white font-bold">地図から探す</p>
-                </div>
+                </Link>
                 <div class="flex items-center">
                     <div class="flex border-1 rounded-full bg-white border-gray-100">
                         <SearchPlaceModal v-model:checked="form.checked" :areas="areas"/>
