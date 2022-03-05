@@ -41,7 +41,7 @@ class Favorite extends Model {
     }
 
     public function scopeGetFavoriteAndExpertProfileInfo($query, $userId) {
-        return $query->selectRaw('GROUP_CONCAT(ai.activity_image) as activity_image, ep.expert_id, ep.id as expert_profile_id, nickname, profile_image, activity_title, activity_content, favorites.id as favorite_id, GROUP_CONCAT(t.name) as tags, GROUP_CONCAT(p.name) as positions')
+        return $query->selectRaw('GROUP_CONCAT(ai.activity_image) as activity_image, ep.expert_id, ep.id as expert_profile_id, nickname, profile_image, activity_title, activity_content, favorites.id as favorite_id, GROUP_CONCAT(DISTINCT t.name) as tags, GROUP_CONCAT(DISTINCT p.name) as positions')
             ->join('expert_profiles as ep', 'ep.expert_id', '=', 'favorites.expert_id')
             ->join('activity_images as ai', 'ep.id', '=', 'ai.expert_profile_id')
             ->join('expert_profiles_tags as ept', 'ept.expert_profile_id', '=', 'ep.id')
@@ -53,8 +53,6 @@ class Favorite extends Model {
             ->groupBy('ai.expert_profile_id')
             ->groupBy('ep.id')
             ->groupBy('favorites.id')
-            ->groupBy('t.id')
-            ->groupBy('p.id')
             ->orderBy('favorites.created_at', 'desc');
     }
 }
