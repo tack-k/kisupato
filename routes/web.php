@@ -8,6 +8,7 @@ use \App\Http\Controllers\Users\UserController;
 use \App\Http\Controllers\Users\ResourceController;
 use \App\Http\Controllers\Users\TopController;
 use \App\Http\Controllers\Users\ChatroomController;
+use \App\Http\Controllers\Users\MessagesController;
 use \App\Http\Controllers\Users\UserContactController;
 use \App\Http\Controllers\Users\FavoritesController;
 use \App\Http\Controllers\Admins\AdminController;
@@ -81,6 +82,9 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function () {
         Route::get('/show/{id}', [ChatroomController::class, 'show'])->name('show');
         Route::post('/store', [ChatroomController::class, 'store'])->name('store');
+    });
+    Route::group(['prefix' => 'message', 'as' => 'message.'], function() {
+       Route::post('store', [MessagesController::class, 'update'])->name('update');
     });
     Route::group(['prefix' => 'favorite', 'as' => 'favorite.'], function() {
        Route::post('/switch', [FavoritesController::class, 'switch'])->name('switch');

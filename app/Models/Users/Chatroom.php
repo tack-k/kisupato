@@ -28,4 +28,8 @@ class Chatroom extends Model
     public function expert() {
         return $this->belongsTo(Expert::class);
     }
+
+    public function messages() {
+        return $this->hasMany(Message::class);
+    }
 }
