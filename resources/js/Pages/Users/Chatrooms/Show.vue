@@ -1,7 +1,7 @@
 <template>
 <my-page-layout>
     <template #content>
-        <div class="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
+        <div class="flex-1 p:2 sm:p-6 flex flex-col h-full">
             <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
                 <div class="flex items-center space-x-4">
                     <img src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="" class="w-10 sm:w-16 h-10 sm:h-16 rounded-full">
@@ -35,7 +35,7 @@
                     </button>
                 </div>
             </div>
-            <div id="messages" class="flex flex-col space-y-4 p-3 overflow-y- scrolling-touch">
+            <div id="messages" class="flex flex-col space-y-4 p-3 overflow-y-scroll scrolling-touch">
                 <div class="chat-message" v-for="(message, index) in messages" :key="index">
                     <div class="flex items-end" :class="{'justify-end': isUser(message.user_id)}">
                         <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start" :class="{'user-right': isUser(message.user_id)}">

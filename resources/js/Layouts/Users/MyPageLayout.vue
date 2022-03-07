@@ -1,9 +1,21 @@
 <template>
+<!--  チャットルーム以前のバージョンをコメントアウト  -->
+<!--    <Header/>-->
+<!--    <div class="flex">-->
+<!--        <SideBar/>-->
+<!--        <div class="overflow-y-scroll h-screen w-full">-->
+<!--            <div class="container mx-auto py-10 max-w-screen-lg expert-bg-white shadow-md w-full md:px-10 p-4">-->
+<!--                <FlashMessage/>-->
+<!--                <ValidationFlameErrors/>-->
+<!--                <slot name="content"/>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
     <Header/>
     <div class="flex">
         <SideBar/>
-        <div class="overflow-y-scroll h-screen w-full">
-            <div class="container mx-auto py-10 max-w-screen-lg expert-bg-white shadow-md w-full md:px-10 p-4">
+        <div class="display-container w-full">
+            <div class="container mx-auto max-w-screen-lg h-full expert-bg-white shadow-md w-full md:px-10">
                 <FlashMessage/>
                 <ValidationFlameErrors/>
                 <slot name="content"/>
@@ -30,5 +42,7 @@ export default {
 </script>
 
 <style scoped>
-
+.display-container {
+    height: calc(100vh - 4rem);
+}
 </style>

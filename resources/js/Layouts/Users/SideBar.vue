@@ -1,6 +1,6 @@
 <template>
         <div class="hidden md:block" v-show="show">
-            <div class="w-64 h-screen admin-bg-white ">
+            <div class="w-64 display-container admin-bg-white ">
                 <div class="flex items-start justify-end p-2">
                     <Fa class="admin-hover" @click="show = !show" :icon="faAlignJustify" size="2x"/>
                 </div>
@@ -132,5 +132,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.display-container {
+    height: calc(100vh - 4rem);
+}
 </style>
