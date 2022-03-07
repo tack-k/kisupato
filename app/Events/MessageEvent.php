@@ -22,7 +22,7 @@ class MessageEvent implements ShouldBroadcast
 
     public function broadcastOn(): Channel
     {
-     //   $this->dontBroadcastToCurrentUser();
+        $this->dontBroadcastToCurrentUser();
         return new PrivateChannel('message-channel.'. $this->message->user_id);
     }
 
