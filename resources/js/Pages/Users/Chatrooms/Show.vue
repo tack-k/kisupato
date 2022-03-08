@@ -4,17 +4,17 @@
             <div class="flex-1 p:2 sm:p-6 flex flex-col h-full">
                 <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
                     <div class="flex items-center space-x-4">
-                        <img src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="" class="w-10 sm:w-16 h-10 sm:h-16 rounded-full">
+                        <img :src="PROFILE_PATH + expertProfile.profile_image" alt="" class="w-10 sm:w-16 h-10 sm:h-16 rounded-full">
                         <div class="flex flex-col leading-tight">
                             <div class="text-2xl mt-1 flex items-center">
-                                <span class="text-gray-700 mr-3">Anderson Vanhron</span>
+                                <span class="text-gray-700 mr-3">{{ expertProfile.nickname }}</span>
                                 <span class="text-green-500">
                   <svg width="10" height="10">
                      <circle cx="5" cy="5" r="5" fill="currentColor"></circle>
                   </svg>
                </span>
                             </div>
-                            <span class="text-lg text-gray-600">Junior Developer</span>
+                            <span class="text-lg text-gray-600">{{ expertProfile.activity_title }}</span>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -98,13 +98,14 @@ export default {
     props: {
         messages: Object,
         chatroomId: String,
+        expertProfile: Object,
     },
     components: { MyPageLayout },
     setup(props) {
         const user = computed(() => usePage().props?.value.auth.user);
         const expert = computed(() => usePage().props?.value.auth.expert);
         const { PROFILE_PATH } = commonConst;
-        const { chatroomId, messages } = toRefs(props);
+        const { chatroomId, messages, expertProfile } = toRefs(props);
         const newMessage = ref('')
 
         const channel = Echo.private('message-channel.' + user.value?.id);
@@ -153,6 +154,7 @@ export default {
             isUser,
             PROFILE_PATH,
             messageRef,
+            expertProfile,
         }
     }
 }

@@ -95,6 +95,12 @@ class ExpertProfile extends Model
             ->orderBy('expert_profiles.created_at', 'desc');
     }
 
+    public function scopeGetExpertProfileForChatroom($query) {
+        $query->select('expert_profiles.id', 'nickname', 'profile_image', 'activity_title')
+            ->join('chatrooms as c', 'c.expert_id', '=', 'expert_profiles.expert_id')
+            ->groupBy('expert_profiles.id');
+    }
+
     /**
      * プロフィールが持つ提供技術を取得
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

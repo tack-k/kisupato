@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Experts\ExpertProfile;
 use App\Models\Users\Chatroom;
 use App\Models\Users\Message;
 use Illuminate\Http\Request;
@@ -48,10 +49,12 @@ class ChatroomController extends Controller {
         $this->authorize('show-chatroom', [$chatroom_id]);
 
         $messages = Message::getMessages($chatroom_id)->get();
+        $expertProfile = ExpertProfile::getExpertProfileForChatroom()->first();
 
         return Inertia::render('Users/Chatrooms/Show', [
             'chatroomId' => $chatroom_id,
             'messages' => $messages,
+            'expertProfile' => $expertProfile,
         ]);
     }
 }
