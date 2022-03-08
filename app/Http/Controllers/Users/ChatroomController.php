@@ -47,11 +47,7 @@ class ChatroomController extends Controller {
 
         $this->authorize('show-chatroom', [$chatroom_id]);
 
-        $messages = Message::select(['message', 'messages.created_at', 'user_id', 'messages.expert_id', 'ep.profile_image'])
-            ->leftjoin('expert_profiles as ep', 'ep.id', '=', 'messages.expert_id')
-            ->where('chatroom_id', $chatroom_id)
-            ->orderBy('created_at', 'asc')
-            ->get();
+        $messages = Message::getMessages($chatroom_id)->get();
 
         return Inertia::render('Users/Chatrooms/Show', [
             'chatroomId' => $chatroom_id,
