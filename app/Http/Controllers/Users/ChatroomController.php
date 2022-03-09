@@ -37,7 +37,7 @@ class ChatroomController extends Controller {
         }
 
         return redirect(route('chatroom.show', [
-            'chatroomId' => $chatroom['id']
+            $chatroom['id']
         ]));
 
 
