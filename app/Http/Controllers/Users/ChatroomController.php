@@ -49,7 +49,8 @@ class ChatroomController extends Controller {
         $this->authorize('show-chatroom', [$chatroom_id]);
 
         $messages = Message::getMessages($chatroom_id)->get();
-        $expertProfile = ExpertProfile::getExpertProfileForChatroom()->first();
+        $chatroom = Chatroom::find($chatroom_id);
+        $expertProfile = ExpertProfile::getExpertProfileForChatroom($chatroom['expert_id'])->first();
 
         return Inertia::render('Users/Chatrooms/Show', [
             'chatroomId' => $chatroom_id,

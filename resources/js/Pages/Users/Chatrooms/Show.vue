@@ -14,7 +14,7 @@
                   </svg>
                </span>
                             </div>
-                            <span class="text-lg text-gray-600">{{ expertProfile.activity_title }}</span>
+                            <span class="text-lg text-gray-600">{{ expertProfile.self_introduction }}</span>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">

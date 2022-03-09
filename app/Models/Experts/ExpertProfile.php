@@ -95,10 +95,9 @@ class ExpertProfile extends Model
             ->orderBy('expert_profiles.created_at', 'desc');
     }
 
-    public function scopeGetExpertProfileForChatroom($query) {
-        $query->select('expert_profiles.id', 'nickname', 'profile_image', 'activity_title')
-            ->join('chatrooms as c', 'c.expert_id', '=', 'expert_profiles.expert_id')
-            ->groupBy('expert_profiles.id');
+    public function scopeGetExpertProfileForChatroom($query, $expertId) {
+        $query->select('id', 'nickname', 'profile_image', 'self_introduction')
+            ->where('id', $expertId);
     }
 
     /**
