@@ -15,7 +15,14 @@ use Illuminate\Support\Facades\Gate;
 class ChatroomController extends Controller {
     public function index()
     {
-        //
+        $userId = Auth::id();
+        $chatrooms = Chatroom::getChatrooms($userId)->get();
+
+//        $no = chatroom::getChatroomsNoMessage($userId)->get();
+//        dd($no);
+        return Inertia::render('Users/Chatrooms/Index', [
+            'chatrooms' => $chatrooms,
+        ]);
     }
 
     public function store(Request $request)

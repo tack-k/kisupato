@@ -80,6 +80,7 @@ Route::group(['middleware' => 'guest'], function() {
 //ユーザー:認証あり
 Route::group(['middleware' => 'auth:user'], function () {
     Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function () {
+        Route::get('/', [ChatroomController::class, 'index'])->name('index');
         Route::get('/show/{id}', [ChatroomController::class, 'show'])->name('show');
         Route::post('/store', [ChatroomController::class, 'store'])->name('store');
     });
