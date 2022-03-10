@@ -16,7 +16,7 @@
                             </tr>
                             </thead>
                             <tbody class="bg-white">
-                            <tr class="text-gray-700 user-hover" v-for="(chatroom, index) in chatrooms" :key="index" @click="linkChatroomShow(chatroom.chatroom_id)">
+                            <tr class="text-gray-700 user-hover hover:bg-gray-50" v-for="(chatroom, index) in chatrooms" :key="index" @click="linkChatroomShow(chatroom.chatroom_id)">
                                 <td class="px-4 py-3 border">
                                     <div class="flex items-center text-sm">
                                         <div class="relative w-8 h-8 mr-3 rounded-full">
@@ -30,12 +30,12 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 text-md font-semibold border">
-                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-red-100 rounded-sm"> 完了 </span>
+                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-red-100 rounded-sm">{{ chatroom.consultation_status }}</span>
                                 </td>
                                 <td class="px-4 py-3 text-xs border">
-                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-gray-100 rounded-sm"> 完了 </span>
+                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-gray-100 rounded-sm">{{ chatroom.request_status }}</span>
                                 </td>
-                                <td class="px-4 py-3 text-sm border">{{ chatroom.c_created }}</td>
+                                <td class="px-4 py-3 text-sm border">{{ chatroom.c_created_at }}</td>
                                 <td class="px-4 py-3 text-sm border">2020/05/05</td>
                             </tr>
                             </tbody>

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Experts\ExpertProfile;
 use App\Models\Users\Chatroom;
 use App\Models\Users\Message;
+use App\Services\ChatroomService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -13,20 +15,22 @@ use Illuminate\Support\Facades\Gate;
 
 
 class ChatroomController extends Controller {
+
+    protected $_service;
+
+    public function __construct() {
+        $this->_service = new ChatroomService();
+    }
+
     public function index()
     {
         $userId = Auth::id();
         $chatrooms = Chatroom::getChatrooms($userId)->get();
-        $chatroomsAry = $chatrooms->toArray();
 
-        foreach ($chatrooms as $key => $chatroom) {
-           $sort[$key] = $chatroom['m_created_at'];
-        }
-
-        array_multisort($sort, SORT_DESC, $chatroomsAry);
+        $chatrooms = $this->_service->formatChatroomData($chatrooms);
 
         return Inertia::render('Users/Chatrooms/Index', [
-            'chatrooms' => $chatroomsAry,
+            'chatrooms' => $chatrooms,
         ]);
     }
 

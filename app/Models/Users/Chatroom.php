@@ -26,7 +26,7 @@ class Chatroom extends Model
             ->selectRaw('expert_id, MAX(created_at) as latest_message_created_at')
             ->groupBy('expert_id');
 
-        $query->select('chatrooms.id as chatroom_id', 'consultation_status', 'request_status', 'chatrooms.created_at as c_created', 'chatrooms.updated_at as c_updated', 'ep.nickname', 'ep.profile_image', 'm.message', 'm.created_at as m_created_at')
+        $query->select('chatrooms.id as chatroom_id', 'consultation_status', 'request_status', 'chatrooms.created_at as c_created_at', 'chatrooms.updated_at as c_updated_at', 'ep.nickname', 'ep.profile_image', 'm.message', 'm.created_at as m_created_at')
             ->join('expert_profiles as ep', 'ep.id', '=', 'chatrooms.expert_id')
             ->leftjoin('messages as m', function ($join) {
                 $join->on( 'm.chatroom_id', '=', 'chatrooms.id')
