@@ -17,11 +17,16 @@ class ChatroomController extends Controller {
     {
         $userId = Auth::id();
         $chatrooms = Chatroom::getChatrooms($userId)->get();
+        $chatroomsAry = $chatrooms->toArray();
 
-//        $no = chatroom::getChatroomsNoMessage($userId)->get();
-//        dd($no);
+        foreach ($chatrooms as $key => $chatroom) {
+           $sort[$key] = $chatroom['m_created_at'];
+        }
+
+        array_multisort($sort, SORT_DESC, $chatroomsAry);
+
         return Inertia::render('Users/Chatrooms/Index', [
-            'chatrooms' => $chatrooms,
+            'chatrooms' => $chatroomsAry,
         ]);
     }
 
