@@ -20,7 +20,7 @@ class ChatroomService {
                     $chatroom['request_status'] = '依頼中';
                     break;
                 case '2':
-                    $chatroom['request_status'] = '完了';
+                    $chatroom['request_status'] = '取引完了';
                     break;
                 case '3':
                     $chatroom['request_status'] = '依頼なし';
