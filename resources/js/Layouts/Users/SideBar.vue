@@ -63,7 +63,7 @@ export default {
                 "id": 1,
                 'icon': faComments,
                 "title": "トークルーム",
-                "link": "home",
+                "link": "chatroom.index",
             },
             "favorite": {
                 "id": 2,
