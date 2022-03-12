@@ -2,7 +2,10 @@
     <my-page-layout>
         <template #content>
             <!-- component -->
-            <section class="container mx-auto p-6 font-mono">
+            <div v-if="chatrooms.length === 0" class="pt-4">
+                <FixedMessage>チャットルームの登録がありません。</FixedMessage>
+            </div>
+            <section v-else class="container mx-auto p-6 font-mono">
                 <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
                     <div class="w-full overflow-x-auto">
                         <table class="w-full">
@@ -49,11 +52,15 @@
 
 <script>
 import MyPageLayout from '@/Layouts/Users/MyPageLayout'
+import FixedMessage from '@/Components/Messages/FixedMessage'
 import { Inertia } from '@inertiajs/inertia'
 
 export default {
     name: "Index",
-    components: { MyPageLayout },
+    components: {
+        MyPageLayout,
+        FixedMessage,
+    },
     props: {
         chatrooms: Object,
     },

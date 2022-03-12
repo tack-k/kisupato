@@ -18,7 +18,8 @@ class ChatroomController extends Controller {
 
     protected $_service;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_service = new ChatroomService();
     }
 
@@ -27,7 +28,9 @@ class ChatroomController extends Controller {
         $userId = Auth::id();
         $chatrooms = Chatroom::getChatrooms($userId)->get();
 
-        $chatrooms = $this->_service->formatChatroomData($chatrooms);
+        if ($chatrooms->isNotEmpty()) {
+            $chatrooms = $this->_service->formatChatroomData($chatrooms);
+        }
 
         return Inertia::render('Users/Chatrooms/Index', [
             'chatrooms' => $chatrooms,
