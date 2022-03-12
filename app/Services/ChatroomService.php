@@ -6,24 +6,36 @@ use Carbon\Carbon;
 
 class ChatroomService {
 
-    public function formatChatroomData($chatrooms) {
+    public function formatChatroomData($chatrooms)
+    {
         foreach ($chatrooms as $key => $chatroom) {
             $data = new Carbon($chatroom['c_created_at']);
             $chatroom['c_created_at'] = $data->format('Y/m/d');
-            $chatroom['consultation_status'] = $chatroom['consultation_status'] === '0' ? '相談中' : '完了';
+
+            switch ($chatroom['consultation_status']) {
+                case '0':
+                    $chatroom['consultation_status_name'] = '相談中';
+                    break;
+                case '1':
+                    $chatroom['consultation_status_name'] = '完了';
+                    break;
+                case '2':
+                    $chatroom['consultation_status_name'] = 'キャンセル';
+                    break;
+            }
 
             switch ($chatroom['request_status']) {
                 case '0':
-                    $chatroom['request_status'] = '検討中';
+                    $chatroom['request_status_name'] = '検討中';
                     break;
                 case '1':
-                    $chatroom['request_status'] = '依頼中';
+                    $chatroom['request_status_name'] = '依頼中';
                     break;
                 case '2':
-                    $chatroom['request_status'] = '取引完了';
+                    $chatroom['request_status_name'] = '取引完了';
                     break;
                 case '3':
-                    $chatroom['request_status'] = '依頼なし';
+                    $chatroom['request_status_name'] = 'キャンセル';
                     break;
             }
 
