@@ -4,7 +4,7 @@
             <h2 class="mb-8 pt-8 base-font-m base-font-bold">プロフィール</h2>
             <form @submit.prevent="submit">
                 <section class="mb-10">
-                    <Label class="label" value="ニックネーム" for="nickname"/>
+                    <LabelRequired class="label" value="ニックネーム" for="nickname"/>
                     <InputForm id="nickname" type="text" class="w-full sm:w-1/2" v-model="form.nickname"/>
                 </section>
 
@@ -66,6 +66,7 @@
 <script>
 import MyPageLayout from '@/Layouts/Users/MyPageLayout'
 import Label from '@/Components/Labels/Label'
+import LabelRequired from '@/Components/Labels/LabelRequired'
 import InputForm from "@/Components/Forms/Input";
 import { ref, toRefs } from 'vue'
 import { useForm, Link } from '@inertiajs/inertia-vue3'
@@ -81,6 +82,7 @@ export default {
         Label,
         InputForm,
         Link,
+        LabelRequired,
     },
     setup(props) {
 
