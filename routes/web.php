@@ -11,6 +11,7 @@ use \App\Http\Controllers\Users\ChatroomController;
 use \App\Http\Controllers\Users\MessagesController;
 use \App\Http\Controllers\Users\UserContactController;
 use \App\Http\Controllers\Users\FavoritesController;
+use \App\Http\Controllers\Users\UserProfilesController;
 use \App\Http\Controllers\Admins\AdminController;
 use \App\Http\Controllers\Admins\DepartmentController;
 use \App\Http\Controllers\Admins\PositionController;
@@ -91,6 +92,10 @@ Route::group(['middleware' => 'auth:user'], function () {
        Route::post('/switch', [FavoritesController::class, 'switch'])->name('switch');
        Route::get('/', [FavoritesController::class, 'index'])->name('index');
        Route::post('/delete', [FavoritesController::class, 'delete'])->name('delete');
+    });
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function() {
+       Route::get('input', [UserProfilesController::class, 'input'])->name('input');
+       Route::post('/update', [UserProfilesController::class, 'update'])->name('update');
     });
 });
 
