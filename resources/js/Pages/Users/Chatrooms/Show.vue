@@ -35,7 +35,7 @@
                         </button>
                     </div>
                 </div>
-                <div id="messages" class="flex flex-col space-y-4 p-3 overflow-y-scroll scrolling-touch" ref="messageRef">
+                <div id="messages" class="flex flex-col space-y-4 p-3 overflow-y-scroll scrolling-touch h-screen" ref="messageRef">
                     <div class="chat-message" v-for="(message, index) in messages" :key="index">
                         <div class="flex items-end" :class="{'justify-end': isUser(message.user_id)}">
                             <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start" :class="{'user-right': isUser(message.user_id)}">
