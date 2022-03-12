@@ -6,6 +6,8 @@ use App\Rules\KanaRule;
 use App\Rules\PostalCodeRule;
 use App\Rules\TelRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class UserRequest extends FormRequest
@@ -32,6 +34,7 @@ class UserRequest extends FormRequest
             'first_name' => 'required|string|max:20',
             'first_name_kana' => ['required','string','max:20',new KanaRule()],
             'last_name_kana' => ['required', 'string', 'max:20', new KanaRule()],
+            'nickname' => ['required', 'string', 'max:10', Rule::unique('user_profiles')->ignore(Auth::id(), 'nickname')],
             'email' => 'required|string|email|max:255|unique:users',
             'tel' => ['required',  new TelRule()],
             'postal_code' => ['required',  new PostalCodeRule()],
@@ -49,6 +52,13 @@ class UserRequest extends FormRequest
     {
         return [
             'birthday.before_or_equal' => ':attributeには本日以降の日付を入力してください。',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'nickname' => 'ニックネーム',
         ];
     }
 

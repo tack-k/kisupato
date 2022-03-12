@@ -25,6 +25,11 @@
         </div>
 
         <div class="mt-4">
+            <label-required for="nickname" value="ニックネーム" />
+            <breeze-input id="nickname" type="text" class="mt-1 block w-full" placeholder="tack" v-model="form.nickname" />
+        </div>
+
+        <div class="mt-4">
             <label-required for="email" value="電話番号" />
             <breeze-input id="tel" type="tel" class="mt-1 block w-full" placeholder="09012341234" v-model="form.tel" autocomplete="tel-national" />
         </div>
@@ -124,6 +129,7 @@
                     first_name_kana: '',
                     last_name: '',
                     first_name: '',
+                    nickname: '',
                     tel: '',
                     postal_code: '',
                     region: '',

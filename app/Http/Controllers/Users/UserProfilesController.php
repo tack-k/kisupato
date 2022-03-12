@@ -44,9 +44,7 @@ class UserProfilesController extends Controller {
     {
         $userId = Auth::id();
         $profile = UserProfile::getUserProfile($userId)->first();
-        if (!$profile) {
-            $profile = ['profile_image' => 'default_profile.png'];
-        }
+
         return Inertia::render('Users/UserProfile/Input', [
             'profile' => $profile,
         ]);

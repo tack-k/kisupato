@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\Users\User;
+use App\Models\Users\UserProfile;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
-class UserController extends Controller
-{
+class UserController extends Controller {
     /**
      * Display a listing of the resource.
      *
@@ -36,18 +37,26 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request\UserRequest  $request
+     * @param \Illuminate\Http\Request\UserRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(UserRequest $request)
     {
-        $params = $request->validated();
-        $params['password'] = Hash::make($request->password);
-        $user = User::create($params);
+        DB::transaction(function () use ($request) {
+            $params = $request->except(['nickname']);
+            $params['password'] = Hash::make($request->password);
+            $user = User::create($params);
 
-        event(new Registered($user));
+            $profile = $request->only(['nickname']);
+            $profile['user_id'] = $user['id'];
+            $profile['profile_image'] = 'default_profile.png';
 
-        Auth::login($user);
+            UserProfile::create($profile);
+
+            event(new Registered($user));
+
+            Auth::login($user);
+        });
 
         return redirect()->route('home');
     }
@@ -55,7 +64,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -66,7 +75,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -77,8 +86,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -89,7 +98,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
