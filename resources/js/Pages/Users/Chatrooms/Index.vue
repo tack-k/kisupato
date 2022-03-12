@@ -2,7 +2,7 @@
     <my-page-layout>
         <template #content>
             <!-- component -->
-            <div v-if="chatrooms.length === 0" class="pt-4">
+            <div v-if="chatrooms.length === 0" class="pt-8">
                 <FixedMessage>チャットルームの登録がありません。</FixedMessage>
             </div>
             <section v-else class="container mx-auto p-6 font-mono">
