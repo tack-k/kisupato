@@ -55,7 +55,7 @@
                             type="submit"
                             class="expert-regular-btn mr-20">保存する
                     </button>
-                    <Link :href="route('profile.input')" as="button" type="button" class="expert-outline-btn">戻る
+                    <Link :href="route('profile.show')" as="button" type="button" class="expert-outline-btn">戻る
                     </Link>
                 </div>
             </form>

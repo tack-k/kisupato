@@ -10,7 +10,7 @@ class UserProfileRequest extends FormRequest {
     public function rules(): array
     {
         return [
-            'nickname' => ['nullable', 'string', 'max:10', Rule::unique('expert_profiles')->ignore(Auth::guard('expert')->id(), 'expert_id')],
+            'nickname' => ['required', 'string', 'max:10', Rule::unique('user_profiles')->ignore(Auth::id(), 'nickname')],
             'profile_image.*' => ['file', 'image', 'max:5000'],
             'self_introduction' => ['nullable', 'string', 'max:500'],
         ];

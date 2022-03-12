@@ -10,7 +10,7 @@ class CreateUserProfilesTable extends Migration {
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('nickname', 20)->nullable();
+            $table->string('nickname', 10)->unique();
             $table->string('profile_image', 255)->nullable();
             $table->text('self_introduction')->nullable();
             $table->dateTimeTz('created_at')->nullable();

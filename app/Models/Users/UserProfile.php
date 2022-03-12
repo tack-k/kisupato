@@ -20,6 +20,6 @@ class UserProfile extends Model {
 
     public function scopeGetUserProfile($query, $userId) {
         $query->select('id', 'user_id', 'nickname', 'self_introduction', 'profile_image')
-            ->where('id', $userId);
+            ->where('user_id', $userId);
     }
 }

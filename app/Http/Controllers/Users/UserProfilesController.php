@@ -10,6 +10,7 @@ use App\Services\UserProfileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class UserProfilesController extends Controller {
@@ -26,9 +27,17 @@ class UserProfilesController extends Controller {
 
     }
 
-    public function show(UserProfile $userProfile)
+    public function show()
     {
-        //
+        $userId = Auth::id();
+        $profile = UserProfile::getUserProfile($userId)->first();
+        if (is_null($profile)) {
+            return Redirect::route('profile.input');
+        }
+
+        return Inertia::render('Users/UserProfile/Show', [
+            'profile' => $profile,
+        ]);
     }
 
     public function input()
@@ -51,8 +60,9 @@ class UserProfilesController extends Controller {
             $this->_service->updateUserProfile($request, $userId);
         });
 
-        return redirect()->route('profile.input');
+        return redirect()->route('profile.show');
 
     }
+
 
 }

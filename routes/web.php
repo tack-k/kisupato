@@ -95,6 +95,7 @@ Route::group(['middleware' => 'auth:user'], function () {
     });
     Route::group(['prefix' => 'profile', 'as' => 'profile.'], function() {
        Route::get('input', [UserProfilesController::class, 'input'])->name('input');
+       Route::get('show', [UserProfilesController::class, 'show'])->name('show');
        Route::post('/update', [UserProfilesController::class, 'update'])->name('update');
     });
 });
