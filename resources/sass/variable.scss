@@ -49,6 +49,22 @@
     @apply table-cell px-3 py-4
 }
 
+.running-status {
+    @apply bg-red-400 text-white
+}
+
+.examination-status {
+    @apply bg-blue-400 text-white
+}
+
+.finished-status {
+    @apply bg-yellow-500 text-white
+}
+
+.canceled-status {
+    @apply bg-gray-500 text-white
+}
+
 //カルーセルの左右アイコン
 .carousel__prev, .carousel__next {
     background-color: #d5d5d5 !important;

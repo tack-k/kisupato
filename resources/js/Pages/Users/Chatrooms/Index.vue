@@ -32,11 +32,11 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-4 py-3 text-md font-semibold border">
-                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-red-100 rounded-sm">{{ chatroom.consultation_status_name }}</span>
+                                <td class="px-4 py-3 text-xs font-semibold border">
+                                    <span :class="setConsultationColor(chatroom.consultation_status)" class="px-2 py-1 font-semibold leading-tight rounded-sm">{{ chatroom.consultation_status_name }}</span>
                                 </td>
-                                <td class="px-4 py-3 text-xs border">
-                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-gray-100 rounded-sm">{{ chatroom.request_status_name }}</span>
+                                <td class="px-4 py-3 text-xs font-semibold border">
+                                    <span :class="setRequestColor(chatroom.request_status)" class="px-2 py-1 font-semibold leading-tight rounded-sm">{{ chatroom.request_status_name }}</span>
                                 </td>
                                 <td class="px-4 py-3 text-sm border">{{ chatroom.c_created_at }}</td>
                                 <td class="px-4 py-3 text-sm border">{{ chatroom.request_finished_at }}</td>
@@ -54,6 +54,7 @@
 import MyPageLayout from '@/Layouts/Users/MyPageLayout'
 import FixedMessage from '@/Components/Messages/FixedMessage'
 import { Inertia } from '@inertiajs/inertia'
+import { commonConst } from '@/Consts/commonConst'
 
 export default {
     name: "Index",
@@ -66,14 +67,59 @@ export default {
     },
     setup(props) {
         const { chatrooms } = props;
+        const {
+            PROFILE_PATH,
+            REQUEST_EXAMINATION,
+            REQUEST,
+            REQUEST_CANCELED,
+            REQUEST_FINISHED,
+            CONSULTATION,
+            CONSULTATION_FINISHED,
+            CONSULTATION_CANCELED,
+        } = commonConst;
 
         const linkChatroomShow = (chatroomId) => {
             Inertia.visit(route('chatroom.show', [chatroomId]));
         }
 
+        //依頼状態によるカラー設定
+        const setRequestColor = (status) => {
+            switch (status) {
+                case REQUEST_EXAMINATION:
+                    return 'examination-status'
+                    break
+                case REQUEST:
+                    return 'running-status'
+                    break
+                case REQUEST_FINISHED:
+                    return 'finished-status'
+                    break
+                case REQUEST_CANCELED:
+                    return 'canceled-status'
+                    break
+            }
+        }
+
+        //相談状態によるカラー設定
+        const setConsultationColor = (status) => {
+            switch (status) {
+                case CONSULTATION:
+                    return 'running-status'
+                    break
+                case CONSULTATION_FINISHED:
+                    return 'finished-status'
+                    break
+                case CONSULTATION_CANCELED:
+                    return 'canceled-status'
+                    break
+            }
+        }
+
         return {
             chatrooms,
             linkChatroomShow,
+            setRequestColor,
+            setConsultationColor,
         }
     }
 }
