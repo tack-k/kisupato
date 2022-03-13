@@ -11,5 +11,16 @@ export const commonConst = {
     //初期プロフィール画像
     DEFAULT_PROFILE: 'default_profile.png',
 
-    COMMON_PATH: '/images/common/'
+    COMMON_PATH: '/images/common/',
+
+    //依頼リクエストの状態
+    REQUEST_EXAMINATION: '0', //検討中
+    REQUEST: '1', //依頼中
+    REQUEST_FINISHED: '2', //取引完了
+    REQUEST_CANCELED: '3', //キャンセル
+
+    //相談状況
+    CONSULTATION: '0', //相談中
+    CONSULTATION_FINISHED: '1',
+    CONSULTATION_CANCELED: '2',
 }

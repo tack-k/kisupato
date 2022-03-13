@@ -33,10 +33,10 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 text-md font-semibold border">
-                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-red-100 rounded-sm">{{ chatroom.consultation_status }}</span>
+                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-red-100 rounded-sm">{{ chatroom.consultation_status_name }}</span>
                                 </td>
                                 <td class="px-4 py-3 text-xs border">
-                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-gray-100 rounded-sm">{{ chatroom.request_status }}</span>
+                                    <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-gray-100 rounded-sm">{{ chatroom.request_status_name }}</span>
                                 </td>
                                 <td class="px-4 py-3 text-sm border">{{ chatroom.c_created_at }}</td>
                                 <td class="px-4 py-3 text-sm border">{{ chatroom.request_finished_at }}</td>

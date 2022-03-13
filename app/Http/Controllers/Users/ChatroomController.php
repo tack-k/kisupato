@@ -69,12 +69,25 @@ class ChatroomController extends Controller {
 
         $messages = Message::getMessages($chatroom_id)->get();
         $chatroom = Chatroom::find($chatroom_id);
+        $this->_service->addChatroomStatusName($chatroom);
         $expertProfile = ExpertProfile::getExpertProfileForChatroom($chatroom['expert_id'])->first();
 
         return Inertia::render('Users/Chatrooms/Show', [
-            'chatroomId' => $chatroom_id,
+            'chatroom' => $chatroom,
             'messages' => $messages,
             'expertProfile' => $expertProfile,
         ]);
+    }
+
+    public function update(Request $request) {
+        $params = $request->validate([
+            'id' => 'exists:chatrooms,id',
+            'request_status' => 'between:0,3',
+            'consultation_status' => 'between:0,2',
+        ]);
+
+        Chatroom::find($params['id'])->update($params);
+
+        return redirect()->route('chatroom.index');
     }
 }

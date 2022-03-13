@@ -12,32 +12,7 @@ class ChatroomService {
             $data = new Carbon($chatroom['c_created_at']);
             $chatroom['c_created_at'] = $data->format('Y/m/d');
 
-            switch ($chatroom['consultation_status']) {
-                case '0':
-                    $chatroom['consultation_status_name'] = '相談中';
-                    break;
-                case '1':
-                    $chatroom['consultation_status_name'] = '完了';
-                    break;
-                case '2':
-                    $chatroom['consultation_status_name'] = 'キャンセル';
-                    break;
-            }
-
-            switch ($chatroom['request_status']) {
-                case '0':
-                    $chatroom['request_status_name'] = '検討中';
-                    break;
-                case '1':
-                    $chatroom['request_status_name'] = '依頼中';
-                    break;
-                case '2':
-                    $chatroom['request_status_name'] = '取引完了';
-                    break;
-                case '3':
-                    $chatroom['request_status_name'] = 'キャンセル';
-                    break;
-            }
+            $this->addChatroomStatusName($chatroom);
 
             $sort[$key] = $chatroom['m_created_at'];
 
@@ -48,6 +23,35 @@ class ChatroomService {
         array_multisort($sort, SORT_DESC, $chatroomsAry);
 
         return $chatroomsAry;
+    }
+
+    public function addChatroomStatusName($chatroom) {
+        switch ($chatroom['consultation_status']) {
+            case '0':
+                $chatroom['consultation_status_name'] = '相談中';
+                break;
+            case '1':
+                $chatroom['consultation_status_name'] = '完了';
+                break;
+            case '2':
+                $chatroom['consultation_status_name'] = 'キャンセル';
+                break;
+        }
+
+        switch ($chatroom['request_status']) {
+            case '0':
+                $chatroom['request_status_name'] = '検討中';
+                break;
+            case '1':
+                $chatroom['request_status_name'] = '依頼中';
+                break;
+            case '2':
+                $chatroom['request_status_name'] = '取引完了';
+                break;
+            case '3':
+                $chatroom['request_status_name'] = 'キャンセル';
+                break;
+        }
     }
 
 }

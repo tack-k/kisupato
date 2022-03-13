@@ -47,15 +47,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+                <div v-show="canMessage" class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
                     <div class="relative flex">
-         <span class="absolute inset-y-0 flex items-center">
-            <button type="button" class="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 text-gray-600">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-               </svg>
-            </button>
-         </span>
+                         <span class="absolute inset-y-0 flex items-center">
+                            <button type="button" class="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
+                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 text-gray-600">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                               </svg>
+                            </button>
+                         </span>
                         <input v-model="newMessage" type="text" placeholder="Write Something" class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-full py-3">
                         <div class="absolute right-0 items-center inset-y-0 hidden sm:flex">
                             <button type="button" class="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
@@ -82,6 +82,10 @@
                         </div>
                     </div>
                 </div>
+                <div v-show="!isRequesting" class="flex justify-center mt-4">
+                    <button @click="submitRequest(chatroom.request_status)" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing" class="expert-regular-btn mr-20">依頼する</button>
+                    <button @click="submitCancelConsultation" class="expert-outline-btn" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing">相談キャンセル</button>
+                </div>
             </div>
         </template>
     </my-page-layout>
@@ -90,33 +94,41 @@
 <script>
 import MyPageLayout from '@/Layouts/Users/MyPageLayout'
 import { toRefs, ref, computed, onMounted, watch, nextTick } from 'vue'
-import { usePage } from "@inertiajs/inertia-vue3"
+import { usePage, useForm } from "@inertiajs/inertia-vue3"
 import { commonConst } from '@/Consts/commonConst'
 
 export default {
     name: "Show",
     props: {
         messages: Object,
-        chatroomId: String,
+        chatroom: Object,
         expertProfile: Object,
     },
     components: { MyPageLayout },
     setup(props) {
         const user = computed(() => usePage().props?.value.auth.user);
         const expert = computed(() => usePage().props?.value.auth.expert);
-        const { PROFILE_PATH } = commonConst;
-        const { chatroomId, messages, expertProfile } = toRefs(props);
+        const {
+            PROFILE_PATH,
+            REQUEST_EXAMINATION,
+            REQUEST,
+            REQUEST_CANCELED,
+            REQUEST_FINISHED,
+            CONSULTATION,
+        } = commonConst;
+        const { chatroom, messages, expertProfile } = toRefs(props);
         const newMessage = ref('')
 
+        //ブロードキャスト受信設定
         const channel = Echo.private('message-channel.' + user.value?.id);
         channel.listen('.message-event', function (data) {
-            console.log(data)
             messages.value.push(data.message);
         });
 
+        //メッセージの送信
         const submit = () => {
             const params = {
-                chatroom_id: chatroomId.value,
+                chatroom_id: chatroom.value.id,
                 message: newMessage.value,
                 user_id: user.value?.id,
                 expert_id: expert.value?.id
@@ -147,6 +159,56 @@ export default {
 
         })
 
+        //メッセージ送信可否
+        const canMessage = ref(true);
+        if (chatroom.value.request_status === REQUEST_CANCELED || chatroom.value.request_status === REQUEST_FINISHED) {
+            canMessage.value = false;
+        }
+
+        //依頼リクエスト・相談キャンセル
+        const isRequesting = ref(false);
+        if (chatroom.value.request_status === REQUEST || chatroom.value.request_status === REQUEST_CANCELED) {
+            isRequesting.value = true;
+        }
+
+        const requestConfirmMessage = ref('')
+        const requestForm = useForm({
+            id: chatroom.value.id,
+            request_status: '',
+            consultation_status: '',
+        });
+
+        const submitChatroomStatus = (requestConfirmMessage) => {
+            if (confirm(requestConfirmMessage)) {
+                requestForm.post(route('chatroom.update'))
+            }
+        }
+
+        const submitRequest = () => {
+            if (chatroom.value.request_status === REQUEST_EXAMINATION) {
+                requestConfirmMessage.value = '仕事依頼をしたら、あなたからキャンセルできません。本当に仕事を依頼しますか？'
+                requestForm.request_status = '1';
+                requestForm.consultation_status = '1';
+                submitChatroomStatus(requestConfirmMessage.value)
+            } else {
+                alert('不正な送信です');
+            }
+
+        }
+
+        const submitCancelConsultation = () => {
+            if (chatroom.value.consultation_status === CONSULTATION) {
+                requestConfirmMessage.value = '相談をキャンセルしたら、メッセージを送ることができなくなります。本当に相談をキャンセルしますか？'
+                requestForm.request_status = '3';
+                requestForm.consultation_status = '2';
+                submitChatroomStatus(requestConfirmMessage.value)
+            } else {
+                alert('不正な送信です')
+            }
+
+        }
+
+
         return {
             newMessage,
             messages,
@@ -155,6 +217,11 @@ export default {
             PROFILE_PATH,
             messageRef,
             expertProfile,
+            submitRequest,
+            requestForm,
+            isRequesting,
+            submitCancelConsultation,
+            canMessage,
         }
     }
 }

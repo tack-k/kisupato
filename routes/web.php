@@ -84,6 +84,7 @@ Route::group(['middleware' => 'auth:user'], function () {
         Route::get('/', [ChatroomController::class, 'index'])->name('index');
         Route::get('/show/{id}', [ChatroomController::class, 'show'])->name('show');
         Route::post('/store', [ChatroomController::class, 'store'])->name('store');
+        Route::post('/update', [ChatroomController::class, 'update'])->name('update');
     });
     Route::group(['prefix' => 'message', 'as' => 'message.'], function() {
        Route::post('store', [MessagesController::class, 'update'])->name('update');
