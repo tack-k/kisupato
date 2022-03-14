@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
 
             ExpertSeeder::class,
+            ExpertProfileSeeder::class,
         ]);
     }
 }

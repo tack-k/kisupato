@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Experts\Expert;
+use App\Models\Experts\ExpertProfile;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -38,5 +41,7 @@ class ExpertSeeder extends Seeder
                 'updated_by' => 'seeder',
             ]
         ]);
+
+        Expert::factory()->count(100)->create();
     }
 }
