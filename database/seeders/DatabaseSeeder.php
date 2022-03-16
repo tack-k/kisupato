@@ -28,6 +28,9 @@ class DatabaseSeeder extends Seeder
 
             ExpertSeeder::class,
             ExpertProfileSeeder::class,
+
+            UserSeeder::class,
+            UserProfileSeeder::class,
         ]);
     }
 }
