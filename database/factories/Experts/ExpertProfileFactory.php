@@ -24,7 +24,7 @@ class ExpertProfileFactory extends Factory {
             },
             'status' => 0,
             'nickname' => $this->faker->userName(),
-            'profile_image' => 'profile_image1',
+            'profile_image' => 'profile_image' . rand(1, 10) . '.jpeg',
             'self_introduction' => $this->faker->realText(80),
             'activity_title' => $this->faker->realText(25),
             'activity_content' => $this->faker->realText(150),

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Consts\CommonConst;
 use App\Models\Experts\Expert;
 use App\Models\Experts\ExpertProfile;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -42,6 +43,6 @@ class ExpertSeeder extends Seeder
             ]
         ]);
 
-        Expert::factory()->count(100)->create();
+        Expert::factory()->count(CommonConst::EXPERT_COUNT)->create();
     }
 }

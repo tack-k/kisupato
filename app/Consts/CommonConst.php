@@ -22,4 +22,11 @@ class CommonConst {
     public const MIDDLE = 2;
     public const EAST = 3;
     public const SOUTH = 4;
+
+    //seeder設定
+    PUBLIC CONST  EXPERT_COUNT = 100;
+    PUBLIC CONST  ORIGINAL_EXPERT_COUNT = 1;
+
+    PUBLIC CONST  USER_COUNT = 50;
+    PUBLIC CONST  ORIGINAL_USER_COUNT = 1;
 }
