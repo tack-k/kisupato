@@ -23,4 +23,10 @@ export const commonConst = {
     CONSULTATION: '0', //相談中
     CONSULTATION_FINISHED: '1',
     CONSULTATION_CANCELED: '2',
+
+    //アカウント情報
+    MEN: 0,
+    WOMEN: 1,
+    OTHER_GENDER: 2,
+
 }

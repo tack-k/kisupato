@@ -99,6 +99,9 @@ Route::group(['middleware' => 'auth:user'], function () {
        Route::get('show', [UserProfilesController::class, 'show'])->name('show');
        Route::post('/update', [UserProfilesController::class, 'update'])->name('update');
     });
+    Route::group(['prefix' => 'account', 'as' => 'account.'], function() {
+       Route::get('/show', [UserController::class, 'show'])->name('show');
+    });
 });
 
 
