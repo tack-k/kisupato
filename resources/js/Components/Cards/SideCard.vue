@@ -37,7 +37,7 @@
                 </div>
 
                 <ul class="flex">
-                    <li v-for="(tag, index) in profile.tags" :key="index" class="ml-3 px-2 py-1 bg-gray-800 text-white text-xs font-bold uppercase rounded">
+                    <li v-for="(tag, index) in profile.tags" :key="index" class="ml-3 px-2 py-1 bg-yellow-500 text-white text-xs font-bold uppercase rounded">
                         {{ tag }}
                     </li>
                 </ul>

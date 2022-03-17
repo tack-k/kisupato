@@ -30,7 +30,7 @@
                             {{ profile.nickname }}
                         </p>
                         <ul class="flex">
-                            <li class="text-gray-400 dark:text-gray-300 ml-4"
+                            <li class="text-gray-400 dark:text-gray-300 ml-4 text-white bg-yellow-500 font-bold px-1 py-0.5 rounded"
                                 v-for="(tag, index) in profile.tags" :key="index">
                                 {{ tag }}
                             </li>
