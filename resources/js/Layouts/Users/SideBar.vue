@@ -57,7 +57,7 @@ export default {
                 "id": 0,
                 'icon': faPortrait,
                 "title": "プロフィール",
-                "link": "home",
+                "link": "profile.show",
             },
             "talk_room": {
                 "id": 1,
@@ -81,7 +81,7 @@ export default {
                 "id": 4,
                 'icon': faUserCircle,
                 "title": "アカウント",
-                "link": "home",
+                "link": "account.show",
             },
             "mail_setting": {
                 "id": 5,
