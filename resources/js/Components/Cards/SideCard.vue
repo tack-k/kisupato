@@ -30,7 +30,7 @@
                         <p class="ml-3">{{ profile.nickname }}</p>
                         <ul>
                             <li v-for="(position, index) in profile.positions" :key="index" class="ml-3 text-gray-700 font-bold text-sm py-2">
-                                {{ position.position }}
+                                {{ position }}
                             </li>
                         </ul>
                     </div>
@@ -38,7 +38,7 @@
 
                 <ul class="flex">
                     <li v-for="(tag, index) in profile.tags" :key="index" class="ml-3 px-2 py-1 bg-gray-800 text-white text-xs font-bold uppercase rounded">
-                        {{ tag.tag }}
+                        {{ tag }}
                     </li>
                 </ul>
             </div>

@@ -11,7 +11,7 @@
                 <ul>
                     <li class="text-indigo-500 text-md font-medium"
                         v-for="(position, index) in profile.positions" :key="index">
-                        {{ position.position }}
+                        {{ position }}
                     </li>
                 </ul>
                 <p class="text-gray-800 dark:text-white text-xl font-medium mb-2">
@@ -32,7 +32,7 @@
                         <ul class="flex">
                             <li class="text-gray-400 dark:text-gray-300 ml-4"
                                 v-for="(tag, index) in profile.tags" :key="index">
-                                {{ tag.tag }}
+                                {{ tag }}
                             </li>
                         </ul>
                     </div>
