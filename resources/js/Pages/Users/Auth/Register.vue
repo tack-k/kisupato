@@ -25,7 +25,7 @@
         </div>
 
         <div class="mt-4">
-            <label-required for="nickname" value="ニックネーム" />
+            <breeze-required for="nickname" value="ニックネーム" />
             <breeze-input id="nickname" type="text" class="mt-1 block w-full" placeholder="tack" v-model="form.nickname" />
         </div>
 
