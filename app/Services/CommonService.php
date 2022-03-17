@@ -28,4 +28,24 @@ class CommonService {
         return sprintf('%0'. $length. 'd', $rand);
 
     }
+
+    /**
+     * コンマで繋がれた文字列を配列に変換する
+     * @param $activityImage
+     * @return false|string[]
+     */
+    public function changeStingToArray($activityImage)
+    {
+        return explode(',', $activityImage);
+    }
+
+    /**
+     * 表示する文字数を制限する
+     * @param $string
+     * @param $limitCount
+     * @return string
+     */
+    public function limitNumberOfCharacters($string, $limitCount) {
+        return mb_substr($string, 1, $limitCount) . '...';
+    }
 }

@@ -5,18 +5,32 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Models\Experts\ExpertProfile;
 use App\Models\Users\Favorite;
+use App\Services\ExpertProfileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class FavoritesController extends Controller {
+
+    protected $_expertProfileService;
+
+    public function __construct()
+    {
+        $this->_expertProfileService = new ExpertProfileService();
+    }
+
     public function index() {
         $userId = Auth::id();
         $profiles = Favorite::getFavoriteAndExpertProfileInfo($userId)->get();
+
+
         foreach ($profiles as $profile) {
-            $profile->tags = explode(',', $profile->tags);
-            $profile->positions = explode(',', $profile->positions);
-            $profile->activity_image = explode(',', $profile->activity_image)[0];
+            $formatProfile = $this->_expertProfileService->formatExpertProfile($profile);
+            $profile->activity_image = $formatProfile['activity_image'];
+            $profile->tags = $formatProfile['tags'];
+            $profile->positions = $formatProfile['positions'];
+            $profile->activity_content = $formatProfile['activity_content'];
+            $profile->activity_title = $formatProfile['activity_title'];
         }
         return Inertia::render('Users/Favorite/Index', [
              'profiles' => $profiles,

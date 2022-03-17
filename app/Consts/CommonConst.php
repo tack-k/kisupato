@@ -29,4 +29,10 @@ class CommonConst {
 
     PUBLIC CONST  USER_COUNT = 50;
     PUBLIC CONST  ORIGINAL_USER_COUNT = 1;
+
+    //プロフィールカードの活動内容の文字制限数
+    public const MAX_ACTIVITY_CONTENT_COUNT = 40;
+
+    //プロフィールカードの活動タイトルの文字制限数
+    public const MAX_ACTIVITY_TITLE_COUNT = 13;
 }

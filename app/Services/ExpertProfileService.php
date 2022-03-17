@@ -207,4 +207,22 @@ class ExpertProfileService
 
     }
 
+
+    public function formatExpertProfile($profile)
+    {
+        $formatProfile['tags'] = $this->_commonService->changeStingToArray($profile['tags']);
+        $formatProfile['positions'] = $this->_commonService->changeStingToArray($profile['positions']);
+        //カルーセル作成まで暫定的に一番最初の画像だけを設定する
+        $formatProfile['activity_image'] = $this->_commonService->changeStingToArray($profile['activity_image'])[0];
+        if (mb_strlen($profile['activity_content']) > CommonConst::MAX_ACTIVITY_CONTENT_COUNT) {
+            $formatProfile['activity_content'] = $this->_commonService->limitNumberOfCharacters($profile['activity_content'], CommonConst::MAX_ACTIVITY_CONTENT_COUNT);
+        }
+        if (mb_strlen($profile['activity_title']) > CommonConst::MAX_ACTIVITY_TITLE_COUNT) {
+            $formatProfile['activity_title'] = $this->_commonService->limitNumberOfCharacters($profile['activity_title'], CommonConst::MAX_ACTIVITY_TITLE_COUNT);
+        }
+
+        return $formatProfile;
+
+    }
+
 }

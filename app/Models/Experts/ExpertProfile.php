@@ -83,12 +83,15 @@ class ExpertProfile extends Model
      */
     public function scopeGetExpertProfileCardInfo($query) {
 
-        return $query->selectRaw('GROUP_CONCAT(ai.activity_image) as activity_image, expert_profiles.expert_id, expert_profiles.id as expert_profile_id, nickname, profile_image, activity_title, activity_content, f.id as favorite_id')
+        return $query->selectRaw('GROUP_CONCAT(ai.activity_image) as activity_image, expert_profiles.expert_id, expert_profiles.id as expert_profile_id, nickname, profile_image, activity_title, activity_content, f.id as favorite_id, GROUP_CONCAT(DISTINCT t.name) as tags, GROUP_CONCAT(DISTINCT p.name) as positions')
             ->join('activity_images as ai', 'expert_profiles.id', '=', 'ai.expert_profile_id')
             ->leftjoin('favorites as f', 'expert_profiles.expert_id', '=', 'f.expert_id')
-            ->with(['tags:name as tag', 'positions:name as position'])
+            ->join('expert_profiles_tags as ept', 'ept.expert_profile_id', '=', 'expert_profiles.id')
+            ->join('tags as t', 't.id', '=', 'ept.tag_id')
+            ->join('expert_profiles_positions as epp', 'epp.expert_profile_id', '=', 'expert_profiles.id')
+            ->join('positions as p', 'p.id', '=', 'epp.position_id')
             ->where('status', '0')
-            ->take(6)
+            ->take(50)
             ->groupBy('ai.expert_profile_id')
             ->groupBy('expert_profiles.id')
             ->groupBy('f.id')
