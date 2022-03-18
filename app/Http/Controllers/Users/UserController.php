@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserAccountRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Users\User;
 use App\Models\Users\UserProfile;
@@ -74,24 +75,31 @@ class UserController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        return Inertia::render('Users/Account/Edit');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserAccountRequest $request)
     {
-        //
+
+        $params = $request->except([
+            'current_password',
+            'password_confirmation',
+        ]);
+        $params['password'] = Hash::make($request->password);
+
+        User::update($params);
+
+        return redirect()->route('account.show');
+
     }
 
     /**

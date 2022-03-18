@@ -101,6 +101,8 @@ Route::group(['middleware' => 'auth:user'], function () {
     });
     Route::group(['prefix' => 'account', 'as' => 'account.'], function() {
        Route::get('/show', [UserController::class, 'show'])->name('show');
+       Route::get('/edit', [UserController::class, 'edit'])->name('edit');
+       Route::post('/update', [UserController::class, 'update'])->name('update');
     });
 });
 

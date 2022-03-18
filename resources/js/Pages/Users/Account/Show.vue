@@ -34,7 +34,7 @@
                 <p class="base-font-s">●●●●●●●●</p>
             </div>
             <div class="flex justify-center mt-4">
-                <Link href="#" class="expert-regular-btn mr-20">変更する</Link>
+                <Link :href="route('account.edit')" class="expert-regular-btn mr-20">変更する</Link>
                 <Link :href="route('profile.show')" class="expert-outline-btn">戻る</Link>
             </div>
         </template>
