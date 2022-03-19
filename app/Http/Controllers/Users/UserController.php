@@ -93,10 +93,18 @@ class UserController extends Controller {
         $params = $request->except([
             'current_password',
             'password_confirmation',
+            'password',
+            'is_password_change',
         ]);
-        $params['password'] = Hash::make($request->password);
 
-        User::update($params);
+        if(isset($request->password)) {
+            $params['password'] = Hash::make($request->password);
+        }
+
+        $userId = Auth::id();
+        User::where('id', $userId)->update($params);
+
+        session()->flash('message', 'アカウント情報を変更しました。');
 
         return redirect()->route('account.show');
 
