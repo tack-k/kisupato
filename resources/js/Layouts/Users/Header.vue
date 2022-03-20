@@ -1,5 +1,5 @@
 <template>
-    <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 user-bg h-16">
+    <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 user-bg" :class="{'h-16': isChatroom}">
         <div class="container px-4 mx-auto flex flex-wrap items-center justify-between">
             <div class="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
                 <Link class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white" :href="route('home')">
@@ -42,7 +42,7 @@
 <script>
 import Fa from "vue-fa";
 import { Link } from "@inertiajs/inertia-vue3";
-import { ref, computed } from "vue";
+import { ref, computed, toRefs } from "vue";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import { usePage } from "@inertiajs/inertia-vue3"
@@ -53,8 +53,15 @@ export default {
         Fa,
         Link,
     },
+    props: {
+        isChatroom: {
+            type: Boolean,
+            default: false,
+        },
+    },
 
-    setup() {
+    setup(propa) {
+        const {isChatroom} = toRefs(propa);
         let showMenu = ref(false)
         const toggleNavbar = () => showMenu.value = !showMenu.value
         const user = computed(() => usePage().props?.value.auth.user);
@@ -66,6 +73,7 @@ export default {
             faUser,
             faBars,
             user,
+            isChatroom,
         }
     },
 }

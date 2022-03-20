@@ -1,5 +1,5 @@
 <template>
-    <my-page-layout>
+    <my-page-layout :isChatroom="true">
         <template #content>
             <div class="flex-1 p:2 sm:p-6 flex flex-col h-full">
                 <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
