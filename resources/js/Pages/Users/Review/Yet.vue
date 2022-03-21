@@ -1,7 +1,7 @@
 <template>
     <my-page-layout>
         <template #content>
-            <div class="pt-8">
+            <div class="pt-8" v-if="chatrooms.length === 0">
                 <FixedMessage>未レビューの人材はいません。</FixedMessage>
             </div>
             <section v-else class="container mx-auto p-6 font-mono">
@@ -17,15 +17,15 @@
                             </tr>
                             </thead>
                             <tbody class="bg-white">
-                            <tr class="text-gray-700 user-hover hover:bg-gray-100" v-for="(value, index) in 10" :key="index">
+                            <tr @click="showModal(chatroom.id)" class="text-gray-700 user-hover hover:bg-gray-100" v-for="(chatroom, index) in chatrooms" :key="index">
                                 <td class="px-4 py-3 border">
-                                    <img class="object-cover w-12 h-full rounded-full" :src="COMMON_PATH + DEFAULT_PROFILE" alt="" loading="lazy"/>
+                                    <img class="object-cover w-12 h-12 rounded-full" :src="PROFILE_PATH + chatroom.profile_image" alt="" loading="lazy"/>
                                 </td>
                                 <td class="px-4 py-3 text-xs font-semibold border">
-                                    <p class="font-semibold text-black">タック</p>
+                                    <p class="font-semibold text-black">{{ chatroom.nickname }}</p>
 
                                 </td>
-                                <td class="px-4 py-3 text-sm border">2022/01/20</td>
+                                <td class="px-4 py-3 text-sm border">{{ chatroom.request_finished_at }}</td>
                                 <td class="px-4 py-3 text-sm border">2022/01/30</td>
                             </tr>
                             </tbody>
@@ -33,6 +33,7 @@
                     </div>
                 </div>
             </section>
+            <ReviewRegisterModal :isShow="isShow" :chatroomId="chatroomId" @emitIsShow="handleIsShow"/>
         </template>
     </my-page-layout>
 </template>
@@ -41,20 +42,43 @@
 import MyPageLayout from '@/Layouts/Users/MyPageLayout'
 import FixedMessage from '@/Components/Messages/FixedMessage'
 import { commonConst } from '@/Consts/commonConst';
+import ReviewRegisterModal from '@/Layouts/Users/ReviewRegisterModal'
+import { ref, toRefs, onMounted } from 'vue'
 
 export default {
     name: "Yet",
     components: {
+        ReviewRegisterModal,
         MyPageLayout,
         FixedMessage
     },
-    props: {},
-    setup() {
-        const { COMMON_PATH, DEFAULT_PROFILE } = commonConst
+    props: {
+        chatrooms: Object,
+    },
+    setup(props) {
+        const { chatrooms } = toRefs(props);
+        const { PROFILE_PATH } = commonConst
+        const isShow = ref(false);
+
+
+        const chatroomId = ref(null);
+
+        const showModal = (id) => {
+            chatroomId.value = id;
+            isShow.value = true;
+        }
+
+        const handleIsShow = (data) => {
+            isShow.value = data
+        }
 
         return {
-            DEFAULT_PROFILE,
-            COMMON_PATH,
+            PROFILE_PATH,
+            isShow,
+            handleIsShow,
+            showModal,
+            chatrooms,
+            chatroomId,
         }
     }
 }

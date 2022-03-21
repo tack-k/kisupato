@@ -24,15 +24,26 @@ class CommonConst {
     public const SOUTH = 4;
 
     //seeder設定
-    PUBLIC CONST  EXPERT_COUNT = 100;
-    PUBLIC CONST  ORIGINAL_EXPERT_COUNT = 1;
+    public const  EXPERT_COUNT = 100;
+    public const  ORIGINAL_EXPERT_COUNT = 1;
 
-    PUBLIC CONST  USER_COUNT = 50;
-    PUBLIC CONST  ORIGINAL_USER_COUNT = 1;
+    public const  USER_COUNT = 50;
+    public const  ORIGINAL_USER_COUNT = 1;
 
     //プロフィールカードの活動内容の文字制限数
     public const MAX_ACTIVITY_CONTENT_COUNT = 40;
 
     //プロフィールカードの活動タイトルの文字制限数
     public const MAX_ACTIVITY_TITLE_COUNT = 13;
+
+    //依頼リクエストの状態
+    public const REQUEST_EXAMINATION = '0'; //検討中
+    public const REQUEST = '1'; //依頼中
+    public const REQUEST_FINISHED = '2';
+    public const REQUEST_CANCELED = '3'; //キャンセル
+
+    //相談状況
+    public const CONSULTATION = '0'; //相談中
+    public const CONSULTATION_FINISHED = '1';
+    public const CONSULTATION_CANCELED = '2';
 }

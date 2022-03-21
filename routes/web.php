@@ -12,6 +12,7 @@ use \App\Http\Controllers\Users\MessagesController;
 use \App\Http\Controllers\Users\UserContactController;
 use \App\Http\Controllers\Users\FavoritesController;
 use \App\Http\Controllers\Users\UserProfilesController;
+use \App\Http\Controllers\Users\ExpertReviewsController;
 use \App\Http\Controllers\Admins\AdminController;
 use \App\Http\Controllers\Admins\DepartmentController;
 use \App\Http\Controllers\Admins\PositionController;
@@ -103,6 +104,9 @@ Route::group(['middleware' => 'auth:user'], function () {
        Route::get('/show', [UserController::class, 'show'])->name('show');
        Route::get('/edit', [UserController::class, 'edit'])->name('edit');
        Route::post('/update', [UserController::class, 'update'])->name('update');
+    });
+    Route::group(['prefix' => 'review', 'as' => 'review.'], function() {
+       Route::get('/yet', [ExpertReviewsController::class, 'yet'])->name('yet');
     });
 });
 

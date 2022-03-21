@@ -48,4 +48,14 @@ class CommonService {
     public function limitNumberOfCharacters($string, $limitCount) {
         return mb_substr($string, 1, $limitCount) . '...';
     }
+
+    /**
+     * 日付と時間を2000/01/01の形にフォーマットする
+     * @param $dateTime
+     * @return string
+     */
+    public function formatDate($dateTime) {
+        $date = new Carbon($dateTime);
+        return $date->format('Y/m/d');
+    }
 }
