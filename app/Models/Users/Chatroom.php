@@ -5,6 +5,7 @@ namespace App\Models\Users;
 use App\Consts\CommonConst;
 use App\Models\Experts\Expert;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Chatroom extends Model
 {
@@ -49,6 +50,8 @@ class Chatroom extends Model
      * @param $userId
      */
     public function scopeGetChatroomsRewviewYet($query, $userId) {
+        $reviewTerm = CommonConst::REVIEW_TERM;
+
         $query->select('chatrooms.id', 'ep.nickname', 'ep.profile_image', 'ep.expert_id', 'request_finished_at')
             ->join('expert_profiles as ep', 'ep.expert_id', '=', 'chatrooms.expert_id')
             ->whereNotExists(function ($query) {
@@ -56,7 +59,10 @@ class Chatroom extends Model
                     ->whereColumn('er.chatroom_id', 'chatrooms.id');
             })
             ->where('chatrooms.user_id', $userId)
-            ->where('chatrooms.request_status', CommonConst::REQUEST_FINISHED);
+            ->where('chatrooms.request_status', CommonConst::REQUEST_FINISHED)
+            ->where(function ($query) use ($reviewTerm) {
+                $query->whereRaw("date_format(request_finished_at, '%Y-%m-%d') > any (select date_add(date_format(now(), '%Y-%m-%d'), INTERVAL -{$reviewTerm} DAY) from chatrooms)");
+            });
     }
 
     public function user() {

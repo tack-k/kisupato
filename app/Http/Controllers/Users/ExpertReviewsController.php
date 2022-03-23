@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Users;
 
+use App\Consts\CommonConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpertReviewRequest;
 use App\Models\Users\Chatroom;
@@ -22,7 +23,7 @@ class ExpertReviewsController extends Controller {
 
         foreach ($chatrooms as $chatroom) {
             $chatroom['request_finished_at'] = $commonService->formatDate($chatroom['request_finished_at']);
-            $chatroom['request_enable_day'] = $commonService->afterDate($chatroom['request_finished_at'], 10);
+            $chatroom['request_enable_day'] = $commonService->afterDate($chatroom['request_finished_at'], CommonConst::REVIEW_TERM);
 
         }
 

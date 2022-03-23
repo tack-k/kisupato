@@ -49,4 +49,7 @@ class CommonConst {
 
     //年月日の表示形式
     public const DATE_FORMAT = 'Y/m/d';
+
+    //レビュー可能期間
+    public const REVIEW_TERM = 10;
 }
