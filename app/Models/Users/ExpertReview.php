@@ -13,9 +13,10 @@ class ExpertReview extends Model {
     use HasFactory, Notifiable, SoftDeletes, AuthorObservable;
 
     protected $fillable = [
-      'expert_id',
-      'user_id',
-      'comment',
-      'evaluation',
+        'chatroom_id',
+        'expert_id',
+        'user_id',
+        'comment',
+        'evaluation',
     ];
 }

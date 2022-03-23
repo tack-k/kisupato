@@ -17,7 +17,7 @@
                             </tr>
                             </thead>
                             <tbody class="bg-white">
-                            <tr @click="showModal(chatroom.id)" class="text-gray-700 user-hover hover:bg-gray-100" v-for="(chatroom, index) in chatrooms" :key="index">
+                            <tr @click="showModal(chatroom)" class="text-gray-700 user-hover hover:bg-gray-100" v-for="(chatroom, index) in chatrooms" :key="index">
                                 <td class="px-4 py-3 border">
                                     <img class="object-cover w-12 h-12 rounded-full" :src="PROFILE_PATH + chatroom.profile_image" alt="" loading="lazy"/>
                                 </td>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </section>
-            <ReviewRegisterModal :isShow="isShow" :chatroomId="chatroomId" @emitIsShow="handleIsShow"/>
+            <ReviewRegisterModal :isShow="isShow" :ids="ids" @emitIsShow="handleIsShow"/>
         </template>
     </my-page-layout>
 </template>
@@ -43,7 +43,7 @@ import MyPageLayout from '@/Layouts/Users/MyPageLayout'
 import FixedMessage from '@/Components/Messages/FixedMessage'
 import { commonConst } from '@/Consts/commonConst';
 import ReviewRegisterModal from '@/Layouts/Users/ReviewRegisterModal'
-import { ref, toRefs, onMounted } from 'vue'
+import { ref, toRefs, reactive } from 'vue'
 
 export default {
     name: "Yet",
@@ -61,10 +61,14 @@ export default {
         const isShow = ref(false);
 
 
-        const chatroomId = ref(null);
+        const ids = reactive({
+            expert_id: null,
+            chatroom_id: null,
+        });
 
-        const showModal = (id) => {
-            chatroomId.value = id;
+        const showModal = (chatroom) => {
+            ids.chatroom_id = chatroom.id
+            ids.expert_id = chatroom.expert_id
             isShow.value = true;
         }
 
@@ -78,7 +82,7 @@ export default {
             handleIsShow,
             showModal,
             chatrooms,
-            chatroomId,
+            ids,
         }
     }
 }

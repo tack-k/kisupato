@@ -2,6 +2,7 @@
 
 namespace App\Models\Users;
 
+use App\Consts\CommonConst;
 use App\Models\Experts\Expert;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,6 +41,22 @@ class Chatroom extends Model
             })
             ->where('chatrooms.user_id', $userId)
             ->distinct();
+    }
+
+    /**
+     * ユーザーがレビューしていないチャットルームを取得する
+     * @param $query
+     * @param $userId
+     */
+    public function scopeGetChatroomsRewviewYet($query, $userId) {
+        $query->select('chatrooms.id', 'ep.nickname', 'ep.profile_image', 'ep.expert_id', 'request_finished_at')
+            ->join('expert_profiles as ep', 'ep.expert_id', '=', 'chatrooms.expert_id')
+            ->whereNotExists(function ($query) {
+                $query->from('expert_reviews as er')
+                    ->whereColumn('er.chatroom_id', 'chatrooms.id');
+            })
+            ->where('chatrooms.user_id', $userId)
+            ->where('chatrooms.request_status', CommonConst::REQUEST_FINISHED);
     }
 
     public function user() {

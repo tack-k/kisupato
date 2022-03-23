@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Consts\CommonConst;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ExpertReviewRequest;
 use App\Models\Users\Chatroom;
 use App\Models\Users\ExpertReview;
 use App\Services\CommonService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ExpertReviewsController extends Controller {
@@ -16,11 +15,7 @@ class ExpertReviewsController extends Controller {
 
         $userId = \Auth::id();
 
-        $chatrooms = Chatroom::select('chatrooms.id', 'ep.nickname', 'ep.profile_image', 'request_finished_at')
-            ->join('expert_profiles as ep', 'ep.expert_id', '=', 'chatrooms.expert_id')
-            ->where('chatrooms.user_id', $userId)
-            ->where('chatrooms.request_status', CommonConst::REQUEST_FINISHED)
-            ->get();
+        $chatrooms = Chatroom::getChatroomsRewviewYet($userId)->get();
 
         $commonService = new CommonService();
 
@@ -33,8 +28,17 @@ class ExpertReviewsController extends Controller {
         ]);
     }
 
-    public function store() {
+    public function store(ExpertReviewRequest $request) {
 
+        $userId = \Auth::id();
+        $reviewParams = $request->validated();
+        $reviewParams['user_id'] = $userId;
+
+        ExpertReview::create($reviewParams);
+
+        session()->flash('message', 'レビューを登録しました');
+
+        return redirect()->route('review.yet');
     }
 
 }

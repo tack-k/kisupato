@@ -107,6 +107,7 @@ Route::group(['middleware' => 'auth:user'], function () {
     });
     Route::group(['prefix' => 'review', 'as' => 'review.'], function() {
        Route::get('/yet', [ExpertReviewsController::class, 'yet'])->name('yet');
+       Route::post('/store', [ExpertReviewsController::class, 'store'])->name('store');
     });
 });
 

@@ -9,10 +9,11 @@ class CreateExpertReviewsTable extends Migration {
     {
         Schema::create('expert_reviews', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('chatroom_id')->constrained();
             $table->foreignId('expert_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->text('comment')->nullable();
-            $table->string('evaluation', 10);
+            $table->float('evaluation', 2, 1);
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();

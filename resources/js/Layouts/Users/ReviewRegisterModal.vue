@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { ref, reactive, toRefs } from "vue";
+import { ref, reactive, toRefs, watch } from "vue";
 import BreezeValidationErrors from '@/Components/Validations/ValidationErrors'
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import RegularButton from "@/Components/Buttons/RegularButton";
@@ -82,17 +82,25 @@ export default {
     },
     props: {
         isShow: Boolean,
-        chatroomId: Number,
+        ids: Object,
     },
     emits: ['emitIsShow'],
 
     setup(props, { emit }) {
 
-        const { isShow, chatroomId } = toRefs(props);
+        const { isShow, ids } = toRefs(props);
 
         const form = useForm({
-            evaluation: '',
+            evaluation: null,
             comment: '',
+            chatroom_id: null,
+            expert_id: null,
+
+        })
+
+        watch(ids.value, (newVal, oldVal) => {
+            form.expert_id = newVal.expert_id
+            form.chatroom_id = newVal.chatroom_id
         })
 
         const submit = () => {
@@ -107,14 +115,14 @@ export default {
 
         const toggleModal = () => {
             form.comment = '';
-            form.evaluation = '';
+            form.evaluation = null;
             emit('emitIsShow', false)
         }
 
-        const rating = reactive({
+        const rating ={
             increment: 0.5,
             starSize: 30,
-        });
+        };
 
         return {
             isShow,
@@ -122,7 +130,7 @@ export default {
             form,
             submit,
             faWindowClose,
-            chatroomId,
+            ids,
             rating,
         }
     },
