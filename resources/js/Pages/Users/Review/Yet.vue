@@ -1,5 +1,5 @@
 <template>
-    <my-page-layout>
+    <my-page-layout :isValidationShow="isValidationShow">
         <template #content>
             <div class="pt-8" v-if="chatrooms.length === 0">
                 <FixedMessage>未レビューの人材はいません。</FixedMessage>
@@ -58,6 +58,7 @@ export default {
     setup(props) {
         const { chatrooms } = toRefs(props);
         const { PROFILE_PATH } = commonConst
+        const isValidationShow = ref(false);
         const isShow = ref(false);
 
 
@@ -83,6 +84,7 @@ export default {
             showModal,
             chatrooms,
             ids,
+            isValidationShow,
         }
     }
 }

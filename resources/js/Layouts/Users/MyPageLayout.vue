@@ -6,7 +6,7 @@
         <div class="overflow-y-scroll h-screen w-full" :class="{'display-container': isChatroom}">
             <div class="container mx-auto py-10 max-w-screen-lg expert-bg-white shadow-md w-full md:px-10 p-4" :class="{'chatroom-container': isChatroom}">
                 <FlashMessage/>
-                <ValidationFlameErrors/>
+                <ValidationFlameErrors v-if="isValidationShow"/>
                 <slot name="content"/>
             </div>
         </div>
@@ -38,6 +38,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isValidationShow: {
+            type: Boolean,
+            default: true,
+        },
     },
     components: {
         FlashMessage,
@@ -47,10 +51,11 @@ export default {
     },
     setup(props) {
 
-        const {isChatroom} = toRefs(props);
+        const {isChatroom, isValidationShow} = toRefs(props);
 
         return {
             isChatroom,
+            isValidationShow,
         }
     }
 }
