@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Consts\CommonConst;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -56,6 +57,18 @@ class CommonService {
      */
     public function formatDate($dateTime) {
         $date = new Carbon($dateTime);
-        return $date->format('Y/m/d');
+        return $date->format(CommonConst::DATE_FORMAT);
+    }
+
+
+    /**
+     * 〇日後の日付を設定する
+     * @param $date
+     * @param $term
+     * @return string
+     */
+    public function afterDate($date, $term) {
+        $day = Carbon::createFromFormat(CommonConst::DATE_FORMAT, $date);
+        return $day->addDay($term)->format(CommonConst::DATE_FORMAT);
     }
 }

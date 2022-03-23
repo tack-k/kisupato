@@ -26,7 +26,7 @@
 
                                 </td>
                                 <td class="px-4 py-3 text-sm border">{{ chatroom.request_finished_at }}</td>
-                                <td class="px-4 py-3 text-sm border">2022/01/30</td>
+                                <td class="px-4 py-3 text-sm border">{{ chatroom.request_enable_day }}</td>
                             </tr>
                             </tbody>
                         </table>

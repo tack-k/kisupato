@@ -7,6 +7,7 @@ use App\Http\Requests\ExpertReviewRequest;
 use App\Models\Users\Chatroom;
 use App\Models\Users\ExpertReview;
 use App\Services\CommonService;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 
 class ExpertReviewsController extends Controller {
@@ -21,6 +22,8 @@ class ExpertReviewsController extends Controller {
 
         foreach ($chatrooms as $chatroom) {
             $chatroom['request_finished_at'] = $commonService->formatDate($chatroom['request_finished_at']);
+            $chatroom['request_enable_day'] = $commonService->afterDate($chatroom['request_finished_at'], 10);
+
         }
 
         return Inertia::render('Users/Review/Yet', [

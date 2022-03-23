@@ -46,4 +46,7 @@ class CommonConst {
     public const CONSULTATION = '0'; //相談中
     public const CONSULTATION_FINISHED = '1';
     public const CONSULTATION_CANCELED = '2';
+
+    //年月日の表示形式
+    public const DATE_FORMAT = 'Y/m/d';
 }
