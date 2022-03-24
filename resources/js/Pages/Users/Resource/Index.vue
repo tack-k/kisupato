@@ -144,6 +144,6 @@ export default {
 <style scoped lang="scss">
 .card-wrapper {
     transform: translate(-50%, -50%);
-    @apply fixed left-1/2 top-1/2 z-50
+    @apply fixed left-1/2 top-1/2 z-50 w-80
 }
 </style>
