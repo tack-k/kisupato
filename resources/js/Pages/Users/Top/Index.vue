@@ -139,7 +139,7 @@ export default {
                 return
             }
 
-            tags.forEach(tag => {
+            tags.value.forEach(tag => {
                 if (tag.name.indexOf(e.target.innerText) !== NO_RESULTS) {
                     form.tag = tag.id;
                     displayTag.value = tag.name;
@@ -157,7 +157,7 @@ export default {
                 isNoTag.value = false;
             }
 
-            tags.forEach(tag => {
+            tags.value.forEach(tag => {
                 if (tag.name.indexOf(displayTag.value) !== NO_RESULTS) {
                     filteredTags.value.push(tag)
                 }
