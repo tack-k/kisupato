@@ -29,4 +29,7 @@ export const commonConst = {
     WOMEN: 1,
     OTHER_GENDER: 2,
 
+    //トップ画面プロフィール最大表示件数
+    MAX_PROFILE_COUNT_TOP: 6,
+
 }

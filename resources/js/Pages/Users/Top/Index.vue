@@ -65,11 +65,14 @@
                         <template v-for="(profile, key) in profiles" :key="key">
                             <VerticalCard @emitFavorite="handleFavorite" :profile="profile" :isFavorite="isFavorites[profile.expert_id]"/>
                         </template>
+                        <template v-if="isShowExtraProfiles" v-for="(extraProfile, key) in extraProfiles" :key="key">
+                            <VerticalCard @emitFavorite="handleFavorite" :profile="extraProfile" :isFavorite="isFavorites[extraProfile.expert_id]"/>
+                        </template>
                     </div>
                     <div class="mt-16 text-center">
-                        <Link href="/" v-if="profiles.length >= MAX_PROFILE_COUNT"
-                              class="text-xl base-font-bold user-bg user-text-white px-4 py-2 rounded-full">もっとみる
-                        </Link>
+                        <span @click="toggleExtraProfiles" v-if="profiles.length >= MAX_PROFILE_COUNT_TOP"
+                              class="text-xl base-font-bold user-bg user-text-white px-4 py-2 rounded-full user-hover">{{ buttonText }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -84,7 +87,7 @@ import RegularButton from "@/Components/Buttons/RegularButton";
 import { faSearch, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons"
 import Fa from 'vue-fa';
 import { useForm, Link } from "@inertiajs/inertia-vue3";
-import { computed, ref, toRefs } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 import { directive } from "vue3-click-away";
 import { commonConst } from "@/Consts/commonConst"
 import VerticalCard from "@/Components/Cards/VerticalCard";
@@ -109,8 +112,8 @@ export default {
         ClickAway: directive
     },
     setup(props) {
+        const { MAX_PROFILE_COUNT_TOP } = commonConst;
         const NO_RESULTS = -1
-        const MAX_PROFILE_COUNT = 6;
         const { areas, tags, profiles } = toRefs(props);
 
         const form = useForm({
@@ -184,6 +187,23 @@ export default {
         const { handleFavorite, setIsFavorites } = useFavoriteAction(profiles, isFavorites)
         setIsFavorites()
 
+        //プロフィールの設定
+        const buttonText = ref('もっと見る');
+        let extraProfiles = ref([]);
+        const isShowExtraProfiles = ref(false);
+        if(profiles.value.length > MAX_PROFILE_COUNT_TOP) {
+            extraProfiles = profiles.value.splice(MAX_PROFILE_COUNT_TOP);
+        }
+
+        const toggleExtraProfiles = () => {
+            isShowExtraProfiles.value = !isShowExtraProfiles.value
+        }
+
+        watch(isShowExtraProfiles, () => {
+            buttonText.value = isShowExtraProfiles.value ? '閉じる' : 'もっと見る';
+        })
+
+
         return {
             form,
             tags,
@@ -199,9 +219,13 @@ export default {
             displayTag,
             onClickOutsideTag,
             profiles,
-            MAX_PROFILE_COUNT,
+            MAX_PROFILE_COUNT_TOP,
             handleFavorite,
             isFavorites,
+            extraProfiles,
+            isShowExtraProfiles,
+            toggleExtraProfiles,
+            buttonText,
         }
     }
 }
