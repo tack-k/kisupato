@@ -1,5 +1,5 @@
 <template>
-    <div class="overflow-hidden shadow-lg rounded-lg h-90 w-full cursor-pointer m-auto">
+    <div class="overflow-hidden shadow-lg rounded-lg h-full w-full cursor-pointer m-auto">
         <Link @click.prevent :href="route('resource.show', profile.expert_id)" class="w-full block h-full">
             <div class="relative">
                 <FavoriteButton @click.prevent @emitFavorite="handleFavorite" :expertId="profile.expert_id" :isFavorite="isFavorite"/>
