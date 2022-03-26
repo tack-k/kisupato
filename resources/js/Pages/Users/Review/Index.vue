@@ -19,7 +19,7 @@ import ReviewCard from "@/Components/Cards/ReviewCard";
 import FixedMessage from '@/Components/Messages/FixedMessage'
 import StandardTab from '@/Components/Tabs/StandardTab'
 import { reviewTabs } from '@/Consts/commonConst';
-import { toRefs } from 'vue'
+import { ref, toRefs } from 'vue'
 
 
 export default {
@@ -43,12 +43,15 @@ export default {
 
         const reviewCount = Object.keys(reviews.value).length;
 
+        const isLimit = ref(true);
+
         return {
             reviews,
             messages,
             tabs,
             active,
             reviewCount,
+            isLimit,
         }
     }
 

@@ -11,10 +11,10 @@
             </div>
         </div>
         <div>
-            <p>{{ review.comment }}</p>
+            <p :class="{'limit-string': isLimit}">{{ review.comment }}</p>
         </div>
-        <div class="text-right">
-            <span class="text-blue-300 user-hover">続きを読む</span>
+        <div v-if="!isNoComment" class="text-right mt-0.5">
+            <span @click="toggleComment" class="text-blue-300 user-hover">{{ text }}</span>
         </div>
     </div>
 </template>
@@ -22,6 +22,7 @@
 <script>
 import StarRating from 'vue-star-rating'
 import { commonConst } from "@/Consts/commonConst";
+import { ref, toRefs, watch } from 'vue';
 
 
 export default {
@@ -32,27 +33,55 @@ export default {
     props: {
         review: Object,
     },
-    setup(props) {
-        const { review } = props;
+    setup(props, {emit}) {
+        const { review } = toRefs(props);
         const { PROFILE_PATH } = commonConst;
 
         const rating ={
             increment: 0.5,
             starSize: 15,
             readOnly: true,
-            rating: review.evaluation,
+            rating: review.value.evaluation,
             showRating: false,
         };
+
+        const isLimit = ref(true)
+
+        const isNoComment = ref(false)
+        if (review.value.comment.length === 0) {
+            isNoComment.value = true
+        }
+
+        const toggleComment = () => {
+            isLimit.value = !isLimit.value
+        }
+
+        const text = ref('続きを見る')
+        watch(isLimit, () => {
+            text.value = isLimit.value ? '続きを見る' : '閉じる';
+        })
+
+
+
 
         return {
             review,
             rating,
             PROFILE_PATH,
+            isLimit,
+            toggleComment,
+            text,
+            isNoComment,
         }
     }
 }
 </script>
 
 <style scoped>
-
+.limit-string {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
 </style>

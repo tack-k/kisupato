@@ -32,9 +32,6 @@ class ExpertReviewsController extends Controller {
         } else {
             foreach ($reviews as $review) {
                 $review['created_date'] = $this->_commonService->formatDate($review['created_at']);
-                if (mb_strlen($review['comment'] > CommonConst::MAX_REVIEW_COUNT)) {
-                    $review['comment'] = $this->_commonService->limitNumberOfCharacters($review['comment'], CommonConst::MAX_REVIEW_COUNT);
-                }
             }
         }
 
