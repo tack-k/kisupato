@@ -6,11 +6,19 @@ use Carbon\Carbon;
 
 class ChatroomService {
 
+    protected $_commonServie;
+
+    public function __construct() {
+        $this->_commonServie = new CommonService();
+    }
+
     public function formatChatroomData($chatrooms)
     {
         foreach ($chatrooms as $key => $chatroom) {
-            $data = new Carbon($chatroom['c_created_at']);
-            $chatroom['c_created_at'] = $data->format('Y/m/d');
+            $chatroom['c_created_at'] = $this->_commonServie->formatDate($chatroom['c_created_at']);
+            if(isset($chatroom['request_finished_at'])) {
+                $chatroom['request_finished_at'] = $this->_commonServie->formatDate($chatroom['request_finished_at']);
+            }
 
             $this->addChatroomStatusName($chatroom);
 
@@ -31,16 +39,16 @@ class ChatroomService {
                 $chatroom['consultation_status_name'] = '相談中';
                 break;
             case '1':
-                $chatroom['consultation_status_name'] = '完了';
+                $chatroom['consultation_status_name'] = '相談完了';
                 break;
             case '2':
-                $chatroom['consultation_status_name'] = 'キャンセル';
+                $chatroom['consultation_status_name'] = '相談キャンセル';
                 break;
         }
 
         switch ($chatroom['request_status']) {
             case '0':
-                $chatroom['request_status_name'] = '検討中';
+                $chatroom['request_status_name'] = '依頼検討中';
                 break;
             case '1':
                 $chatroom['request_status_name'] = '依頼中';
@@ -49,7 +57,7 @@ class ChatroomService {
                 $chatroom['request_status_name'] = '取引完了';
                 break;
             case '3':
-                $chatroom['request_status_name'] = 'キャンセル';
+                $chatroom['request_status_name'] = '依頼キャンセル';
                 break;
         }
     }
