@@ -5,11 +5,11 @@
                    placeholder="場所から探す" @click="toggleModal" :value="checkedStr">
         </div>
         <div v-if="showModal" @click.self="onClickOutsideModal"
-             class="overflow-x-hidden overflow-y-auto fixed inset-0 z-20 outline-none focus:outline-none justify-center items-center flex">
+             class="fixed inset-0 z-20 outline-none focus:outline-none justify-center items-center flex">
             <div class="relative w-auto my-6 mx-auto max-w-3xl">
                 <!--content-->
                 <div
-                    class="border-0 rounded-lg shadow-lg relative flex flex-col w-full admin-bg-white">
+                    class="border-0 rounded-lg shadow-lg relative flex flex-col w-full admin-bg-white max-h-screen overflow-y-scroll">
 
                     <!--body-->
                     <div class="relative p-6 flex-auto">
