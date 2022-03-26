@@ -52,4 +52,8 @@ class CommonConst {
 
     //レビュー可能期間
     public const REVIEW_TERM = 10;
+
+    //レビュー一覧のコメント内容の文字制限数
+    public const MAX_REVIEW_COUNT = 60;
+
 }

@@ -33,3 +33,8 @@ export const commonConst = {
     MAX_PROFILE_COUNT_TOP: 6,
 
 }
+
+export const reviewTabs = {
+    index: { title: 'レビュー済み', url: 'review.index' },
+    yet: { title: '未レビュー', url: 'review.yet' },
+}

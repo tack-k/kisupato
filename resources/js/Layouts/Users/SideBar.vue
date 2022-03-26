@@ -85,7 +85,7 @@ export default {
                 "id": 3,
                 'icon': faStar,
                 "title": "レビュー",
-                "link": "home"
+                "link": "review.index"
             },
             "account": {
                 "id": 4,

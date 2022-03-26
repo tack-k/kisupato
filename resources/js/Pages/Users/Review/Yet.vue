@@ -1,6 +1,7 @@
 <template>
     <my-page-layout :isValidationShow="isValidationShow">
         <template #content>
+            <StandardTab :tabs="tabs" :tab="active"/>
             <div class="pt-8" v-if="chatrooms.length === 0">
                 <FixedMessage>未レビューの人材はいません。</FixedMessage>
             </div>
@@ -44,13 +45,16 @@ import FixedMessage from '@/Components/Messages/FixedMessage'
 import { commonConst } from '@/Consts/commonConst';
 import ReviewRegisterModal from '@/Layouts/Users/ReviewRegisterModal'
 import { ref, toRefs, reactive } from 'vue'
+import StandardTab from '@/Components/Tabs/StandardTab'
+import { reviewTabs } from '@/Consts/commonConst';
 
 export default {
     name: "Yet",
     components: {
         ReviewRegisterModal,
         MyPageLayout,
-        FixedMessage
+        FixedMessage,
+        StandardTab,
     },
     props: {
         chatrooms: Object,
@@ -58,6 +62,8 @@ export default {
     setup(props) {
         const { chatrooms } = toRefs(props);
         const { PROFILE_PATH } = commonConst
+        const tabs = reviewTabs;
+        const active = 'yet';
         const isValidationShow = ref(false);
         const isShow = ref(false);
 
@@ -85,6 +91,8 @@ export default {
             chatrooms,
             ids,
             isValidationShow,
+            tabs,
+            active,
         }
     }
 }

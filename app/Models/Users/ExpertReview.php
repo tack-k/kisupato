@@ -19,4 +19,12 @@ class ExpertReview extends Model {
         'comment',
         'evaluation',
     ];
+
+    public function scopeGetCardReviews($query, $userId) {
+        $query->select('expert_reviews.id', 'expert_reviews.evaluation', 'expert_reviews.comment', 'expert_reviews.created_at', 'ep.nickname', 'ep.profile_image')
+            ->join('expert_profiles as ep', 'expert_reviews.expert_id', '=', 'ep.expert_id')
+            ->where('expert_reviews.user_id', $userId)
+            ->orderBy('expert_reviews.created_at', 'desc');
+
+    }
 }
