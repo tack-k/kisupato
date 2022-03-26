@@ -1,37 +1,17 @@
 <template>
     <my-page-layout :isValidationShow="isValidationShow">
         <template #content>
-                <FixedMessage v-if="chatrooms.length === 0" :messages="messages"/>
+            <FixedMessage v-if="chatrooms.length === 0" :messages="messages"/>
             <StandardTab :tabs="tabs" :active="active"/>
-            <section v-if="chatrooms.length > 0" class="container mx-auto p-6 font-mono">
-                <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
-                    <div class="w-full overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                            <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
-                                <th class="px-4 py-3"></th>
-                                <th class="px-4 py-3">専門人材</th>
-                                <th class="px-4 py-3">依頼完了日</th>
-                                <th class="px-4 py-3">レビュー可能日</th>
-                            </tr>
-                            </thead>
-                            <tbody class="bg-white">
-                            <tr @click="showModal(chatroom)" class="text-gray-700 user-hover hover:bg-gray-100" v-for="(chatroom, index) in chatrooms" :key="index">
-                                <td class="px-4 py-3 border">
-                                    <img class="object-cover w-12 h-12 rounded-full" :src="PROFILE_PATH + chatroom.profile_image" alt="" loading="lazy"/>
-                                </td>
-                                <td class="px-4 py-3 text-xs font-semibold border">
-                                    <p class="font-semibold text-black">{{ chatroom.nickname }}</p>
-
-                                </td>
-                                <td class="px-4 py-3 text-sm border">{{ chatroom.request_finished_at }}</td>
-                                <td class="px-4 py-3 text-sm border">{{ chatroom.request_enable_day }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+            <div class="w-full mx-auto mt-8">
+                <div class="bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
+                    <div class="flow-root">
+                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <ReviewYetCard @click="showModal(chatroom)" v-for="(chatroom, key) in chatrooms" :key="key" :chatroom="chatroom"/>
+                        </ul>
                     </div>
                 </div>
-            </section>
+            </div>
             <ReviewRegisterModal :isShow="isShow" :ids="ids" @emitIsShow="handleIsShow"/>
         </template>
     </my-page-layout>
@@ -45,10 +25,12 @@ import ReviewRegisterModal from '@/Layouts/Users/ReviewRegisterModal'
 import { ref, toRefs, reactive, watch } from 'vue'
 import StandardTab from '@/Components/Tabs/StandardTab'
 import { reviewTabs } from '@/Consts/commonConst';
+import ReviewYetCard from '@/Components/Cards/ReviewYetCard'
 
 export default {
     name: "Yet",
     components: {
+        ReviewYetCard,
         ReviewRegisterModal,
         MyPageLayout,
         FixedMessage,
