@@ -1,11 +1,9 @@
 <template>
     <my-page-layout :isValidationShow="isValidationShow">
         <template #content>
-            <StandardTab :tabs="tabs" :tab="active"/>
-            <div class="pt-8" v-if="chatrooms.length === 0">
-                <FixedMessage>未レビューの人材はいません。</FixedMessage>
-            </div>
-            <section v-else class="container mx-auto p-6 font-mono">
+                <FixedMessage v-if="chatrooms.length === 0" :messages="messages"/>
+            <StandardTab :tabs="tabs" :active="active"/>
+            <section v-if="chatrooms.length > 0" class="container mx-auto p-6 font-mono">
                 <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
                     <div class="w-full overflow-x-auto">
                         <table class="w-full">
@@ -44,7 +42,7 @@ import MyPageLayout from '@/Layouts/Users/MyPageLayout'
 import FixedMessage from '@/Components/Messages/FixedMessage'
 import { commonConst } from '@/Consts/commonConst';
 import ReviewRegisterModal from '@/Layouts/Users/ReviewRegisterModal'
-import { ref, toRefs, reactive } from 'vue'
+import { ref, toRefs, reactive, watch } from 'vue'
 import StandardTab from '@/Components/Tabs/StandardTab'
 import { reviewTabs } from '@/Consts/commonConst';
 
@@ -83,6 +81,20 @@ export default {
             isShow.value = data
         }
 
+        const messages = ref([]);
+        const checkChatroomCount = () => {
+            if (chatrooms.value.length === 0) {
+                console.log(2222)
+                messages.value.push('未レビューはありません');
+            }
+        }
+        checkChatroomCount()
+
+        watch(chatrooms, () => {
+            console.log(1111)
+            checkChatroomCount()
+        })
+
         return {
             PROFILE_PATH,
             isShow,
@@ -93,6 +105,7 @@ export default {
             isValidationShow,
             tabs,
             active,
+            messages,
         }
     }
 }

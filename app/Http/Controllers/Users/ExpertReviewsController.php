@@ -27,7 +27,7 @@ class ExpertReviewsController extends Controller {
 
         $messages = [];
 
-        if($reviews->isEmpty()) {
+        if ($reviews->isEmpty()) {
             $messages[] = 'レビューがありません';
         } else {
             foreach ($reviews as $review) {
@@ -37,10 +37,12 @@ class ExpertReviewsController extends Controller {
         }
 
         $reviewYet = Chatroom::getChatroomsRewviewYet($userId)->get();
-        if(isset($reviewYet)) {
+        if (isset($reviewYet)) {
 
             $reviewYeyCount = count($reviewYet);
-            $messages[] = "未レビューが{$reviewYeyCount}件あります";
+            if ($reviewYeyCount !== 0) {
+                $messages[] = "未レビューが{$reviewYeyCount}件あります";
+            }
         }
 
         return Inertia::render('Users/Review/Index', [
