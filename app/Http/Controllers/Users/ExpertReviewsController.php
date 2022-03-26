@@ -40,7 +40,7 @@ class ExpertReviewsController extends Controller {
         if(isset($reviewYet)) {
 
             $reviewYeyCount = count($reviewYet);
-            $messages[] = "レビューしていない人材が{$reviewYeyCount}人います";
+            $messages[] = "未レビューが{$reviewYeyCount}件あります";
         }
 
         return Inertia::render('Users/Review/Index', [
