@@ -23,7 +23,7 @@ class ExpertReviewsController extends Controller {
     public function index() {
 
         $userId = Auth::id();
-        $reviews = ExpertReview::getCardReviews($userId)->get();
+        $reviews = ExpertReview::getSelfReviews($userId)->get();
 
         $messages = [];
 
