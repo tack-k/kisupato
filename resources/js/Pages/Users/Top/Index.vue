@@ -44,15 +44,20 @@
             <div class="w-full bg-white p-12 pt-40">
                 <div class="flex justify-center items-center flex-col mb-40">
                     <p class="pl-4 mb-6">お知らせ</p>
-                    <table class="table-auto">
-                        <tbody>
-                        <tr v-for="value in 3" :key="value" class="user-hover">
-                            <td class="px-4 py-0.5">2022/01/01</td>
-                            <td class="px-4 py-0.5">サービス一時停止のお知らせ</td>
-                            <td class="px-4 py-0.5">日曜日の午前１時から午前３時までの間はサービスを停止いたします。ご不便をおかけ・・・</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <ul v-for="value in 3" :key="value" class="flex flex-col sm:flex-row w-full hover:cursor-pointer hover:text-blue-300 mb-4">
+                        <li class="">2022/01/01</li>
+                        <li class="sm:ml-8">サービス一時停止のお知らせ</li>
+                        <li class="sm:ml-8 truncate">2022年3月1日（日）の午前１時から午前３時までの間はサービスを停止いたします。ご不便をおかけ・・・</li>
+                    </ul>
+<!--                    <table class="table-auto">-->
+<!--                        <tbody>-->
+<!--                        <tr v-for="value in 3" :key="value" class="user-hover">-->
+<!--                            <td class="px-4 py-0.5">2022/01/01</td>-->
+<!--                            <td class="px-4 py-0.5">サービス一時停止のお知らせ</td>-->
+<!--                            <td class="px-4 py-0.5">日曜日の午前１時から午前３時までの間はサービスを停止いたします。ご不便をおかけ・・・</td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
                 </div>
 
                 <div class="mb-40">
