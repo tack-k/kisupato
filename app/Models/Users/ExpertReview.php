@@ -32,4 +32,12 @@ class ExpertReview extends Model {
             ->orderBy('expert_reviews.created_at', 'desc');
 
     }
+
+    public function scopeGetExpertReviews($query, $expertId) {
+
+        $query->select('expert_reviews.id', 'expert_reviews.evaluation', 'expert_reviews.comment', 'expert_reviews.created_at', 'ep.nickname', 'ep.profile_image')
+            ->join('expert_profiles as ep', 'expert_reviews.expert_id', '=', 'ep.expert_id')
+            ->where('expert_reviews.expert_id', $expertId)
+            ->orderBy('expert_reviews.created_at', 'desc');
+    }
 }

@@ -45,12 +45,12 @@
                     </div>
                 </section>
 
-                <section class="section-common">
+                <section v-if="reviews.length > 0" class="section-common">
                     <div class="bg-gray-100 min-h-screen py-32 px-10 ">
                         <h2 class="section-title">レビュー</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-x-10 xl-grid-cols-4 gap-y-10 gap-x-6 ">
-                            <template v-for="(value, index) in 6" :key="index">
-                                <ReviewCard/>
+                            <template v-for="(review, index) in reviews" :key="index">
+                                <ReviewCard :review="review"/>
                             </template>
                         </div>
                         <div class="text-right mt-5">
@@ -89,9 +89,10 @@ export default {
     components: { ReviewCard, RegularButton, ImageCarousel, SearchInput, FullPageLayout },
     props: {
         profile: Object,
+        reviews: Object,
     },
     setup(props) {
-        const { profile } = toRefs(props)
+        const { profile, reviews } = toRefs(props)
         const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
         const form = useForm({
            'expert_id': profile.value.expert_id
@@ -107,6 +108,7 @@ export default {
             ACTIVITY_PATH,
             form,
             submit,
+            reviews,
         }
     }
 }
