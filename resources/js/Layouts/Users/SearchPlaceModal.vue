@@ -65,7 +65,7 @@ import {faWindowClose} from "@fortawesome/free-regular-svg-icons";
 import Checkbox from "@/Components/Forms/Checkbox";
 
 export default {
-    name: "RegisterModal",
+    name: "SearchPlaceModal",
     components: {
         Checkbox,
         BreezeValidationErrors,
@@ -110,8 +110,7 @@ export default {
         }
 
         const emitChecked = () => {
-        //    emit('update:checked', checked)
-            emit('test', checked)
+            emit('update:checked', checked)
             toggleModal()
         }
 
