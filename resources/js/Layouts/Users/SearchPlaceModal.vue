@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import {ref, reactive, computed, watchEffect} from "vue";
+import { ref, reactive, computed, watchEffect, toRefs } from "vue";
 import BreezeValidationErrors from '@/Components/Validations/ValidationErrors'
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import RegularButton from "@/Components/Buttons/RegularButton";
@@ -86,7 +86,8 @@ export default {
     ],
     setup(props, {emit}) {
 
-        let { areas } = props;
+
+        let { areas } = toRefs(props);
 
         let checked = reactive({
                 'north': [],
@@ -126,11 +127,11 @@ export default {
 
         const allCheckedNorth = computed({
             get: () => {
-                return checked['north'].length === areas['north'].cities.length
+                return checked['north'].length === areas.value['north'].cities.length
             },
             set: val => {
                 if (val) {
-                    const newCities = areas['north'].cities.map(city => city.name)
+                    const newCities = areas.value['north'].cities.map(city => city.name)
                     checked['north'] = newCities
                 } else {
                     checked['north'] = []
@@ -140,11 +141,11 @@ export default {
 
         const allCheckedEast = computed({
             get: () => {
-                return checked['east'].length === areas['east'].cities.length
+                return checked['east'].length === areas.value['east'].cities.length
             },
             set: val => {
                 if (val) {
-                    const newCities = areas['east'].cities.map(city => city.name)
+                    const newCities = areas.value['east'].cities.map(city => city.name)
                     checked['east'] = newCities
                 } else {
                     checked['east'] = []
@@ -154,11 +155,11 @@ export default {
 
         const allCheckedSouth = computed({
             get: () => {
-                return checked['south'].length === areas['south'].cities.length
+                return checked['south'].length === areas.value['south'].cities.length
             },
             set: val => {
                 if (val) {
-                    const newCities = areas['south'].cities.map(city => city.name)
+                    const newCities = areas.value['south'].cities.map(city => city.name)
                     checked['south'] = newCities
                 } else {
                     checked['south'] = []
@@ -168,11 +169,11 @@ export default {
 
         const allCheckedMiddle = computed({
             get: () => {
-                return checked['middle'].length === areas['middle'].cities.length
+                return checked['middle'].length === areas.value['middle'].cities.length
             },
             set: val => {
                 if (val) {
-                    const newCities = areas['middle'].cities.map(city => city.name)
+                    const newCities = areas.value['middle'].cities.map(city => city.name)
                     checked['middle'] = newCities
                 } else {
                     checked['middle'] = []
