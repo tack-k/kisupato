@@ -26,13 +26,13 @@
                                 <li v-for="(city, index) in area.cities" :key="index" class="mr-3 mb-1"><label
                                     class="flex items-center">
                                     <Checkbox v-if="area.id === 1" v-model:checked="checked['north']"
-                                              :value="city.name"/>
+                                              :value="city.city_id"/>
                                     <Checkbox v-if="area.id === 2" v-model:checked="checked['middle']"
-                                              :value="city.name"/>
+                                              :value="city.city_id"/>
                                     <Checkbox v-if="area.id === 3" v-model:checked="checked['east']"
-                                              :value="city.name"/>
+                                              :value="city.city_id"/>
                                     <Checkbox v-if="area.id === 4" v-model:checked="checked['south']"
-                                              :value="city.name"/>
+                                              :value="city.city_id"/>
                                     <span class="ml-2">{{ city.name }}</span><span class="ml-2">{{ city.count }}</span></label>
                                 </li>
                             </ul>
@@ -131,7 +131,7 @@ export default {
             },
             set: val => {
                 if (val) {
-                    const newCities = areas.value['north'].cities.map(city => city.name)
+                    const newCities = areas.value['north'].cities.map(city => city.city_id)
                     checked['north'] = newCities
                 } else {
                     checked['north'] = []
@@ -145,7 +145,7 @@ export default {
             },
             set: val => {
                 if (val) {
-                    const newCities = areas.value['east'].cities.map(city => city.name)
+                    const newCities = areas.value['east'].cities.map(city => city.city_id)
                     checked['east'] = newCities
                 } else {
                     checked['east'] = []
@@ -159,7 +159,7 @@ export default {
             },
             set: val => {
                 if (val) {
-                    const newCities = areas.value['south'].cities.map(city => city.name)
+                    const newCities = areas.value['south'].cities.map(city => city.city_id)
                     checked['south'] = newCities
                 } else {
                     checked['south'] = []
@@ -173,7 +173,7 @@ export default {
             },
             set: val => {
                 if (val) {
-                    const newCities = areas.value['middle'].cities.map(city => city.name)
+                    const newCities = areas.value['middle'].cities.map(city => city.city_id)
                     checked['middle'] = newCities
                 } else {
                     checked['middle'] = []
