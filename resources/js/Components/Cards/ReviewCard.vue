@@ -2,7 +2,7 @@
     <div class="container mx-auto shadow-lg rounded-lg max-w-md hover:shadow-2xl transition duration-300 p-4">
         <div class="flex items-center mb-5">
             <div class="w-1/2">
-                <img :src="PROFILE_PATH + review.profile_image" alt="" class="rounded-full w-20 h-20">
+                <img :src="displayedProfilePath + review.profile_image" alt="" class="rounded-full w-20 h-20">
             </div>
             <div class="w-1/2 break-words px-1">
                 <p class="mb-2">{{ review.nickname }}</p>
@@ -35,7 +35,7 @@ export default {
     },
     setup(props, {emit}) {
         const { review } = toRefs(props);
-        const { PROFILE_PATH } = commonConst;
+        const { USER_PROFILE_PATH, COMMON_PATH, DEFAULT_PROFILE } = commonConst;
 
         const rating ={
             increment: 0.5,
@@ -44,6 +44,9 @@ export default {
             rating: review.value.evaluation,
             showRating: false,
         };
+
+        const displayedProfilePath = review.value.profile_image === DEFAULT_PROFILE ? COMMON_PATH : USER_PROFILE_PATH;
+
 
         const isLimit = ref(true)
 
@@ -67,7 +70,7 @@ export default {
         return {
             review,
             rating,
-            PROFILE_PATH,
+            displayedProfilePath,
             isLimit,
             toggleComment,
             text,
