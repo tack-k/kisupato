@@ -71,4 +71,31 @@ class CommonService {
         $day = Carbon::createFromFormat(CommonConst::DATE_FORMAT, $date);
         return $day->addDay($term)->format(CommonConst::DATE_FORMAT);
     }
+
+    /**
+     * 空白の区切りを配列に変換する
+     * @param $keyword
+     * @return false|string[]|null
+     */
+    public function replaceWhitespaceToArray($keyword) {
+        // +を半角スペースに変換（GETメソッド対策）
+        $keyword = str_replace('+', ' ', $keyword);
+        // 全角スペースを半角スペースに変換
+        $keyword = str_replace('　', ' ', $keyword);
+        // 全角スペースを半角スペースに変換
+        $keyword = str_replace('%', ' ', $keyword);
+        // 取得したキーワードのスペースの重複を除く。
+        $keyword = preg_replace('/\s(?=\s)/', '', $keyword);
+        // キーワード文字列の前後のスペースを削除する
+        $keyword = trim($keyword);
+        // 整形の結果、空白しか残らなかった場合nullを返す（スペースしか入力されていないなど）
+        if (empty($keyword) || $keyword === '') {
+            return null;
+        }
+        // 半角カナを全角カナへ変換
+        $keyword = mb_convert_kana($keyword, 'KV');
+        // 半角スペースで配列にし、重複は削除する
+        return array_unique(explode(' ', $keyword));
+
+    }
 }

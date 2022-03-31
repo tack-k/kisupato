@@ -18,6 +18,7 @@ class TopService
             foreach ($areaAndCities as $areaAndCity) {
                 if ($area->id === $areaAndCity->area_id)
                     $area->cities[] = [
+                        'city_id' => $areaAndCity->city_id,
                         'name' => $areaAndCity->city_name,
                         'count' => $areaAndCity->city_count,
                     ];

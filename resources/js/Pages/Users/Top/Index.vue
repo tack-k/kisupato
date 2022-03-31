@@ -34,7 +34,7 @@
                                     type="text"
                                     v-model="form.keyword" placeholder="キーワード検索">
                             </div>
-                            <div class="p-4 bg-red-400 rounded-full absolute right-0.5 hover:cursor-pointer">
+                            <div @click="submitSearch" class="p-4 bg-red-400 rounded-full absolute right-0.5 hover:cursor-pointer">
                                 <Fa :icon="faSearch" class="text-lg text-white"/>
                             </div>
                         </div>
@@ -122,7 +122,7 @@ export default {
         const { areas, tags, profiles } = toRefs(props);
 
         const form = useForm({
-            checked: [],
+            checked: null,
             tag: '',
             keyword: '',
 
@@ -209,6 +209,11 @@ export default {
         })
 
 
+        //検索の送信
+        const submitSearch = () => {
+            form.get(route('resource.index'), form)
+        }
+
         return {
             form,
             tags,
@@ -231,6 +236,7 @@ export default {
             isShowExtraProfiles,
             toggleExtraProfiles,
             buttonText,
+            submitSearch,
         }
     }
 }

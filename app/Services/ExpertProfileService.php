@@ -11,6 +11,7 @@ use App\Models\Experts\Skill;
 use App\Consts\CommonConst;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ExpertProfileService
 {
@@ -223,6 +224,45 @@ class ExpertProfileService
 
         return $formatProfile;
 
+    }
+
+    /**
+     * 検索結果を考慮して、プロフィール情報を取得する
+     * @param $checked
+     * @param $tag
+     * @param $keyword
+     * @return array
+     */
+    public function getExpertProfiles($checked, $tag, $keyword): array {
+
+        $cityIds = null;
+        if (isset($checked)) {
+            foreach ($checked as $check) {
+                foreach ($check as $cityId) {
+                    $cityIds[] = $cityId;
+                }
+            }
+        }
+
+        if (isset($keyword)) {
+            $keyword = $this->_commonService->replaceWhitespaceToArray($keyword);
+        }
+
+        $messages = [];
+        if (isset($checked) || isset($tag) || isset($keyword)) {
+            $profiles = ExpertProfile::getExpertProfileCard($tag, $keyword, $cityIds)->get();
+            if ($profiles->isEmpty()) {
+                $messages[] = '検索に該当する人材がいませんでした。検索条件を変更して再度お試しください。';
+            }
+
+        } else {
+            $profiles = ExpertProfile::getExpertProfileCard()->get();
+        }
+
+        $return['profiles'] = $profiles;
+        $return['messages'] = $messages;
+
+        return $return;
     }
 
 }

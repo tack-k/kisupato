@@ -35,7 +35,7 @@ class TopController extends Controller {
 
         $tags = Tag::getTags()->get();
 
-        $profiles = ExpertProfile::getExpertProfileCardInfo()->get() ?? null;
+        $profiles = ExpertProfile::getExpertProfileCard()->get() ?? null;
 
         foreach ($profiles as $profile) {
             $formatProfile = $this->_expertProfileService->formatExpertProfile($profile);

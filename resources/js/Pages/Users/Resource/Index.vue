@@ -4,9 +4,10 @@
             <div>
                 <div class="flex flex-col sm:flex-row">
                     <div class="p-3 w-full sm:w-1/2 sm:h-screen sm:absolute top-16 z-0">
-                        <template v-for="(profile, index) in profiles" :key="index" class="overflow-y-auto">
+                        <template v-if="profiles.length > 0" v-for="(profile, index) in profiles" :key="index" class="overflow-y-auto">
                             <SideCard @emitFavorite="handleFavorite" :profile="profile" :isFavorite="isFavorites[profile.expert_id]" class="mb-2"/>
                         </template>
+                        <FixedMessage :messages="messages" v-else/>
                     </div>
 
                     <div class="w-full sm:w-1/2 sm:fixed top-16 sm:right-0 sm:h-screen h-96">
@@ -42,11 +43,13 @@ import VerticalCard from "@/Components/Cards/VerticalCard";
 import SideCard from "@/Components/Cards/SideCard";
 import FullPageMapLayout from "@/Layouts/Users/FullPageMapLayout";
 import { useFavoriteAction } from "@/Composables/useFavoriteAction"
+import FixedMessage from '@/Components/Messages/FixedMessage'
 
 
 export default {
     name: "Index",
     components: {
+        FixedMessage,
         FullPageMapLayout,
         SideCard,
         VerticalCard,
@@ -56,9 +59,10 @@ export default {
     },
     props: {
         profiles: Array,
+        messages: Array,
     },
     setup(props) {
-        const { profiles } = toRefs(props);
+        const { profiles, messages } = toRefs(props);
         const { PROFILE_PATH } = commonConst;
         const mapRef = ref(null)
         const GOOGLE_MAP_API_KEY = process.env.MIX_GOOGLE_MAP_API_KEY;
@@ -136,6 +140,7 @@ export default {
             mapProfiles,
             isFavorites,
             handleFavorite,
+            messages,
         }
     }
 }
