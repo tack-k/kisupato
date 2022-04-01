@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Experts;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ExpertAccountRequest;
 use App\Http\Requests\ExpertRequest;
 use App\Models\Experts\Expert;
 use Illuminate\Auth\Events\Registered;
@@ -68,35 +69,48 @@ class ExpertController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        return Inertia::render('Experts/Account/Show');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        return Inertia::render('Experts/Account/Edit');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ExpertAccountRequest $request)
     {
-        //
+        $params = $request->except([
+            'current_password',
+            'password_confirmation',
+            'password',
+            'is_password_change',
+        ]);
+
+        if(isset($request->password)) {
+            $params['password'] = Hash::make($request->password);
+        }
+
+        $expertId = Auth::guard('expert')->id();
+        Expert::where('id', $expertId)->update($params);
+
+        session()->flash('message', 'アカウント情報を変更しました。');
+
+        return redirect()->route('expert.account.show');
     }
 
     /**

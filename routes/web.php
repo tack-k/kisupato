@@ -129,7 +129,11 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
     Route::get('/profile/input', [ExpertProfileController::class, 'input'])->name('profile.input');
     Route::post('/profile/input', [ExpertProfileController::class, 'update'])->name('profile.update');
     Route::post('profile/status', [ExpertProfileController::class, 'status'])->name('profile.status');
-
+    Route::group(['prefix' => 'account', 'as' => 'account.'], function() {
+       Route::get('/show', [ExpertController::class, 'show'])->name('show');
+       Route::get('/edit', [ExpertController::class, 'edit'])->name('edit');
+       Route::post('/update', [ExpertController::class, 'update'])->name('update');
+    });
 });
 
 //管理者:認証なし

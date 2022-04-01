@@ -81,7 +81,7 @@ export default {
                 "id": 4,
                 'icon': faUserCircle,
                 "title": "アカウント",
-                "link": "expert.home",
+                "link": "expert.account.show",
             },
             "mail_setting": {
                 "id": 5,
