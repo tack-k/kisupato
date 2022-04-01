@@ -68,7 +68,7 @@ class ResourceController extends Controller {
             'id' => 'exists:expert_profiles'
         ]);
 
-        $profile = ExpertProfile::getExpertProfileCardInfo()->where('expert_profiles.id', $params['id'])->first();
+        $profile = ExpertProfile::getExpertProfileCard()->where('expert_profiles.id', $params['id'])->first();
         $formatProfile = $this->_service->formatExpertProfile($profile);
         $profile->activity_image = $formatProfile['activity_image'];
         $profile->tags = $formatProfile['tags'];
