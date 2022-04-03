@@ -23,7 +23,7 @@
                             <span class="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600" :class="{'user-message': isLogin(message)}">{{ message.message }}</span>
                         </div>
                     </div>
-                    <img v-if="!isLogin(message)" :src="profilePath + message.profile_image" alt="My profile" class="w-6 h-6 rounded-full order-1">
+                    <img v-if="!isLogin(message)" :src="profilePath + profile.profile_image" alt="My profile" class="w-6 h-6 rounded-full order-1">
                 </div>
             </div>
         </div>
@@ -55,23 +55,34 @@ export default {
     setup(props) {
         const user = computed(() => usePage().props?.value.auth.user);
         const expert = computed(() => usePage().props?.value.auth.expert);
+        const { messages, chatroom, profile } = toRefs(props);
 
         const {
             PROFILE_PATH,
             REQUEST_FINISHED,
             USER_PROFILE_PATH,
             REQUEST_CANCELED,
+            DEFAULT_PROFILE,
+            COMMON_PATH,
         } = commonConst;
 
-        const profilePath = expert.value === null ? PROFILE_PATH : USER_PROFILE_PATH;
-
-        const { messages, chatroom, profile } = toRefs(props);
+        let profilePath = ''
+        if(expert.value === null) {
+            profilePath = PROFILE_PATH
+        } else {
+            if(profile.value.profile_image === DEFAULT_PROFILE) {
+                profilePath = COMMON_PATH
+            } else {
+                profilePath = USER_PROFILE_PATH
+            }
+        }
 
         const newMessage = ref('')
 
         //ブロードキャスト受信設定
-        const channel = Echo.private('message-channel.' + user.value?.id);
+        const channel = Echo.channel('message-channel.' + chatroom.value.id);
         channel.listen('.message-event', function (data) {
+            console.log(data)
             messages.value.push(data.message);
         });
 
@@ -83,8 +94,11 @@ export default {
                 user_id: user.value?.id,
                 expert_id: expert.value?.id
             }
+
+            const url = expert.value === null ? 'message.update' : 'expert.message.update';
+
             axios.post(
-                route('message.update'),
+                route(url),
                 params
             ).then(res => {
                 messages.value.push(res.data)

@@ -67,6 +67,11 @@ class ChatroomController extends Controller {
 
         $this->authorize('show-chatroom', [$chatroom_id]);
 
+        if(Auth::guard('expert')->check()) {
+            Auth::guard('expert')->logout();
+            return redirect()->route('chatroom.show', $chatroom_id);
+        }
+
         $messages = Message::getMessages($chatroom_id)->get();
         $chatroom = Chatroom::find($chatroom_id);
         $this->_service->addChatroomStatusName($chatroom);

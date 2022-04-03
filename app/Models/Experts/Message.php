@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Users;
+namespace App\Models\Experts;
 
 use App\Traits\AuthorObservable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
-class Message extends Model
-{
+class Message extends Model {
+
     use HasFactory, Notifiable, SoftDeletes, AuthorObservable;
 
     protected $fillable = [
@@ -20,15 +20,9 @@ class Message extends Model
     ];
 
     public function scopeGetMessages($query, $chatroomId) {
-        return $query->select(['message', 'messages.created_at', 'user_id', 'messages.expert_id', 'ep.profile_image'])
-            ->leftjoin('expert_profiles as ep', 'ep.id', '=', 'messages.expert_id')
+        return $query->select(['message', 'messages.created_at', 'messages.user_id', 'messages.expert_id', 'up.profile_image'])
+            ->leftjoin('user_profiles as up', 'up.id', '=', 'messages.user_id')
             ->where('chatroom_id', $chatroomId)
             ->orderBy('created_at', 'asc');
-    }
-
-
-    public function chatroom()
-    {
-        return $this->belongsTo(Chatroom::class);
     }
 }

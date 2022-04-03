@@ -4,11 +4,17 @@ namespace App\Models\Users;
 
 use App\Consts\CommonConst;
 use App\Models\Experts\Expert;
+use App\Traits\AuthorObservable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 
 class Chatroom extends Model
 {
+    use HasFactory, Notifiable, SoftDeletes, AuthorObservable;
+
     protected $fillable = [
         'user_id',
         'expert_id',

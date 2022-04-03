@@ -7,8 +7,8 @@ use App\Consts;
 use \App\Http\Controllers\Users\UserController;
 use \App\Http\Controllers\Users\ResourceController;
 use \App\Http\Controllers\Users\TopController;
-use \App\Http\Controllers\Users\ChatroomController;
-use \App\Http\Controllers\Users\MessagesController;
+use \App\Http\Controllers\Users\ChatroomController as UserChatroomController;
+use \App\Http\Controllers\Users\MessagesController as UserMessagesController;
 use \App\Http\Controllers\Users\UserContactController;
 use \App\Http\Controllers\Users\FavoritesController;
 use \App\Http\Controllers\Users\UserProfilesController;
@@ -23,6 +23,8 @@ use \App\Http\Controllers\Experts\ExpertController;
 use \App\Http\Controllers\Experts\HomeController;
 use \App\Http\Controllers\Experts\MyPageController;
 use \App\Http\Controllers\Experts\ExpertProfileController;
+use \App\Http\Controllers\Experts\ChatroomController as ExpertChatroomController;
+use \App\Http\Controllers\Experts\MessagesController as ExpertMessagesController;
 
 
 /*
@@ -82,13 +84,13 @@ Route::group(['middleware' => 'guest'], function() {
 //ユーザー:認証あり
 Route::group(['middleware' => 'auth:user'], function () {
     Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function () {
-        Route::get('/', [ChatroomController::class, 'index'])->name('index');
-        Route::get('/show/{id}', [ChatroomController::class, 'show'])->name('show');
-        Route::post('/store', [ChatroomController::class, 'store'])->name('store');
-        Route::post('/update', [ChatroomController::class, 'update'])->name('update');
+        Route::get('/', [UserChatroomController::class, 'index'])->name('index');
+        Route::get('/show/{id}', [UserChatroomController::class, 'show'])->name('show');
+        Route::post('/store', [UserChatroomController::class, 'store'])->name('store');
+        Route::post('/update', [UserChatroomController::class, 'update'])->name('update');
     });
     Route::group(['prefix' => 'message', 'as' => 'message.'], function() {
-       Route::post('store', [MessagesController::class, 'update'])->name('update');
+       Route::post('store', [UserMessagesController::class, 'update'])->name('update');
     });
     Route::group(['prefix' => 'favorite', 'as' => 'favorite.'], function() {
        Route::post('/switch', [FavoritesController::class, 'switch'])->name('switch');
@@ -133,6 +135,13 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
        Route::get('/show', [ExpertController::class, 'show'])->name('show');
        Route::get('/edit', [ExpertController::class, 'edit'])->name('edit');
        Route::post('/update', [ExpertController::class, 'update'])->name('update');
+    });
+    Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function() {
+        Route::get('/', [ExpertChatroomController::class, 'index'])->name('index');
+        Route::get('/show/{chatroom_id}', [ExpertChatroomController::class, 'show'])->name('show');
+    });
+    Route::group(['prefix' => 'message', 'as' => 'message.'], function() {
+        Route::post('store', [ExpertMessagesController::class, 'update'])->name('update');
     });
 });
 

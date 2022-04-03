@@ -23,7 +23,7 @@ class MessageEvent implements ShouldBroadcast
     public function broadcastOn(): Channel
     {
         $this->dontBroadcastToCurrentUser();
-        return new PrivateChannel('message-channel.'. $this->message->user_id);
+        return new Channel('message-channel.'. $this->message->chatroom_id);
     }
 
     public function broadcastAs()
