@@ -36,6 +36,8 @@ class ChatroomController extends Controller {
 
     public function show(Request $request, $chatroom_id) {
 
+        $this->authorize('show-expertChatroom', [$chatroom_id]);
+
         $messages = Message::getMessages($chatroom_id)->get();
         $chatroom = Chatroom::find($chatroom_id);
         $this->_service->addChatroomStatusName($chatroom);

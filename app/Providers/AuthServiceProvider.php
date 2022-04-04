@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Admins\Admin;
+use App\Models\Experts\Chatroom;
 use App\Policies\AdminPolicy;
 use App\Policies\ChatroomPolicy;
+use App\Policies\ExpertChatroomPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -32,5 +34,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Gate::define('show-chatroom', [ChatroomPolicy::class, 'view']);
+        Gate::define('show-expertChatroom', [ExpertChatroomPolicy::class, 'view']);
     }
 }
