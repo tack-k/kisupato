@@ -1,6 +1,6 @@
 <template>
         <div class="hidden md:block" v-show="show">
-            <div class="w-64 h-screen admin-bg-white ">
+            <div class="w-64 h-screen admin-bg-white" :class="{'display-container': isChatroom}">
                 <div class="flex items-start justify-end p-2">
                     <Fa class="admin-hover" @click="show = !show" :icon="faAlignJustify" size="2x"/>
                 </div>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {inject, ref, computed} from "vue";
+import { inject, ref, computed, toRefs } from "vue";
 import Fa from 'vue-fa';
 import { faPortrait, faUserCircle, faSignOutAlt, faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import { faComments, faStar, faEnvelope } from "@fortawesome/free-regular-svg-icons"
@@ -50,8 +50,17 @@ export default {
         Fa,
         Link,
     },
+    props: {
+        isChatroom: {
+            type: Boolean,
+            default: false,
+        },
+    },
 
     setup(props) {
+
+        const { isChatroom } = toRefs(props)
+
         const sideBarLists = {
             "profile": {
                 "id": 0,
@@ -122,6 +131,7 @@ export default {
             show,
             getMethod,
             getType,
+            isChatroom,
         }
     },
 
@@ -132,5 +142,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.display-container {
+    height: calc(100vh - 4rem);
+}
 </style>

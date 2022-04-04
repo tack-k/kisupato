@@ -1,5 +1,5 @@
 <template>
-    <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-gray-400">
+    <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-gray-400"  :class="{'h-16': isChatroom}">
         <div class="px-4 flex flex-wrap items-center justify-between w-full">
             <div class="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
                 <a class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white" href="#pablo">
@@ -13,7 +13,7 @@
                 <ul class="flex flex-col lg:flex-row list-none ml-auto">
                     <li class="nav-item">
                         <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#pablo">
-                            <i class="fab fa-facebook-square text-lg leading-lg text-white opacity-75" /><span class="ml-2">Share</span>
+                            <i class="fab fa-facebook-square text-lg leading-lg text-white opacity-75"/><span class="ml-2">Share</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -23,7 +23,8 @@
                     </li>
                     <li class="nav-item">
                         <Link class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" :href="route('expert.myPage.top')">
-                            <Fa :icon="faUser" class="text-lg leading-lg text-white opacity-7"/><span class="ml-2">{{ $page.props.auth.expert.last_name }}{{ $page.props.auth.expert.first_name }}</span>
+                            <Fa :icon="faUser" class="text-lg leading-lg text-white opacity-7"/>
+                            <span class="ml-2">{{ $page.props.auth.expert.last_name }}{{ $page.props.auth.expert.first_name }}</span>
                         </Link>
                     </li>
                 </ul>
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import Fa from "vue-fa";
 import { Link } from "@inertiajs/inertia-vue3"
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -43,21 +44,28 @@ import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 export default {
     name: "Header",
     components: {
-      Fa,
-      Link,
+        Fa,
+        Link,
     },
+    props: {
+        isChatroom: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    setup(props) {
+        const { isChatroom } = toRefs(props);
+        let showMenu = ref(false)
+        const toggleNavbar = () => showMenu.value = !showMenu.value
 
-    setup() {
-      let showMenu = ref(false)
-      const toggleNavbar = () => showMenu.value = !showMenu.value
 
-
-      return {
-          showMenu,
-          toggleNavbar,
-          faUser,
-          faAlignJustify,
-      }
+        return {
+            showMenu,
+            toggleNavbar,
+            faUser,
+            faAlignJustify,
+            isChatroom,
+        }
     },
 }
 </script>
