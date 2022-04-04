@@ -72,7 +72,7 @@ export default {
                 "id": 1,
                 'icon': faComments,
                 "title": "トークルーム",
-                "link": "expert.home",
+                "link": "expert.chatroom.index",
             },
             "favorite": {
                 "id": 2,
