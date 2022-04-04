@@ -1,13 +1,9 @@
 <template>
     <!-- This is an example component -->
-    <div class="w-full mx-auto">
-        <div class="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div class="w-full mx-auto user-hover" @click="linkChatroomShow(chatroom.chatroom_id)">
+        <div class="max-w-sm p-2 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
             <div class="flex justify-end px-4 pt-4">
-                <button @click="linkChatroomShow(chatroom.chatroom_id)" id="dropdownButton" data-dropdown-toggle="dropdown" class="hidden sm:inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
-                    </svg>
-                </button>
+                <div :class="setConsultationColor(chatroom.consultation_status)" class="inline-flex items-center py-1 px-2 text-xs font-medium rounded">{{ chatroom.consultation_status_name }}</div>
 
                 <div id="dropdown"
                      class="hidden z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
@@ -29,10 +25,14 @@
                 </div>
             </div>
             <div class="flex flex-col items-center pb-10">
-                <img class="mb-3 w-24 h-24 rounded-full shadow-lg" :src="PROFILE_PATH + chatroom.profile_image" alt="Bonnie image">
+                <div class="flex items-center">
+                    <img class="mb-3 w-24 h-24 rounded-full shadow-lg" :src="PROFILE_PATH + chatroom.profile_image" alt="Bonnie image">
+                    <div v-if="chatroom.message !== null" class="ml-2 limit-string bg-gray-300 rounded-lg rounded-bl-none px-4 py-2">
+                        <span class="limit-string inline-block text-gray-600 text-xs">{{ chatroom.message }}</span>
+                    </div>
+                </div>
                 <h3 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ chatroom.nickname }}</h3>
                 <div class="flex mt-4 space-x-3 lg:mt-6 mb-4">
-                    <div :class="setConsultationColor(chatroom.consultation_status)" class="inline-flex items-center py-2 px-4 text-sm font-medium rounded">{{ chatroom.consultation_status_name }}</div>
                     <div :class="setRequestColor(chatroom.request_status)" class="inline-flex items-center py-2 px-4 text-sm font-medium rounded">{{ chatroom.request_status_name }}</div>
                 </div>
                 <table>
@@ -123,6 +123,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.limit-string {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
 
 </style>
