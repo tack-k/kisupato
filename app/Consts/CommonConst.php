@@ -37,10 +37,11 @@ class CommonConst {
     public const MAX_ACTIVITY_TITLE_COUNT = 13;
 
     //依頼リクエストの状態
-    public const REQUEST_EXAMINATION = '0'; //検討中
+    public const REQUEST_APPLYING = '0'; //依頼申請中
     public const REQUEST = '1'; //依頼中
-    public const REQUEST_FINISHED = '2';
-    public const REQUEST_CANCELED = '3'; //キャンセル
+    public const REQUEST_EXAMINATION = '2'; //検討中
+    public const REQUEST_FINISHED = '3';
+    public const REQUEST_CANCELED = '4'; //キャンセル
 
     //相談状況
     public const CONSULTATION = '0'; //相談中

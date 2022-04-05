@@ -13,7 +13,7 @@ class CreateChatrooms extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('expert_id')->constrained();
             $table->string('consultation_status', 5)->default('0');
-            $table->string('request_status', 5)->default('0');
+            $table->string('request_status', 10)->default('2');
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();

@@ -14,10 +14,11 @@ export const commonConst = {
     COMMON_PATH: '/images/common/',
 
     //依頼リクエストの状態
-    REQUEST_EXAMINATION: '0', //検討中
+    REQUEST_APPLYING: '0', //依頼申請中
     REQUEST: '1', //依頼中
-    REQUEST_FINISHED: '2', //取引完了
-    REQUEST_CANCELED: '3', //キャンセル
+    REQUEST_EXAMINATION: '2', //検討中
+    REQUEST_FINISHED: '3', //取引完了
+    REQUEST_CANCELED: '4', //キャンセル
 
     //相談状況
     CONSULTATION: '0', //相談中
