@@ -54,8 +54,9 @@
 
 <script>
 import { commonConst } from '@/Consts/commonConst'
-import { toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
 import { Inertia } from '@inertiajs/inertia'
+import { usePage } from '@inertiajs/inertia-vue3'
 
 export default {
     name: "ChatroomCard",
@@ -76,8 +77,13 @@ export default {
             CONSULTATION_CANCELED,
         } = commonConst;
 
+        const expert = computed(() => usePage().props?.value.auth.expert);
+
+        const url = expert === null ? 'chatroom.show' : 'expert.chatroom.show';
+
+
         const linkChatroomShow = (chatroomId) => {
-            Inertia.visit(route('chatroom.show', [chatroomId]));
+            Inertia.visit(route(url, [chatroomId]));
         }
 
         //依頼状態によるカラー設定
