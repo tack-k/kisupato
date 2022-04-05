@@ -3,7 +3,7 @@
         <template #content>
             <!-- component -->
             <div v-if="chatrooms.length === 0" class="pt-8">
-                <FixedMessage>チャットルームの登録がありません。</FixedMessage>
+                <FixedMessage :messages="messages" />
             </div>
             <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
                 <template v-for="(chatroom, key) in chatrooms" :key="key">
@@ -29,12 +29,14 @@ export default {
     },
     props: {
         chatrooms: Object,
+        messages: Array,
     },
     setup(props) {
-        const { chatrooms } = toRefs(props);
+        const { chatrooms, messages } = toRefs(props);
 
         return {
             chatrooms,
+            messages,
         }
     }
 }

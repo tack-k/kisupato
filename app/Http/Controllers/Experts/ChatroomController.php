@@ -25,12 +25,17 @@ class ChatroomController extends Controller {
 
         $chatrooms = Chatroom::getChatrooms($expertId)->get();
 
+        $messages = [];
+
         if ($chatrooms->isNotEmpty()) {
             $chatrooms = $this->_service->formatChatroomData($chatrooms);
+        } else {
+            $messages[] = 'チャットルームの登録がありません';
         }
 
         return Inertia::render('Experts/Chatrooms/Index', [
             'chatrooms' => $chatrooms,
+            'messages' => $messages,
         ]);
     }
 

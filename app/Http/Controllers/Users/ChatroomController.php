@@ -28,12 +28,16 @@ class ChatroomController extends Controller {
         $userId = Auth::id();
         $chatrooms = Chatroom::getChatrooms($userId)->get();
 
+        $messages = [];
         if ($chatrooms->isNotEmpty()) {
             $chatrooms = $this->_service->formatChatroomData($chatrooms);
+        } else {
+            $messages[] = 'チャットルームの登録がありません';
         }
 
         return Inertia::render('Users/Chatrooms/Index', [
             'chatrooms' => $chatrooms,
+            'messages' => $messages,
         ]);
     }
 
