@@ -1,7 +1,7 @@
 <template>
     <!-- This is an example component -->
     <div class="w-full mx-auto user-hover" @click="linkChatroomShow(chatroom.chatroom_id)">
-        <div class="max-w-sm p-2 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+        <div class="max-w-sm p-2 h-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
             <div class="flex justify-end px-4 pt-4">
                 <div :class="setConsultationColor(chatroom.consultation_status)" class="inline-flex items-center py-1 px-2 text-xs font-medium rounded">{{ chatroom.consultation_status_name }}</div>
 
@@ -33,7 +33,7 @@
                 </div>
                 <h3 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ chatroom.nickname }}</h3>
                 <div class="flex mt-4 space-x-3 lg:mt-6 mb-4">
-                    <div :class="setRequestColor(chatroom.request_status)" class="inline-flex items-center py-2 px-4 text-sm font-medium rounded">{{ chatroom.request_status_name }}</div>
+                    <div v-if="isShowRequestName(chatroom)" :class="setRequestColor(chatroom.request_status)" class="inline-flex items-center py-2 px-4 text-sm font-medium rounded">{{ chatroom.request_status_name }}</div>
                 </div>
                 <table>
                     <tbody class="text-sm text-gray-500 dark:text-gray-400">
@@ -54,7 +54,7 @@
 
 <script>
 import { commonConst } from '@/Consts/commonConst'
-import { computed, toRefs } from 'vue'
+import { computed, toRefs, ref } from 'vue'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-vue3'
 
@@ -72,25 +72,21 @@ export default {
             REQUEST,
             REQUEST_CANCELED,
             REQUEST_FINISHED,
+            REQUEST_APPLYING,
             CONSULTATION,
             CONSULTATION_FINISHED,
             CONSULTATION_CANCELED,
         } = commonConst;
 
-        const expert = computed(() => usePage().props?.value.auth.expert);
-
-        const url = expert === null ? 'chatroom.show' : 'expert.chatroom.show';
-
-
         const linkChatroomShow = (chatroomId) => {
-            Inertia.visit(route(url, [chatroomId]));
+            Inertia.visit(route('chatroom.show', [chatroomId]));
         }
 
         //依頼状態によるカラー設定
         const setRequestColor = (status) => {
             switch (status) {
-                case REQUEST_EXAMINATION:
-                    return 'examination-status'
+                case REQUEST_APPLYING:
+                    return 'applying-status'
                     break
                 case REQUEST:
                     return 'running-status'
@@ -118,12 +114,28 @@ export default {
                     break
             }
         }
+
+        const isShowRequestName = (chatroom) => {
+            if(chatroom.request_status === REQUEST_EXAMINATION) {
+                return false
+            } else if (chatroom.request_status === REQUEST_CANCELED && chatroom.consultation_status === CONSULTATION_CANCELED) {
+                return false
+            } else {
+                return true
+            }
+        }
+
+
         return {
             chatroom,
             PROFILE_PATH,
             linkChatroomShow,
             setRequestColor,
             setConsultationColor,
+            REQUEST_EXAMINATION,
+            CONSULTATION_CANCELED,
+            REQUEST_CANCELED,
+            isShowRequestName,
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use App\Consts\CommonConst;
 
 class ChatroomService {
 
@@ -35,28 +36,31 @@ class ChatroomService {
 
     public function addChatroomStatusName($chatroom) {
         switch ($chatroom['consultation_status']) {
-            case '0':
+            case commonConst::CONSULTATION:
                 $chatroom['consultation_status_name'] = '相談中';
                 break;
-            case '1':
+            case CommonConst::CONSULTATION_FINISHED:
                 $chatroom['consultation_status_name'] = '相談完了';
                 break;
-            case '2':
+            case CommonConst::CONSULTATION_CANCELED:
                 $chatroom['consultation_status_name'] = '相談キャンセル';
                 break;
         }
 
         switch ($chatroom['request_status']) {
-            case '0':
-                $chatroom['request_status_name'] = '依頼検討中';
+            case CommonConst::REQUEST_EXAMINATION:
+                $chatroom['request_status_name'] = null;
                 break;
-            case '1':
+            case CommonConst::REQUEST_APPLYING:
+                $chatroom['request_status_name'] = '依頼申請中';
+                break;
+            case CommonConst::REQUEST:
                 $chatroom['request_status_name'] = '依頼中';
                 break;
-            case '2':
+            case CommonConst::REQUEST_FINISHED:
                 $chatroom['request_status_name'] = '取引完了';
                 break;
-            case '3':
+            case CommonConst::REQUEST_CANCELED:
                 $chatroom['request_status_name'] = '依頼キャンセル';
                 break;
         }
