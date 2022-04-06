@@ -3,7 +3,7 @@
         <template #content>
             <FixedMessage v-if="chatrooms.length === 0" :messages="messages"/>
             <StandardTab :tabs="tabs" :active="active"/>
-            <div class="w-full mx-auto mt-8">
+            <div v-if="chatrooms.length > 0" class="w-full mx-auto mt-8">
                 <div class="bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
                     <div class="flow-root">
                         <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
