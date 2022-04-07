@@ -54,9 +54,9 @@
 
 <script>
 import { commonConst } from '@/Consts/commonConst'
-import { computed, toRefs, ref } from 'vue'
+import { toRefs } from 'vue'
 import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-vue3'
+import useChatroomCardAction from '@/Composables/useChatroomCardAction'
 
 export default {
     name: "ChatroomCard",
@@ -69,12 +69,7 @@ export default {
         const {
             PROFILE_PATH,
             REQUEST_EXAMINATION,
-            REQUEST,
             REQUEST_CANCELED,
-            REQUEST_FINISHED,
-            REQUEST_APPLYING,
-            CONSULTATION,
-            CONSULTATION_FINISHED,
             CONSULTATION_CANCELED,
         } = commonConst;
 
@@ -82,48 +77,7 @@ export default {
             Inertia.visit(route('chatroom.show', [chatroomId]));
         }
 
-        //依頼状態によるカラー設定
-        const setRequestColor = (status) => {
-            switch (status) {
-                case REQUEST_APPLYING:
-                    return 'applying-status'
-                    break
-                case REQUEST:
-                    return 'running-status'
-                    break
-                case REQUEST_FINISHED:
-                    return 'finished-status'
-                    break
-                case REQUEST_CANCELED:
-                    return 'canceled-status'
-                    break
-            }
-        }
-
-        //相談状態によるカラー設定
-        const setConsultationColor = (status) => {
-            switch (status) {
-                case CONSULTATION:
-                    return 'running-status'
-                    break
-                case CONSULTATION_FINISHED:
-                    return 'finished-status'
-                    break
-                case CONSULTATION_CANCELED:
-                    return 'canceled-status'
-                    break
-            }
-        }
-
-        const isShowRequestName = (chatroom) => {
-            if(chatroom.request_status === REQUEST_EXAMINATION) {
-                return false
-            } else if (chatroom.request_status === REQUEST_CANCELED && chatroom.consultation_status === CONSULTATION_CANCELED) {
-                return false
-            } else {
-                return true
-            }
-        }
+        const { isShowRequestName, setRequestColor, setConsultationColor } = useChatroomCardAction();
 
 
         return {
