@@ -36,7 +36,7 @@ class Chatroom extends Model
             ->groupBy('expert_id');
 
         $query->select('chatrooms.id as chatroom_id', 'consultation_status', 'request_status', 'chatrooms.created_at as c_created_at', 'chatrooms.updated_at as c_updated_at', 'request_finished_at', 'ep.nickname', 'ep.profile_image', 'm.message', 'm.created_at as m_created_at')
-            ->join('expert_profiles as ep', 'ep.id', '=', 'chatrooms.expert_id')
+            ->join('expert_profiles as ep', 'ep.expert_id', '=', 'chatrooms.expert_id')
             ->leftjoin('messages as m', function ($join) {
                 $join->on( 'm.chatroom_id', '=', 'chatrooms.id')
                     ->whereNull('m.user_id');
