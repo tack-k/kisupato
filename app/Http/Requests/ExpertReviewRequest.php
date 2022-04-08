@@ -12,7 +12,7 @@ class ExpertReviewRequest extends FormRequest {
         return [
             'evaluation' => 'numeric|between:0.5,5',
             'comment' => 'string|nullable|max:500',
-            'expert_id' => 'required|exists:users,id',
+            'expert_id' => 'required|exists:experts,id',
             'chatroom_id' => 'required|exists:chatrooms,id'
         ];
     }
