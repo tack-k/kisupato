@@ -21,8 +21,8 @@
 
 <script>
 import StarRating from 'vue-star-rating'
-import { commonConst } from "@/Consts/commonConst";
 import { ref, toRefs, watch } from 'vue';
+import useCommonAction from '@/Composables/useCommonAction'
 
 
 export default {
@@ -35,7 +35,6 @@ export default {
     },
     setup(props, {emit}) {
         const { review } = toRefs(props);
-        const { USER_PROFILE_PATH, COMMON_PATH, DEFAULT_PROFILE } = commonConst;
 
         const rating ={
             increment: 0.5,
@@ -45,7 +44,8 @@ export default {
             showRating: false,
         };
 
-        const displayedProfilePath = review.value.profile_image === DEFAULT_PROFILE ? COMMON_PATH : USER_PROFILE_PATH;
+        const { setDisplayedProfilePath } = useCommonAction();
+        const displayedProfilePath = setDisplayedProfilePath(review.value.profile_image);
 
 
         const isLimit = ref(true)

@@ -70,7 +70,8 @@ import LabelRequired from '@/Components/Labels/LabelRequired'
 import InputForm from "@/Components/Forms/Input";
 import { ref, toRefs } from 'vue'
 import { useForm, Link } from '@inertiajs/inertia-vue3'
-import { commonConst } from '@/Consts/commonConst'
+import useCommonAction from '@/Composables/useCommonAction'
+
 
 export default {
     name: "Input",
@@ -87,7 +88,6 @@ export default {
     setup(props) {
 
         const { profile } = toRefs(props);
-        const { USER_PROFILE_PATH, DEFAULT_PROFILE, COMMON_PATH } = commonConst;
 
         const form = useForm({
             nickname: profile.value?.nickname ?? '',
@@ -97,7 +97,8 @@ export default {
             self_introduction: profile.value?.self_introduction ?? '',
         });
 
-        let displayedProfilePath = profile.value.profile_image === DEFAULT_PROFILE ? COMMON_PATH : USER_PROFILE_PATH;
+        const { setDisplayedProfilePath } = useCommonAction();
+        let displayedProfilePath = setDisplayedProfilePath(profile.value.profile_image);
 
 
         //プロフィール画像ドラッグ&ドロップ

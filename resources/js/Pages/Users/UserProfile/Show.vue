@@ -34,11 +34,12 @@
 
 <script>
 import MyPageLayout from '@/Layouts/Users/MyPageLayout'
-import { Link, useForm } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/inertia-vue3";
 import RegularButton from '@/Components/Buttons/RegularButton';
 import { commonConst } from '@/Consts/commonConst'
 import { reactive, toRefs } from 'vue'
 import { messageConst } from '@/Consts/messageConst'
+import useCommonAction from '@/Composables/useCommonAction'
 
 
 export default {
@@ -53,9 +54,11 @@ export default {
     },
     setup(props) {
         const { profile } = toRefs(props);
-        const { USER_PROFILE_PATH, DEFAULT_PROFILE, COMMON_PATH } = commonConst;
-        const { INPUT_NICKNAME, INPUT_SELF_INTRODUCTION } = messageConst;
-        let displayedProfilePath = profile.value.profile_image === DEFAULT_PROFILE ? COMMON_PATH : USER_PROFILE_PATH;
+        const { DEFAULT_PROFILE } = commonConst;
+        const { INPUT_SELF_INTRODUCTION } = messageConst;
+        const { setDisplayedProfilePath } = useCommonAction();
+
+        let displayedProfilePath = setDisplayedProfilePath(profile.value.profile_image);
 
         const isNoInput = reactive({
             self_introduction: false,
