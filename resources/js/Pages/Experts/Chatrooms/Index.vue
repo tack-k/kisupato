@@ -5,11 +5,11 @@
             <div v-if="chatrooms.length === 0" class="pt-8">
                 <FixedMessage :messages="messages" />
             </div>
-            <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+            <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
                 <template v-for="(chatroom, key) in chatrooms" :key="key">
-                    <ChatroomCard :chatroom="chatroom"/>
+                    <ChatroomCardExpert :chatroom="chatroom"/>
                 </template>
-            </div>
+            </ul>
         </template>
     </my-page-layout>
 </template>
@@ -17,13 +17,13 @@
 <script>
 import MyPageLayout from '@/Layouts/Experts/MyPageLayout'
 import FixedMessage from '@/Components/Messages/FixedMessage'
-import ChatroomCard from '@/Components/Cards/ChatroomCard'
 import { toRefs } from 'vue'
+import ChatroomCardExpert from '@/Components/Cards/ChatroomCardExpert'
 
 export default {
     name: "Index",
     components: {
-        ChatroomCard,
+        ChatroomCardExpert,
         MyPageLayout,
         FixedMessage,
     },
