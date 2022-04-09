@@ -23,7 +23,7 @@
                 </div>
                 <div class="w-2/12 m-1">
                     <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                        依頼承諾日
+                        依頼完了日
                     </p>
                     <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                         {{ chatroom.request_finished_at }}
