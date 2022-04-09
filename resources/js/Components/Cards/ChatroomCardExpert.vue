@@ -1,32 +1,34 @@
 <template>
-    <li @click="linkChatroomShow(chatroom.chatroom_id)" class="py-3 sm:py-4 px-1 sm:px-12 hover:bg-gray-50 hover:cursor-pointer">
-        <div class="flex items-center space-x-3">
-            <div class="w-2/12 flex items-center flex-col">
-                <div v-if="chatroom.consultation_status_name !== null" :class="setConsultationColor(chatroom.consultation_status)" class="text-xs px-1 py-0.5 rounded mb-0.5">{{ chatroom.consultation_status_name }}</div>
-                <div v-if="isShowRequestName(chatroom)" :class="setRequestColor(chatroom.request_status)" class="text-xs px-1 py-0.5 rounded">{{ chatroom.request_status_name }}</div>
-            </div>
-            <div class="w-2/12 flex-col flex items-center">
-                <img class="w-8 h-8 rounded-full mb-1" :src="displayedProfilePath + chatroom.profile_image" alt="Neil image">
-                <p class="text-sm　base-font-bold"> {{ chatroom.nickname }}</p>
-            </div>
-            <p v-if="chatroom.message !== null" class="w-4/12 limit-string text-xs">
-                {{ chatroom.message }}
-            </p>
-            <div class="w-2/12">
-                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                    ルーム作成日
+    <li @click="linkChatroomShow(chatroom.chatroom_id)" class="py-3 sm:py-4 px-1 sm:px-4 hover:bg-gray-50 hover:cursor-pointer">
+        <div class="flex items-center">
+            <div class="flex items-center w-10/12">
+                <div class="w-2/12 m-1 flex items-center flex-col">
+                    <div v-if="chatroom.consultation_status_name !== null" :class="setConsultationColor(chatroom.consultation_status)" class="text-xs px-1 py-0.5 rounded mb-0.5">{{ chatroom.consultation_status_name }}</div>
+                    <div v-if="isShowRequestName(chatroom)" :class="setRequestColor(chatroom.request_status)" class="text-xs px-1 py-0.5 rounded">{{ chatroom.request_status_name }}</div>
+                </div>
+                <div class="w-2/12 m-1 flex-col flex items-center">
+                    <img class="w-8 h-8 rounded-full mb-1" :src="displayedProfilePath + chatroom.profile_image" alt="Neil image">
+                    <p class="text-sm　base-font-bold"> {{ chatroom.nickname }}</p>
+                </div>
+                <p v-if="chatroom.message !== null" class="w-4/12 limit-string text-xs">
+                    {{ chatroom.message }}
                 </p>
-                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                    {{ chatroom.c_created_at }}
-                </p>
-            </div>
-            <div class="w-2/12">
-                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                    依頼承諾日
-                </p>
-                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                    {{ chatroom.request_finished_at }}
-                </p>
+                <div class="w-2/12 m-1">
+                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                        ルーム作成日
+                    </p>
+                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                        {{ chatroom.c_created_at }}
+                    </p>
+                </div>
+                <div class="w-2/12 m-1">
+                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                        依頼承諾日
+                    </p>
+                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                        {{ chatroom.request_finished_at }}
+                    </p>
+                </div>
             </div>
             <div v-if="chatroom.request_status === REQUEST_APPLYING" class="w-2/12 flex items-center flex-col">
                 <RegularButton @click.stop="submitApproval" class="mb-1">
