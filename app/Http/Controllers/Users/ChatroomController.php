@@ -91,7 +91,7 @@ class ChatroomController extends Controller {
     public function update(Request $request) {
         $params = $request->validate([
             'id' => 'exists:chatrooms,id',
-            'request_status' => 'between:0,3',
+            'request_status' => 'between:0,4',
             'consultation_status' => 'between:0,2',
         ]);
 
