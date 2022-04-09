@@ -56,9 +56,19 @@ export default function useChatroomCardAction() {
         }
     }
 
+    //チャットルームのステータスを送信する
+    const submitChatroomStatus = (message, requestStatus, consultationStatus, form, url) => {
+        form.request_status = requestStatus
+        form.consultation_status = consultationStatus
+        if (confirm(message)) {
+            form.post(url)
+        }
+    }
+
     return {
         isShowRequestName,
         setRequestColor,
         setConsultationColor,
+        submitChatroomStatus,
     }
 }

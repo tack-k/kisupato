@@ -139,6 +139,7 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
     Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function() {
         Route::get('/', [ExpertChatroomController::class, 'index'])->name('index');
         Route::get('/show/{chatroom_id}', [ExpertChatroomController::class, 'show'])->name('show');
+        Route::post('/update', [ExpertChatroomController::class, 'update'])->name('update');
     });
     Route::group(['prefix' => 'message', 'as' => 'message.'], function() {
         Route::post('store', [ExpertMessagesController::class, 'update'])->name('update');

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use App\Consts\CommonConst;
+use Illuminate\Support\Facades\Auth;
 
 class ChatroomService {
 
@@ -13,11 +14,10 @@ class ChatroomService {
         $this->_commonServie = new CommonService();
     }
 
-    public function formatChatroomData($chatrooms)
-    {
+    public function formatChatroomData($chatrooms) {
         foreach ($chatrooms as $key => $chatroom) {
             $chatroom['c_created_at'] = $this->_commonServie->formatDate($chatroom['c_created_at']);
-            if(isset($chatroom['request_finished_at'])) {
+            if (isset($chatroom['request_finished_at'])) {
                 $chatroom['request_finished_at'] = $this->_commonServie->formatDate($chatroom['request_finished_at']);
             }
 
@@ -40,7 +40,7 @@ class ChatroomService {
                 $chatroom['consultation_status_name'] = '相談中';
                 break;
             case CommonConst::CONSULTATION_FINISHED:
-                $chatroom['consultation_status_name'] = '相談完了';
+                $chatroom['consultation_status_name'] = null;
                 break;
             case CommonConst::CONSULTATION_CANCELED:
                 $chatroom['consultation_status_name'] = '相談キャンセル';
@@ -52,10 +52,10 @@ class ChatroomService {
                 $chatroom['request_status_name'] = null;
                 break;
             case CommonConst::REQUEST_APPLYING:
-                $chatroom['request_status_name'] = '依頼申請中';
+                $chatroom['request_status_name'] = Auth::guard('expert')->check() ? '受諾検討中' : '依頼申請中';
                 break;
             case CommonConst::REQUEST:
-                $chatroom['request_status_name'] = '依頼中';
+                $chatroom['request_status_name'] = Auth::guard('expert')->check() ? '受諾中' : '依頼中';
                 break;
             case CommonConst::REQUEST_FINISHED:
                 $chatroom['request_status_name'] = '取引完了';

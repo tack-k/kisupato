@@ -10,6 +10,14 @@ use Illuminate\Notifications\Notifiable;
 
 class Chatroom extends Model {
 
+    protected $fillable = [
+        'user_id',
+        'expert_id',
+        'consultation_status',
+        'request_status',
+        'request_finished_at',
+    ];
+
     use HasFactory, Notifiable, SoftDeletes, AuthorObservable;
 
     public function scopeGetChatrooms($query, $expertId) {

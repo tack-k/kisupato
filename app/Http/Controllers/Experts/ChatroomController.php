@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Experts;
 
+use App\Consts\CommonConst;
 use App\Http\Controllers\Controller;
 use App\Models\Experts\Chatroom;
 use App\Models\Experts\Message;
 use App\Models\Users\UserProfile;
 use App\Services\ChatroomService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -56,4 +58,20 @@ class ChatroomController extends Controller {
         ]);
 
     }
+
+    public function update(Request $request) {
+        $params = $request->validate([
+            'id' => 'exists:chatrooms,id',
+            'request_status' => 'between:0,4',
+            'consultation_status' => 'between:0,2',
+        ]);
+
+        if($params['request_status'] === CommonConst::REQUEST) {
+            $params['request_finished_at'] = Carbon::now();
+        }
+        Chatroom::find($params['id'])->update($params);
+
+        return redirect()->route('expert.chatroom.index');
+    }
+
 }
