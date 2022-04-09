@@ -30,14 +30,8 @@
                     </p>
                 </div>
             </div>
-            <div v-if="chatroom.request_status === REQUEST_APPLYING" class="w-2/12 flex items-center flex-col">
-                <RegularButton @click.stop="submitApproval" class="mb-1">
-                    依頼承認
-                </RegularButton>
-                <OutlineButton @click.stop="submitCancel" class="">
-                    キャンセル
-                </OutlineButton>
-            </div>
+            <DoubleButton v-if="chatroom.request_status === REQUEST_APPLYING" :regularText="'依頼承認'" :outline-text="'キャンセル'" :regular-action="submitApproval" :outline-action="submitCancel"/>
+            <DoubleButton v-if="chatroom.request_status === REQUEST" :regularText="'依頼完了'" :outline-text="'キャンセル'" :regular-action="submitFinish" :outline-action="submitCancel"/>
         </div>
     </li>
 </template>
@@ -52,18 +46,19 @@ import { Inertia } from '@inertiajs/inertia'
 import { commonConst } from '@/Consts/commonConst'
 import { messageConst } from '@/Consts/messageConst'
 import { useForm } from '@inertiajs/inertia-vue3'
+import DoubleButton from '@/Layouts/Common/DoubleButton'
 
 export default {
     name: "ChatroomCardExpert",
-    components: { OutlineButton, RegularButton },
+    components: { DoubleButton, OutlineButton, RegularButton },
     props: {
         chatroom: Object,
     },
     setup(props) {
 
         const { chatroom } = toRefs(props);
-        const { REQUEST_APPLYING, REQUEST, REQUEST_CANCELED, CONSULTATION_FINISHED } = commonConst;
-        const { M_CANCEL_REQUEST, M_ACCEPT_REQUEST } = messageConst;
+        const { REQUEST_APPLYING, REQUEST, REQUEST_CANCELED, REQUEST_FINISHED, CONSULTATION_FINISHED } = commonConst;
+        const { M_CANCEL_REQUEST, M_ACCEPT_REQUEST, M_FINISH_REQUEST } = messageConst;
 
         const {
             isShowRequestName,
@@ -95,6 +90,10 @@ export default {
             submitChatroomStatus(M_CANCEL_REQUEST, REQUEST_CANCELED, CONSULTATION_FINISHED, form, url)
         }
 
+        const submitFinish = () => {
+            submitChatroomStatus(M_FINISH_REQUEST, REQUEST_FINISHED, CONSULTATION_FINISHED, form, url)
+        }
+
         return {
             chatroom,
             displayedProfilePath,
@@ -105,6 +104,8 @@ export default {
             REQUEST_APPLYING,
             submitApproval,
             submitCancel,
+            REQUEST,
+            submitFinish,
         }
     }
 }
