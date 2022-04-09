@@ -33,6 +33,9 @@ export const commonConst = {
     //トップ画面プロフィール最大表示件数
     MAX_PROFILE_COUNT_TOP: 6,
 
+    //レビューコメントの表示文字上限数
+    MAX_REVIEW_COUNT: 100,
+
 }
 
 export const reviewTabs = {

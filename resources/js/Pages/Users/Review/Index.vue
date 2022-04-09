@@ -4,7 +4,7 @@
             <FixedMessage v-if="messages.length > 0" :messages="messages"/>
             <StandardTab :tabs="tabs" :active="active"/>
             <h2 class="mb-8 pt-8 base-font-m base-font-bold">{{ reviewCount }}件のレビュー</h2>
-            <div v-if="reviews.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+            <div v-if="reviews.length > 0" class="flex flex-col items-start">
                 <template v-for="(review, key) in reviews" :key="key">
                     <ReviewCard :review="review"/>
                 </template>
