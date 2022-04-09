@@ -3,10 +3,6 @@
         <template #content>
             <div class="flex-1 p:2 sm:p-6 flex flex-col h-full">
                 <Chatroom :messages="messages" :chatroom="chatroom" :profile="userProfile"/>
-                <div v-show="!isRequesting" class="flex justify-center mt-4">
-                    <button @click="submitRequest(chatroom.request_status)" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing" class="expert-regular-btn mr-20">依頼する</button>
-                    <button @click="submitCancelConsultation" class="expert-outline-btn" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing">相談キャンセル</button>
-                </div>
             </div>
         </template>
     </my-page-layout>
