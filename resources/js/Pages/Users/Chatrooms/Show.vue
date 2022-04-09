@@ -41,7 +41,7 @@ export default {
             CONSULTATION_FINISHED,
         } = commonConst;
 
-        const { M_APPLY_REQUEST, M_CANCEL_CONSULTATION } = messageConst;
+        const { M_APPLY_REQUEST, M_CANCEL_CONSULTATION, ME_SUBMIT_ILLEGAL } = messageConst;
 
         const { chatroom, messages, expertProfile } = toRefs(props);
 
@@ -66,7 +66,7 @@ export default {
             if (chatroom.value.request_status === REQUEST_EXAMINATION) {
                 submitChatroomStatus(M_APPLY_REQUEST, REQUEST_APPLYING, CONSULTATION_FINISHED, requestForm, url)
             } else {
-                alert('不正な送信です');
+                alert(ME_SUBMIT_ILLEGAL);
             }
 
         }
@@ -75,7 +75,7 @@ export default {
             if (chatroom.value.consultation_status === CONSULTATION) {
                 submitChatroomStatus(M_CANCEL_CONSULTATION, REQUEST_CANCELED, CONSULTATION_CANCELED, requestForm, url)
             } else {
-                alert('不正な送信です')
+                alert(ME_SUBMIT_ILLEGAL)
             }
 
         }
