@@ -54,4 +54,5 @@ class MessageConst
     public const I_00004 = "を公開しました";
     public const I_00005 = "を非公開にしました";
     public const I_01001 = "ご登録いただいたメールアドレスにアカウント発行のメールを送信しました";
+    public const I_REQUIRE_PROFILE = "プロフィール公開中のため、すべての項目を入力してください";
 }

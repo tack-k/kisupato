@@ -1,7 +1,7 @@
 <template>
     <my-page-layout>
         <template #content>
-            <p v-if="profile.status === '0'" class="font-medium text-red-600 mb-10">※プロフィール公開中のため、すべての項目を入力してください</p>
+            <FixedMessage v-if="messages.length > 0" :messages="messages"/>
             <form @submit.prevent>
                 <section class="mb-10">
                     <LabelRequired class="label" value="ニックネーム" for="nickname"/>
@@ -216,6 +216,7 @@ import useTagAction from "@/Composables/useTagAction";
 import useActivityBaseAction from "@/Composables/useActivityBaseAction";
 import { directive } from "vue3-click-away";
 import { commonConst } from "@/Consts/commonConst"
+import FixedMessage from '@/Components/Messages/FixedMessage'
 
 
 export default {
@@ -229,12 +230,14 @@ export default {
         MyPageLayout,
         Fa,
         Link,
+        FixedMessage,
     },
     props: {
         profile: Object,
         tags: Object,
         positions: Object,
         cities: Object,
+        messages: Array,
     },
     directives: {
         ClickAway: directive
@@ -246,7 +249,7 @@ export default {
             { 'id': 1, 'name': '非公開' },
         ])
 
-        const { profile, tags, cities, positions } = toRefs(props)
+        const { profile, tags, cities, positions, messages } = toRefs(props)
 
         let initPosition = ref('');
         if (profile.value.positions && profile.value.positions.length > 0) {
@@ -468,6 +471,7 @@ export default {
             onClickOutside,
             displayActivityBase,
             positions,
+            messages,
         }
     }
 }

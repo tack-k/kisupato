@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Experts;
 
+use App\Consts\CommonConst;
 use App\Consts\ExpertConst;
 use App\Consts\MessageConst;
 use App\Http\Controllers\Controller;
@@ -65,8 +66,13 @@ class ExpertProfileController extends Controller
         $positions = Position::getPositions()->get();
         $cities = City::select('id', 'area_id', 'name')->get();
         $profile = ExpertProfile::getExpertProfileInfo($expert_id)->first();
+        $messages = [];
         if (!$profile) {
             $profile = ['profile_image' => 'default_profile.png'];
+        }
+
+        if($profile['status'] === ExpertConst::PUBLIC) {
+            $messages[] = MessageConst::I_REQUIRE_PROFILE;
         }
 
         return Inertia::render(('Experts/Profile/Input'), [
@@ -74,6 +80,7 @@ class ExpertProfileController extends Controller
             'tags' => $tags,
             'positions' => $positions,
             'cities' => $cities,
+            'messages' => $messages,
         ]);
     }
 
