@@ -98,7 +98,7 @@
 
                 <div class="flex justify-center mt-4">
                     <button class="expert-regular-btn mr-20">変更する</button>
-                    <Link :href="route('profile.show')" class="expert-outline-btn">戻る</Link>
+                    <Link :href="route('account.show')" class="expert-outline-btn">戻る</Link>
                 </div>
             </form>
         </template>
