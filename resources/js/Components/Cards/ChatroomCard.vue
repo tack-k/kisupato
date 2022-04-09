@@ -26,6 +26,10 @@
                     </tr>
                     </tbody>
                 </table>
+                <div v-if="!isRequesting" class="flex justify-center mt-4">
+                    <button @click.stop="submitRequest(chatroom.request_status)" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing" class="expert-regular-btn mr-2">依頼する</button>
+                    <button @click.stop="submitCancelConsultation" class="expert-outline-btn" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing">相談キャンセル</button>
+                </div>
             </div>
         </div>
     </div>
@@ -33,9 +37,11 @@
 
 <script>
 import { commonConst } from '@/Consts/commonConst'
-import { toRefs } from 'vue'
+import { ref, toRefs } from 'vue'
 import { Inertia } from '@inertiajs/inertia'
 import useChatroomCardAction from '@/Composables/useChatroomCardAction'
+import { useForm } from '@inertiajs/inertia-vue3'
+import { messageConst } from '@/Consts/messageConst'
 
 export default {
     name: "ChatroomCard",
@@ -48,16 +54,54 @@ export default {
         const {
             PROFILE_PATH,
             REQUEST_EXAMINATION,
+            REQUEST_APPLYING,
+            REQUEST,
             REQUEST_CANCELED,
+            CONSULTATION,
             CONSULTATION_CANCELED,
+            CONSULTATION_FINISHED,
         } = commonConst;
+
+        const { M_APPLY_REQUEST, M_CANCEL_CONSULTATION, ME_SUBMIT_ILLEGAL } = messageConst;
 
         const linkChatroomShow = (chatroomId) => {
             Inertia.visit(route('chatroom.show', [chatroomId]));
         }
 
-        const { isShowRequestName, setRequestColor, setConsultationColor } = useChatroomCardAction();
+        const { isShowRequestName, setRequestColor, setConsultationColor, submitChatroomStatus } = useChatroomCardAction();
 
+        //依頼リクエスト・相談キャンセル
+        const isRequesting = ref(true);
+        if (chatroom.value.request_status === REQUEST_EXAMINATION ) {
+            isRequesting.value = false;
+        }
+
+        const requestForm = useForm({
+            id: chatroom.value.id,
+            request_status: '',
+            consultation_status: '',
+        });
+
+        const url = route('chatroom.update')
+
+        const submitRequest = () => {
+            console.log(chatroom.value.request_status)
+            if (chatroom.value.request_status === REQUEST_EXAMINATION) {
+                submitChatroomStatus(M_APPLY_REQUEST, REQUEST_APPLYING, CONSULTATION_FINISHED, requestForm, url)
+            } else {
+                alert(ME_SUBMIT_ILLEGAL);
+            }
+
+        }
+
+        const submitCancelConsultation = () => {
+            if (chatroom.value.consultation_status === CONSULTATION) {
+                submitChatroomStatus(M_CANCEL_CONSULTATION, REQUEST_CANCELED, CONSULTATION_CANCELED, requestForm, url)
+            } else {
+                alert(ME_SUBMIT_ILLEGAL)
+            }
+
+        }
 
         return {
             chatroom,
@@ -69,6 +113,10 @@ export default {
             CONSULTATION_CANCELED,
             REQUEST_CANCELED,
             isShowRequestName,
+            submitRequest,
+            requestForm,
+            isRequesting,
+            submitCancelConsultation,
         }
     }
 }
