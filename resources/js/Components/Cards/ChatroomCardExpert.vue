@@ -63,7 +63,7 @@ export default {
 
         const { chatroom } = toRefs(props);
         const { REQUEST_APPLYING, REQUEST, REQUEST_CANCELED, CONSULTATION_FINISHED } = commonConst;
-        const { M_CANCEL_REQUEST, M_CONFIRM_REQUEST } = messageConst;
+        const { M_CANCEL_REQUEST, M_ACCEPT_REQUEST } = messageConst;
 
         const {
             isShowRequestName,
@@ -88,7 +88,7 @@ export default {
         const url = route('expert.chatroom.update');
 
         const submitApproval = () => {
-            submitChatroomStatus(M_CONFIRM_REQUEST, REQUEST, CONSULTATION_FINISHED, form, url)
+            submitChatroomStatus(M_ACCEPT_REQUEST, REQUEST, CONSULTATION_FINISHED, form, url)
         }
 
         const submitCancel = () => {

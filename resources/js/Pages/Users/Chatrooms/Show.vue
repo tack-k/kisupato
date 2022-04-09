@@ -2,11 +2,11 @@
     <my-page-layout :isChatroom="true">
         <template #content>
             <div class="flex-1 p:2 sm:p-6 flex flex-col h-full">
-            <Chatroom :messages="messages" :chatroom="chatroom" :profile="expertProfile"/>
-            <div v-if="!isRequesting" class="flex justify-center mt-4">
-                <button @click="submitRequest(chatroom.request_status)" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing" class="expert-regular-btn mr-20">依頼する</button>
-                <button @click="submitCancelConsultation" class="expert-outline-btn" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing">相談キャンセル</button>
-            </div>
+                <Chatroom :messages="messages" :chatroom="chatroom" :profile="expertProfile"/>
+                <div v-if="!isRequesting" class="flex justify-center mt-4">
+                    <button @click="submitRequest(chatroom.request_status)" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing" class="expert-regular-btn mr-20">依頼する</button>
+                    <button @click="submitCancelConsultation" class="expert-outline-btn" :class="{ 'opacity-25': requestForm.processing }" :disabled="requestForm.processing">相談キャンセル</button>
+                </div>
             </div>
         </template>
     </my-page-layout>
@@ -18,6 +18,8 @@ import { toRefs, ref } from 'vue'
 import { useForm } from "@inertiajs/inertia-vue3"
 import { commonConst } from '@/Consts/commonConst'
 import Chatroom from '@/Layouts/Common/Chatroom'
+import useChatroomCardAction from '@/Composables/useChatroomCardAction'
+import { messageConst } from '@/Consts/messageConst'
 
 export default {
     name: "Show",
@@ -39,7 +41,11 @@ export default {
             CONSULTATION_FINISHED,
         } = commonConst;
 
+        const { M_APPLY_REQUEST, M_CANCEL_CONSULTATION } = messageConst;
+
         const { chatroom, messages, expertProfile } = toRefs(props);
+
+        const { submitChatroomStatus } = useChatroomCardAction();
 
 
         //依頼リクエスト・相談キャンセル
@@ -48,25 +54,17 @@ export default {
             isRequesting.value = true;
         }
 
-        const requestConfirmMessage = ref('')
         const requestForm = useForm({
             id: chatroom.value.id,
             request_status: '',
             consultation_status: '',
         });
 
-        const submitChatroomStatus = (requestConfirmMessage) => {
-            if (confirm(requestConfirmMessage)) {
-                requestForm.post(route('chatroom.update'))
-            }
-        }
+        const url = route('chatroom.update')
 
         const submitRequest = () => {
             if (chatroom.value.request_status === REQUEST_EXAMINATION) {
-                requestConfirmMessage.value = '仕事依頼をしたら、あなたからキャンセルできません。本当に仕事を依頼しますか？'
-                requestForm.request_status = REQUEST_APPLYING;
-                requestForm.consultation_status = CONSULTATION_FINISHED;
-                submitChatroomStatus(requestConfirmMessage.value)
+                submitChatroomStatus(M_APPLY_REQUEST, REQUEST_APPLYING, CONSULTATION_FINISHED, requestForm, url)
             } else {
                 alert('不正な送信です');
             }
@@ -75,10 +73,7 @@ export default {
 
         const submitCancelConsultation = () => {
             if (chatroom.value.consultation_status === CONSULTATION) {
-                requestConfirmMessage.value = '相談をキャンセルしたら、メッセージを送ることができなくなります。本当に相談をキャンセルしますか？'
-                requestForm.request_status = REQUEST_CANCELED;
-                requestForm.consultation_status = CONSULTATION_CANCELED;
-                submitChatroomStatus(requestConfirmMessage.value)
+                submitChatroomStatus(M_CANCEL_CONSULTATION, REQUEST_CANCELED, CONSULTATION_CANCELED, requestForm, url)
             } else {
                 alert('不正な送信です')
             }
