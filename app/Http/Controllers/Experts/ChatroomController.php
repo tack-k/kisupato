@@ -66,7 +66,7 @@ class ChatroomController extends Controller {
             'consultation_status' => 'between:0,2',
         ]);
 
-        if($params['request_status'] === CommonConst::REQUEST) {
+        if($params['request_status'] === CommonConst::REQUEST_FINISHED) {
             $params['request_finished_at'] = Carbon::now();
         }
         Chatroom::find($params['id'])->update($params);
