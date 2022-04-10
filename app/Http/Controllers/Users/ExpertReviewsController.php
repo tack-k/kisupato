@@ -29,7 +29,7 @@ class ExpertReviewsController extends Controller {
         $messages = [];
 
         if ($reviews->isEmpty()) {
-            $messages[] = 'レビューがありません';
+            $messages[] = MessageConst::REVIEW . MessageConst::I_NOT_EXIST;
         } else {
             foreach ($reviews as $review) {
                 $review['created_date'] = $this->_commonService->formatDate($review['created_at']);

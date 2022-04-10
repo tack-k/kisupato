@@ -58,4 +58,5 @@ class MessageConst
     public const I_01001 = "ご登録いただいたメールアドレスにアカウント発行のメールを送信しました";
     public const I_REQUIRE_PROFILE = "プロフィール公開中のため、すべての項目を入力してください";
     PUBLIC CONST I_REGISTER = "を登録しました";
+    public const I_NOT_EXIST = "がありません";
 }
