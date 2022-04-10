@@ -2,6 +2,7 @@
 
 namespace App\Models\Experts;
 
+use App\Consts\CommonConst;
 use App\Traits\AuthorObservable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +41,22 @@ class Chatroom extends Model {
             })
             ->where('chatrooms.expert_id', $expertId)
             ->distinct();
+    }
+
+    public function scopeGetChatroomsReviewYet($query, $expertId) {
+        $reviewTerm = CommonConst::REVIEW_TERM;
+
+        $query->select('chatrooms.id', 'up.nickname', 'up.profile_image', 'up.user_id', 'request_finished_at')
+            ->join('user_profiles as up', 'up.user_id', '=', 'chatrooms.user_id')
+            ->whereNotExists(function ($query) {
+                $query->from('user_reviews as ur')
+                    ->whereColumn('ur.chatroom_id', 'chatrooms.id');
+            })
+            ->where('chatrooms.user_id', $expertId)
+            ->where('chatrooms.request_status', CommonConst::REQUEST_FINISHED)
+            ->where(function ($query) use ($reviewTerm) {
+                $query->whereRaw("date_format(request_finished_at, '%Y-%m-%d') > any (select date_add(date_format(now(), '%Y-%m-%d'), INTERVAL -{$reviewTerm} DAY) from chatrooms)");
+            });
     }
 
 }

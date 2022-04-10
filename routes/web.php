@@ -25,6 +25,7 @@ use \App\Http\Controllers\Experts\MyPageController;
 use \App\Http\Controllers\Experts\ExpertProfileController;
 use \App\Http\Controllers\Experts\ChatroomController as ExpertChatroomController;
 use \App\Http\Controllers\Experts\MessagesController as ExpertMessagesController;
+use \App\Http\Controllers\Experts\UserReviewsController;
 
 
 /*
@@ -143,6 +144,9 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
     });
     Route::group(['prefix' => 'message', 'as' => 'message.'], function() {
         Route::post('store', [ExpertMessagesController::class, 'update'])->name('update');
+    });
+    Route::group(['prefix' => 'review', 'as' => 'review.'], function() {
+        Route::get('/yet', [UserReviewsController::class, 'yet'])->name('yet');
     });
 });
 
