@@ -38,7 +38,7 @@ export const commonConst = {
 
 }
 
-export const reviewTabs = {
+export const userReviewTabs = {
     index: { title: 'レビュー済み', url: 'review.index' },
     yet: { title: '未レビュー', url: 'review.yet' },
 }
