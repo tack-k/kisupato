@@ -98,4 +98,12 @@ class CommonService {
         return array_unique(explode(' ', $keyword));
 
     }
+
+    /**
+     * 専門人材のidを取得する
+     * @return int|string|null
+     */
+    public function getExpertId() {
+       return Auth::guard('expert')->id();
+    }
 }
