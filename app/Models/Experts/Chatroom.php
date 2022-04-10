@@ -52,7 +52,7 @@ class Chatroom extends Model {
                 $query->from('user_reviews as ur')
                     ->whereColumn('ur.chatroom_id', 'chatrooms.id');
             })
-            ->where('chatrooms.user_id', $expertId)
+            ->where('chatrooms.expert_id', $expertId)
             ->where('chatrooms.request_status', CommonConst::REQUEST_FINISHED)
             ->where(function ($query) use ($reviewTerm) {
                 $query->whereRaw("date_format(request_finished_at, '%Y-%m-%d') > any (select date_add(date_format(now(), '%Y-%m-%d'), INTERVAL -{$reviewTerm} DAY) from chatrooms)");
