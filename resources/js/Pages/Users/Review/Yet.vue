@@ -7,7 +7,7 @@
                 <div class="bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
                     <div class="flow-root">
                         <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-                            <ReviewYetCard @click="showModal(chatroom)" v-for="(chatroom, key) in chatrooms" :key="key" :chatroom="chatroom"/>
+                            <ReviewYetCard @click="showModal(chatroom)" v-for="(chatroom, key) in chatrooms" :key="key" :chatroom="chatroom" :display-profile-path="PROFILE_PATH"/>
                         </ul>
                     </div>
                 </div>
