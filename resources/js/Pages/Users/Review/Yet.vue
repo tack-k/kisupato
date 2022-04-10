@@ -12,7 +12,7 @@
                     </div>
                 </div>
             </div>
-            <ReviewRegisterModal :isShow="isShow" :ids="ids" @emitIsShow="handleIsShow"/>
+            <ReviewRegisterModal :isShow="isShow" :ids="ids" :url="'review.store'" @emitIsShow="handleIsShow"/>
         </template>
     </my-page-layout>
 </template>

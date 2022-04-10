@@ -106,4 +106,12 @@ class CommonService {
     public function getExpertId() {
        return Auth::guard('expert')->id();
     }
+
+    /**
+     * ユーザーのidを取得する
+     * @return int|string|null
+     */
+    public function getUserId() {
+        return Auth::id();
+    }
 }

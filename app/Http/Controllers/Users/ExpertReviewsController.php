@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Consts\CommonConst;
+use App\Consts\MessageConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpertReviewRequest;
 use App\Models\Users\Chatroom;
@@ -71,13 +72,13 @@ class ExpertReviewsController extends Controller {
 
     public function store(ExpertReviewRequest $request) {
 
-        $userId = \Auth::id();
+        $userId = $this->_commonService->getUserId();
         $reviewParams = $request->validated();
         $reviewParams['user_id'] = $userId;
 
         ExpertReview::create($reviewParams);
 
-        session()->flash('message', 'レビューを登録しました');
+        session()->flash('message', MessageConst::REVIEW . MessageConst::I_REGISTER);
 
         return redirect()->route('review.yet');
     }

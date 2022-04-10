@@ -34,6 +34,8 @@ class MessageConst
     public const TAGS = 'タグ';
     public const POSITIONS = '肩書';
 
+    public const REVIEW = "レビュー";
+
 
     //エラーメッセージ
     public const E_00001 = 'を作成できませんでした';
@@ -55,4 +57,5 @@ class MessageConst
     public const I_00005 = "を非公開にしました";
     public const I_01001 = "ご登録いただいたメールアドレスにアカウント発行のメールを送信しました";
     public const I_REQUIRE_PROFILE = "プロフィール公開中のため、すべての項目を入力してください";
+    PUBLIC CONST I_REGISTER = "を登録しました";
 }
