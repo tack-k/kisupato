@@ -35,7 +35,7 @@ class ExpertReviewsController extends Controller {
             }
         }
 
-        $reviewYet = Chatroom::getChatroomsRewviewYet($userId)->get();
+        $reviewYet = Chatroom::getChatroomsReviewYet($userId)->get();
         if (isset($reviewYet)) {
 
             $reviewYeyCount = count($reviewYet);
@@ -54,7 +54,7 @@ class ExpertReviewsController extends Controller {
 
         $userId = \Auth::id();
 
-        $chatrooms = Chatroom::getChatroomsRewviewYet($userId)->get();
+        $chatrooms = Chatroom::getChatroomsReviewYet($userId)->get();
 
         $commonService = new CommonService();
 

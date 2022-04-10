@@ -55,7 +55,7 @@ class Chatroom extends Model
      * @param $query
      * @param $userId
      */
-    public function scopeGetChatroomsRewviewYet($query, $userId) {
+    public function scopeGetChatroomsReviewYet($query, $userId) {
         $reviewTerm = CommonConst::REVIEW_TERM;
 
         $query->select('chatrooms.id', 'ep.nickname', 'ep.profile_image', 'ep.expert_id', 'request_finished_at')
