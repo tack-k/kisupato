@@ -83,28 +83,31 @@ export default {
     props: {
         isShow: Boolean,
         ids: Object,
+        url: String,
     },
     emits: ['emitIsShow'],
 
     setup(props, { emit }) {
 
-        const { isShow, ids } = toRefs(props);
+        const { isShow, ids, url } = toRefs(props);
 
         const form = useForm({
             evaluation: null,
             comment: '',
             chatroom_id: null,
             expert_id: null,
+            user_id: null,
 
         })
 
         watch(ids.value, (newVal, oldVal) => {
             form.expert_id = newVal.expert_id
+            form.user_id = newVal.user_id
             form.chatroom_id = newVal.chatroom_id
         })
 
         const submit = () => {
-            form.post(route('review.store'), {
+            form.post(route(url.value), {
                 onSuccess: () => {
                     form.reset()
                     toggleModal()

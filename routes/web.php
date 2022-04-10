@@ -147,6 +147,7 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
     });
     Route::group(['prefix' => 'review', 'as' => 'review.'], function() {
         Route::get('/yet', [UserReviewsController::class, 'yet'])->name('yet');
+        Route::post('/store', [UserReviewsController::class, 'store'])->name('store');
     });
 });
 

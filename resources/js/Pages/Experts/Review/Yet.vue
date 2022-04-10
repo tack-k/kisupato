@@ -12,7 +12,7 @@
                     </div>
                 </div>
             </div>
-            <ReviewRegisterModal :isShow="isShow" :ids="ids" @emitIsShow="handleIsShow"/>
+            <ReviewRegisterModal :isShow="isShow" :ids="ids" :url="'expert.review.store'" @emitIsShow="handleIsShow"/>
         </template>
     </my-page-layout>
 </template>
@@ -53,13 +53,13 @@ export default {
         const flashMessage = computed(() => usePage().props.value.flash.message)
 
         const ids = reactive({
-            expert_id: null,
+            user_id: null,
             chatroom_id: null,
         });
 
         const showModal = (chatroom) => {
             ids.chatroom_id = chatroom.id
-            ids.expert_id = chatroom.expert_id
+            ids.user_id = chatroom.user_id
             isShow.value = true;
         }
 

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Experts;
 
 use App\Consts\CommonConst;
+use App\Consts\MessageConst;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserReviewRequest;
 use App\Models\Experts\Chatroom;
+use App\Models\Experts\UserReview;
 use App\Services\CommonService;
 use Inertia\Inertia;
 
@@ -31,5 +34,18 @@ class UserReviewsController extends Controller {
         return Inertia::render('Experts/Review/Yet', [
             'chatrooms' => $chatrooms,
         ]);
+    }
+
+    public function store(UserReviewRequest $request) {
+
+        $expertId = $this->_commonService->getExpertId();
+        $reviewParams = $request->validated();
+        $reviewParams['expert_id'] = $expertId;
+
+        UserReview::create($reviewParams);
+
+        session()->flash('message', MessageConst::REVIEW . MessageConst::I_REGISTER);
+
+        return redirect()->route('expert.review.yet');
     }
 }
