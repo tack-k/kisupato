@@ -2,7 +2,7 @@
     <div class="container shadow-lg rounded-lg max-w-md hover:shadow-2xl transition duration-300 p-4 sm:p-8 mb-4">
         <div class="flex items-center mb-5">
             <div class="grow-0">
-                <img :src="PROFILE_PATH + review.profile_image" alt="" class="rounded-full w-20 h-20">
+                <img :src="displayProfilePath + review.profile_image" alt="" class="rounded-full w-20 h-20">
             </div>
             <div class="grow break-words px-5">
                 <p class="mb-2">{{ review.nickname }}</p>
@@ -35,9 +35,10 @@ export default {
     },
     props: {
         review: Object,
+        displayProfilePath: String,
     },
     setup(props, { emit }) {
-        const { review } = toRefs(props);
+        const { review, displayProfilePath } = toRefs(props);
 
         const rating = {
             increment: 0.5,
@@ -46,7 +47,7 @@ export default {
             rating: review.value.evaluation,
         };
 
-        const { PROFILE_PATH, MAX_REVIEW_COUNT } = commonConst;
+        const { MAX_REVIEW_COUNT } = commonConst;
 
         const isLimit = ref(true)
 
@@ -65,7 +66,7 @@ export default {
         return {
             review,
             rating,
-            PROFILE_PATH,
+            displayProfilePath,
             isLimit,
             openComment,
             isShowNext,

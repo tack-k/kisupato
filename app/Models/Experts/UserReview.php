@@ -27,8 +27,8 @@ class UserReview extends Model {
      */
     public function scopeGetSelfReviews($query, $expertId) {
         $query->select('user_reviews.id', 'user_reviews.evaluation', 'user_reviews.comment', 'user_reviews.created_at', 'up.nickname', 'up.profile_image')
-            ->join('user_profiles as up', 'user_reviews.expert_id', '=', 'up.expert_id')
-            ->where('user_reviews.expert_id', $expertId)
+            ->join('user_profiles as up', 'user_reviews.user_id', '=', 'up.user_id')
+            ->where('user_reviews.user_id', $expertId)
             ->orderBy('user_reviews.created_at', 'desc');
 
     }
@@ -36,7 +36,7 @@ class UserReview extends Model {
     public function scopeGetUserReviews($query, $userId) {
 
         $query->select('user_reviews.id', 'user_reviews.evaluation', 'user_reviews.comment', 'user_reviews.created_at', 'up.nickname', 'up.profile_image')
-            ->join('user_profiles as up', 'user_reviews.expert_id', '=', 'up.expert_id')
+            ->join('user_profiles as up', 'user_reviews.user_id', '=', 'up.user_id')
             ->join('user_profiles as up', 'user_reviews.user_id', '=', 'up.user_id')
             ->where('user_reviews.user_id', $userId)
             ->orderBy('user_reviews.created_at', 'desc');

@@ -42,3 +42,8 @@ export const reviewTabs = {
     index: { title: 'レビュー済み', url: 'review.index' },
     yet: { title: '未レビュー', url: 'review.yet' },
 }
+
+export const expertReviewTabs = {
+    index: { title: 'レビュー済み', url: 'expert.review.index' },
+    yet: { title: '未レビュー', url: 'expert.review.yet' },
+}

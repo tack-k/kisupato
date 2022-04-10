@@ -24,7 +24,7 @@ import { commonConst } from '@/Consts/commonConst';
 import ReviewRegisterModal from '@/Layouts/Users/ReviewRegisterModal'
 import { ref, toRefs, reactive, watch, computed } from 'vue'
 import StandardTab from '@/Components/Tabs/StandardTab'
-import { reviewTabs } from '@/Consts/commonConst';
+import { expertReviewTabs } from '@/Consts/commonConst';
 import ReviewYetCard from '@/Components/Cards/ReviewYetCard'
 import { usePage } from '@inertiajs/inertia-vue3'
 import useCommonAction from '@/Composables/useCommonAction'
@@ -45,7 +45,7 @@ export default {
         const { chatrooms } = toRefs(props);
         const { PROFILE_PATH } = commonConst
         const { setDisplayedProfilePath } = useCommonAction();
-        const tabs = reviewTabs;
+        const tabs = expertReviewTabs;
         const active = 'yet';
         const isValidationShow = ref(false);
         const isShow = ref(false);

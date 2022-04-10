@@ -19,6 +19,36 @@ class UserReviewsController extends Controller {
         $this->_commonService = new CommonService();
     }
 
+    public function index() {
+
+        $expertId = $this->_commonService->getExpertId();
+        $reviews = UserReview::getSelfReviews($expertId)->get();
+
+        $messages = [];
+
+        if ($reviews->isEmpty()) {
+            $messages[] = 'レビューがありません';
+        } else {
+            foreach ($reviews as $review) {
+                $review['created_date'] = $this->_commonService->formatDate($review['created_at']);
+            }
+        }
+
+        $reviewYet = Chatroom::getChatroomsReviewYet($expertId)->get();
+        if (isset($reviewYet)) {
+
+            $reviewYeyCount = count($reviewYet);
+            if ($reviewYeyCount !== 0) {
+                $messages[] = "未レビューが{$reviewYeyCount}件あります";
+            }
+        }
+
+        return Inertia::render('Experts/Review/Index', [
+            'reviews' => $reviews,
+            'messages' => $messages,
+        ]);
+    }
+
     public function yet() {
 
         $expertId = $this->_commonService->getExpertId();
