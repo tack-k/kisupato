@@ -7,7 +7,7 @@
             <ValidationFlameErrors v-if="hasChecked"/>
             <FlashMessage />
 
-            <div class="container mx-auto pt-4 py-16 ">
+            <div class="container mx-auto shadow">
 
                 <slot name="content" />
 
