@@ -72,12 +72,12 @@ export default {
 
         //依頼リクエスト・相談キャンセル
         const isRequesting = ref(true);
-        if (chatroom.value.request_status === REQUEST_EXAMINATION ) {
+        if (chatroom.value.request_status === REQUEST_APPLYING ) {
             isRequesting.value = false;
         }
 
         const requestForm = useForm({
-            id: chatroom.value.id,
+            id: chatroom.value.chatroom_id,
             request_status: '',
             consultation_status: '',
         });
