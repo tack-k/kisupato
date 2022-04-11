@@ -12,8 +12,9 @@ class CreateExpertReviewsTable extends Migration {
             $table->foreignId('chatroom_id')->constrained();
             $table->foreignId('expert_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->text('comment')->nullable();
+            $table->text('comment')->nullable()->fulltext();
             $table->float('evaluation', 2, 1);
+            $table->string('status', 1)->default('1');
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();
