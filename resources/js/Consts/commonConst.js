@@ -47,3 +47,10 @@ export const expertReviewTabs = {
     index: { title: 'レビュー済み', url: 'expert.review.index' },
     yet: { title: '未レビュー', url: 'expert.review.yet' },
 }
+
+export const informationSiteStatusOptions = [
+    {id: 0, name: '公開'},
+    {id: 1, name: '非公開'},
+    {id: 2, name: '投稿予約'}
+]
+
