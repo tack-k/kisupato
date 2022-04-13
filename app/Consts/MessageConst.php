@@ -15,6 +15,7 @@ class MessageConst
     public const TAG = '専門人材タグ';
     public const USER_CONTACT_TITLE = 'ユーザー問い合わせ項目';
     public const EXPERT_CONTACT_TITLE = '専門人材問い合わせ項目';
+    public const INFORMATION_SITE = 'サイトからのお知らせ';
 
     public const INIT_PASSWORD = '初期パスワード';
     public const ADMIN_BY = 'admin:';

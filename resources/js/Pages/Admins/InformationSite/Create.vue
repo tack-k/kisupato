@@ -44,8 +44,8 @@
 
 <script>
 import MainLayout from "@/Layouts/Admins/MainLayout";
-import {useForm, Link} from "@inertiajs/inertia-vue3";
-import { ref, reactive, watch } from "vue";
+import { useForm, Link } from "@inertiajs/inertia-vue3";
+import { ref, watch } from "vue";
 import ValidationFlameErrors from "@/Components/Validations/ValidationFlameErrors";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import RegularButton from "@/Components/Buttons/RegularButton";
@@ -55,6 +55,7 @@ import TextArea from '@/Components/Forms/TextArea'
 import Select from '@/Components/Forms/Select'
 import { informationSiteStatusOptions } from '@/Consts/commonConst'
 import DoubleButton from '@/Layouts/Common/DoubleButton'
+
 export default {
     name: "Create",
     components: {
@@ -73,11 +74,15 @@ export default {
 
         const options = informationSiteStatusOptions;
         const IS_RESERVE = '2';
+
+        //投稿予約の初期値のため、現在日時を取得
         const date = new Date();
         date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
         const currentDateTime = date.toISOString().slice(0, -8)
 
         const form = useForm({
+            //ToDo:データ取得後にidの設定を分岐
+            id: null,
             title: '',
             description: '',
             status: '',
@@ -86,8 +91,8 @@ export default {
 
         const isShowReserveForm = ref(false);
 
-        watch(form, () => {
-            if( form.status === IS_RESERVE) {
+        watch(() => form.status, () => {
+            if (form.status === IS_RESERVE) {
                 isShowReserveForm.value = true
                 form.reserved_at = currentDateTime
             } else {
@@ -97,11 +102,20 @@ export default {
 
         })
 
+        const submit = () => {
+            form.put(route('admin.information_site.update'), {
+                onSuccess: () => {
+                    form.reset()
+                }
+            })
+        }
+
         return {
             form,
             options,
             currentDateTime,
             isShowReserveForm,
+            submit,
         }
     },
 }
