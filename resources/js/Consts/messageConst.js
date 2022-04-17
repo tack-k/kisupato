@@ -24,4 +24,8 @@ export const messageConst = {
     //タグ作成
     I_SELECT_TAG: '削除するタグを選択してください',
     I_DELETE_TAG: '選択したタグを本当に削除しますか',
+
+    //肩書作成
+    I_SELECT_POSITION: '削除する肩書を選択してください',
+    I_DELETE_POSITION: '選択した肩書を本当に削除しますか',
 }
