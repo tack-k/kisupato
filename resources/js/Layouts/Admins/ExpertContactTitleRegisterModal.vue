@@ -86,7 +86,7 @@ export default {
         })
 
         const submit = () => {
-           form.post(route('admin.expertContactTitle.store'), {
+           form.post(route('admin.expert_contact_title.store'), {
                onSuccess: () => {
                    form.reset()
                    toggleModal()

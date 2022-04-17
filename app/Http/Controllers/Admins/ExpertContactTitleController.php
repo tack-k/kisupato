@@ -43,7 +43,7 @@ class ExpertContactTitleController extends Controller
     public function store(ExpertContactTitleRequest $request) {
         if(Auth::guard('admin')->user()->cannot('create', ExpertContactTitle::class)) {
             session()->flash('message', MessageConst::E_01001);
-            return Inertia::location(route('admin.expertContactTitle.index'));
+            return Inertia::location(route('admin.expert_contact_title.index'));
         }
 
         $params = $request->validated();
@@ -55,7 +55,7 @@ class ExpertContactTitleController extends Controller
             session()->flash('message', MessageConst::EXPERT_CONTACT_TITLE . MessageConst::E_00001);
         }
 
-        return Inertia::location(route('admin.expertContactTitle.index', ['page' => 1]));
+        return Inertia::location(route('admin.expert_contact_title.index', ['page' => 1]));
     }
 
 
@@ -79,7 +79,7 @@ class ExpertContactTitleController extends Controller
     public function update(ExpertContactTitleRequest $request, $id) {
         if(Auth::guard('admin')->user()->cannot('update', ExpertContactTitle::class)) {
             session()->flash('message', MessageConst::E_01002);
-            return Inertia::location(route('admin.expertContactTitle.index'));
+            return Inertia::location(route('admin.expert_contact_title.index'));
         }
 
         $params = $request->validated();
@@ -91,7 +91,7 @@ class ExpertContactTitleController extends Controller
             session()->flash('message', MessageConst::EXPERT_CONTACT_TITLE . MessageConst::E_00002);
         }
 
-        return Inertia::location(route('admin.expertContactTitle.index'));
+        return Inertia::location(route('admin.expert_contact_title.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class ExpertContactTitleController extends Controller
 
         if(Auth::guard('admin')->user()->cannot('delete', ExpertContactTitle::class)) {
             session()->flash('message', MessageConst::E_01003);
-            return Inertia::location(route('admin.expertContactTitle.index'));
+            return Inertia::location(route('admin.expert_contact_title.index'));
         }
 
         $ids = $request->input('checked');
@@ -123,7 +123,7 @@ class ExpertContactTitleController extends Controller
             session()->flash('message', MessageConst::EXPERT_CONTACT_TITLE . MessageConst::E_00003);
         }
 
-        return Inertia::location(route('admin.expertContactTitle.index', ['page' => $page, 'keyword' => $keyword]));
+        return Inertia::location(route('admin.expert_contact_title.index', ['page' => $page, 'keyword' => $keyword]));
 
     }
 }

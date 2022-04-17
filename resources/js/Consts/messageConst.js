@@ -32,4 +32,8 @@ export const messageConst = {
     //ユーザー問い合わせ項目作成
     I_SELECT_USER_CONTACT_TITLE: '削除するユーザー問い合わせ項目名を選択してください',
     I_DELETE_USER_CONTACT_TITLE: '選択したユーザー問い合わせ項目名を本当に削除しますか',
+
+    //専門人材問い合わせ項目作成
+    I_SELECT_EXPERT_CONTACT_TITLE: '削除する専門人材問い合わせ項目名を選択してください',
+    I_DELETE_EXPERT_CONTACT_TITLE: '選択した専門人材問い合わせ項目名を本当に削除しますか',
 }
