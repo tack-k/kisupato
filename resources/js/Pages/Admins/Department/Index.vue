@@ -1,7 +1,7 @@
 <template>
     <main-layout>
         <template #content>
-            <form @submit.prevent="submitKeyword">
+            <form @submit.prevent="submitKeyword(keywordUrl)">
                 <RoundSearch v-model="formKeyword.keyword" placeholder="全体検索"/>
             </form>
             <DepartmentRegisterModal v-if="canCreate"/>
@@ -12,50 +12,50 @@
                         <tr class="base-th-tr-search">
                             <th colspan="5" class="p-1 table-cell">
                                 <div class="flex items-center flex-col-reverse md:justify-between md:flex-row md:mr-6">
-                                    <square-search v-model="tableKeyword" placeholder="テーブル内検索"/>
+                                    <square-search v-model.lazy="tableKeyword" placeholder="テーブル内検索"/>
                                     <p class="text-center">部署一覧</p>
                                 </div>
                             </th>
                         </tr>
                         <tr class="base-th-tr">
                             <th class="base-th-th" v-if="canDelete">
-                                <form @submit.prevent="submitDelete(formDelete.checked)">
+                                <form @submit.prevent="submitDelete(deleteUrl, I_SELECT_DEPARTMENT, I_DELETE_DEPARTMENT)">
                                     <div class="flex items-center">
-                                        <checkbox v-model="allChecked" :checked="allChecked" />
+                                        <checkbox v-model="allChecked" :checked="allChecked"/>
                                         <button type="submit" :class="{ 'opacity-25': formDelete.processing }" :disabled="formDelete.processing">
-                                            <Fa :icon="faTrashAlt" class="ml-3 admin-hover" size="lg" />
+                                            <Fa :icon="faTrashAlt" class="ml-3 admin-hover" size="lg"/>
                                         </button>
                                     </div>
                                 </form>
                             </th>
-                            <th class="base-th-th" >
+                            <th class="base-th-th">
                                 <div class="flex items-center">
                                     <p class="mr-2">部署名</p>
                                     <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortNameUp" :class="{ 'admin-text-active': sortStatus.nameUp }"/>
                                     <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortNameDown" :class="{ 'admin-text-active': sortStatus.nameDown }"/>
                                 </div>
                             </th>
-                            <th class="base-th-th" >
+                            <th class="base-th-th">
                                 <div class="flex items-center">
                                     <p class="mr-2">更新年月日</p>
                                     <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortUpdatedAtUp" :class="{ 'admin-text-active': sortStatus.updatedAtUp }"/>
                                     <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortUpdatedAtDown" :class="{ 'admin-text-active': sortStatus.updatedAtDown }"/>
                                 </div>
                             </th>
-                            <th class="base-th-th" >
+                            <th class="base-th-th">
                                 <div class="flex items-center">
                                     <p class="mr-2">登録年月日</p>
                                     <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortCreatedAtUp" :class="{ 'admin-text-active': sortStatus.createdAtUp }"/>
                                     <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortCreatedAtDown" :class="{ 'admin-text-active': sortStatus.createdAtDown }"/>
                                 </div>
                             </th>
-                            <th class="base-th-th" >
+                            <th class="base-th-th">
                                 <p class="text-center">編集</p>
                             </th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(department, index) in searchDepartments" :key="index"
+                        <tr v-for="(department, index) in searchedTableContents" :key="index"
                             class="base-tb-tr">
                             <td class="base-tb-td" v-if="canDelete">
                                 <checkbox :value="department.id" v-model:checked="formDelete.checked"/>
@@ -72,7 +72,9 @@
 
                             <td class="base-tb-td">
                                 <div class="flex justify-center">
-                                    <Link :href="route('admin.department.edit', {'id': department.id})" as="button" methods="get"><Fa :icon="faEdit" class="admin-hover"/></Link>
+                                    <Link :href="route('admin.department.edit', {'id': department.id})" as="button" methods="get">
+                                        <Fa :icon="faEdit" class="admin-hover"/>
+                                    </Link>
                                 </div>
                             </td>
                         </tr>
@@ -81,7 +83,7 @@
                     </table>
                 </div>
 
-                <Pagination :paginations="paginations"/>
+                <Pagination :paginations="links"/>
 
             </div>
         </template>
@@ -95,19 +97,19 @@ import Header from "@/Layouts/Admins/Header";
 import DepartmentRegisterModal from "@/Layouts/Admins/DepartmentRegisterModal";
 import AdminAuthenticated from "@/Layouts/AdminAuthenticated";
 import Pagination from "@/Components/Paginations/Pagination";
-import {ref, reactive, computed, watch} from "vue";
+import { ref, reactive, computed, watch, toRefs } from "vue";
 import RoundSearch from "@/Components/Forms/RoundSearch";
 import SquareSearch from "@/Components/Forms/SquareSearch";
-import {useForm, Link} from "@inertiajs/inertia-vue3"
+import { Link } from "@inertiajs/inertia-vue3"
 import FlashMessage from "@/Components/Messages/FlashMessage";
 import Checkbox from "@/Components/Forms/Checkbox";
 import Fa from "vue-fa";
 import { faTrashAlt, faCaretSquareUp, faCaretSquareDown } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-regular-svg-icons"
 import MainLayout from "@/Layouts/Admins/MainLayout";
-import moment from "moment";
 import useTableAction from "@/Composables/useTableAction"
-
+import useCommonAction from '@/Composables/useCommonAction'
+import { messageConst } from '@/Consts/messageConst'
 
 export default {
     name: "Index",
@@ -135,75 +137,29 @@ export default {
     },
 
     setup(props) {
-        const sideBarLists = props.sideBarLists
         const keyword = props.keyword
         const NO_RESULTS = -1
-        const NO_VALUE = 0
-        let departments = props.departments['data']
-        let paginations = props.departments['links']
+        const { data, links } = toRefs(props.departments)
+        const { I_SELECT_DEPARTMENT, I_DELETE_DEPARTMENT } = messageConst
 
         //テーブル内検索
         let tableKeyword = ref('')
 
-        const searchDepartments = computed(() => {
-            let filteredDepartments = reactive([])
+        const searchedTableContents = computed(() => {
+            let filteredTableContents = reactive([])
 
-            for (const i in departments) {
-                let department = departments[i]
+            for (const i in data.value) {
+                let searchedTableContent = data.value[i]
                 if (
-                    department.name.indexOf(tableKeyword.value) !== NO_RESULTS
+                    searchedTableContent.name.indexOf(tableKeyword.value) !== NO_RESULTS
                 ) {
-                    filteredDepartments.push(department)
+                    filteredTableContents.push(searchedTableContent)
                 }
             }
-            return filteredDepartments
+            return filteredTableContents
         })
 
-        //テーブル内検索時にチェックボックス選択結果を検索結果と一致させる
-        watch(searchDepartments, (newval, oldval) => {
-            const departmentIds = newval.map(department => department.id)
-            const deleteIds = formDelete.checked.map(deleteId => deleteId)
-            const allValues = [...departmentIds, ...deleteIds]
-            const duplicatedValues = allValues.filter(allValue => departmentIds.includes(allValue) && deleteIds.includes(allValue))
-
-            formDelete.checked = [...new Set(duplicatedValues)];
-
-        })
-
-
-        //キーワード検索
-        const formKeyword = useForm({
-            keyword: '',
-        })
-
-        const submitKeyword = () => {
-            formKeyword.get(route('admin.department.index'), {
-                onSuccess: () => {
-                    formKeyword.reset()
-                }
-            })
-        }
-
-
-        //選択削除
-        const formDelete = useForm({
-            checked: [],
-            page: null,
-            keyword: keyword
-        })
-
-        //選択削除のデータ送信
-        const submitDelete = () => {
-            if(formDelete.checked.length === NO_VALUE ) {
-                return confirm('削除する部署を選択してください')
-            }
-            getAfterDeletePageParam()
-            formDelete.post(route('admin.department.delete'),{
-                onBefore: () => confirm('選択した部署を本当に削除しますか？')
-            })
-        }
-
-        //ソート
+        //ソートステータスを定義
         let sortStatus = reactive({
             nameUp: false,
             nameDown: false,
@@ -213,6 +169,7 @@ export default {
             updatedAtDown: false,
         })
 
+        //ソート状態のリセット
         const resetSortStatus = () => {
             sortStatus.nameUp = false
             sortStatus.nameDown = false
@@ -222,147 +179,36 @@ export default {
             sortStatus.updatedAtDown = false
         }
 
-        const sortNameUp = () => {
-            if(sortStatus.nameUp) {
-                sortDefault()
-                sortStatus.nameUp = false
-                return
-            }
 
-            searchDepartments.value.sort((a, b) => {
-                if(a.name > b.name) {
-                    return 1
-                } else if (a.name < b.name){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-
-            resetSortStatus()
-            sortStatus.nameUp = true
-        }
-
-        const sortNameDown = () => {
-            if(sortStatus.nameDown) {
-                sortDefault()
-                sortStatus.nameDown = false
-                return
-            }
-
-            searchDepartments.value.sort((a, b) => {
-                if(a.name < b.name) {
-                    return 1
-                } else if (a.name > b.name){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-            resetSortStatus()
-            sortStatus.nameDown = true
-        }
-
-        const sortCreatedAtUp = () => {
-            if(sortStatus.createdAtUp) {
-                sortDefault()
-                sortStatus.createdAtUp = false
-                return
-            }
-
-            searchDepartments.value.sort((a, b) => {
-                if(a.created_at > b.created_at) {
-                    return 1
-                } else if (a.created_at < b.created_at){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-
-            resetSortStatus()
-            sortStatus.createdAtUp = true
-        }
-
-        const sortCreatedAtDown = () => {
-            if(sortStatus.createdAtDown) {
-                sortDefault()
-                sortStatus.createdAtDown = false
-                return
-            }
-
-            searchDepartments.value.sort((a, b) => {
-                if(a.created_at < b.created_at) {
-                    return 1
-                } else if (a.created_at > b.created_at){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-            resetSortStatus()
-            sortStatus.createdAtDown = true
-        }
-
-        const sortUpdatedAtUp = () => {
-            if(sortStatus.updatedAtUp) {
-                sortDefault()
-                sortStatus.updatedAtUp = false
-                return
-            }
-
-            searchDepartments.value.sort((a, b) => {
-                if(a.updated_at > b.updated_at) {
-                    return 1
-                } else if (a.updated_at < b.updated_at){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-
-            resetSortStatus()
-            sortStatus.updatedAtUp = true
-        }
-
-        const sortUpdatedAtDown = () => {
-            if(sortStatus.updatedAtDown) {
-                sortDefault()
-                sortStatus.updatedAtDown = false
-                return
-            }
-
-            searchDepartments.value.sort((a, b) => {
-                if(a.updated_at < b.updated_at) {
-                    return 1
-                } else if (a.updated_at > b.updated_at){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-            resetSortStatus()
-            sortStatus.updatedAtDown = true
-        }
+        //送信先
+        const keywordUrl = route('admin.department.index')
+        const deleteUrl = route('admin.department.delete')
 
         //日付のフォーマット
-        const formatDate = (date) => {
-            return moment(date).format('YYYY年MM月DD日')
-        }
+        const { formatDate } = useCommonAction()
 
-        const { allChecked, sortDefault ,getAfterDeletePageParam } = useTableAction(formDelete, searchDepartments, paginations, departments)
+        const {
+            allChecked,
+            submitDelete,
+            formDelete,
+            formKeyword,
+            submitKeyword,
+            sortNameUp,
+            sortNameDown,
+            sortCreatedAtUp,
+            sortCreatedAtDown,
+            sortUpdatedAtUp,
+            sortUpdatedAtDown,
+        } = useTableAction(keyword, searchedTableContents, links, data, sortStatus, resetSortStatus)
 
         return {
-            sideBarLists,
-            paginations,
+            links,
             tableKeyword,
-            searchDepartments,
             formKeyword,
             submitKeyword,
             faTrashAlt,
             formDelete,
             submitDelete,
-            getAfterDeletePageParam,
             allChecked,
             faCaretSquareUp,
             faCaretSquareDown,
@@ -375,10 +221,14 @@ export default {
             sortUpdatedAtDown,
             formatDate,
             faEdit,
-
+            searchedTableContents,
+            deleteUrl,
+            keywordUrl,
+            I_DELETE_DEPARTMENT,
+            I_SELECT_DEPARTMENT,
+            resetSortStatus,
         }
     },
-
 
 
 }

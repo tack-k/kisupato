@@ -12,4 +12,8 @@ export const messageConst = {
 
     //エラーメッセージ
     ME_SUBMIT_ILLEGAL: '不正な送信です',
+
+    //部署作成
+    I_SELECT_DEPARTMENT: '削除する部署を選択してください',
+    I_DELETE_DEPARTMENT: '選択した部署を本当に削除しますか',
 }

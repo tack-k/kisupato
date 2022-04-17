@@ -1,4 +1,5 @@
 import { commonConst } from '@/Consts/commonConst'
+import moment from 'moment'
 
 export default function useCommonAction() {
 
@@ -9,7 +10,13 @@ export default function useCommonAction() {
        return profileImage === DEFAULT_PROFILE ? COMMON_PATH : USER_PROFILE_PATH;
     }
 
+    //日付のフォーマット
+    const formatDate = (date) => {
+        return moment(date).format('YYYY年MM月DD日')
+    }
+
     return {
         setDisplayedProfilePath,
+        formatDate,
     }
 }
