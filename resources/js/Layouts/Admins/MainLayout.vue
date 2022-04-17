@@ -2,12 +2,12 @@
     <Header/>
     <div class="flex">
         <sideBar />
-        <div class="container p-4 lg:py-24 lg:px-40">
+        <div class="container p-4">
 
             <ValidationFlameErrors v-if="hasChecked"/>
             <FlashMessage />
 
-            <div class="container mx-auto shadow">
+            <div class="container mx-auto shadow p-8">
 
                 <slot name="content" />
 
