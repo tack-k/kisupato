@@ -28,4 +28,8 @@ export const messageConst = {
     //肩書作成
     I_SELECT_POSITION: '削除する肩書を選択してください',
     I_DELETE_POSITION: '選択した肩書を本当に削除しますか',
+
+    //肩書作成
+    I_SELECT_USER_CONTACT_TITLE: '削除するユーザー問い合わせ項目名を選択してください',
+    I_DELETE_USER_CONTACT_TITLE: '選択したユーザー問い合わせ項目名を本当に削除しますか',
 }

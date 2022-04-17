@@ -43,7 +43,7 @@ class UserContactTitleController extends Controller
     public function store(UserContactTitleRequest $request) {
         if(Auth::guard('admin')->user()->cannot('create', UserContactTitle::class)) {
             session()->flash('message', MessageConst::E_01001);
-            return Inertia::location(route('admin.userContactTitle.index'));
+            return Inertia::location(route('admin.user_contact_title.index'));
         }
 
         $params = $request->validated();
@@ -55,7 +55,7 @@ class UserContactTitleController extends Controller
             session()->flash('message', MessageConst::USER_CONTACT_TITLE . MessageConst::E_00001);
         }
 
-        return Inertia::location(route('admin.userContactTitle.index', ['page' => 1]));
+        return Inertia::location(route('admin.user_contact_title.index', ['page' => 1]));
     }
 
 
@@ -79,7 +79,7 @@ class UserContactTitleController extends Controller
     public function update(UserContactTitleRequest $request, $id) {
         if(Auth::guard('admin')->user()->cannot('update', UserContactTitle::class)) {
             session()->flash('message', MessageConst::E_01002);
-            return Inertia::location(route('admin.userContactTitle.index'));
+            return Inertia::location(route('admin.user_contact_title.index'));
         }
 
         $params = $request->validated();
@@ -91,7 +91,7 @@ class UserContactTitleController extends Controller
             session()->flash('message', MessageConst::USER_CONTACT_TITLE . MessageConst::E_00002);
         }
 
-        return Inertia::location(route('admin.userContactTitle.index'));
+        return Inertia::location(route('admin.user_contact_title.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class UserContactTitleController extends Controller
 
         if(Auth::guard('admin')->user()->cannot('delete', UserContactTitle::class)) {
             session()->flash('message', MessageConst::E_01003);
-            return Inertia::location(route('admin.userContactTitle.index'));
+            return Inertia::location(route('admin.user_contact_title.index'));
         }
 
         $ids = $request->input('checked');
@@ -123,7 +123,7 @@ class UserContactTitleController extends Controller
             session()->flash('message', MessageConst::USER_CONTACT_TITLE . MessageConst::E_00003);
         }
 
-        return Inertia::location(route('admin.userContactTitle.index', ['page' => $page, 'keyword' => $keyword]));
+        return Inertia::location(route('admin.user_contact_title.index', ['page' => $page, 'keyword' => $keyword]));
 
     }
 }
