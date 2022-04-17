@@ -16,4 +16,12 @@ export const messageConst = {
     //部署作成
     I_SELECT_DEPARTMENT: '削除する部署を選択してください',
     I_DELETE_DEPARTMENT: '選択した部署を本当に削除しますか',
+
+    //職員作成
+    I_SELECT_ADMIN: '削除する職員を選択してください',
+    I_DELETE_ADMIN: '選択した職員を本当に削除しますか',
+
+    //タグ作成
+    I_SELECT_TAG: '削除するタグを選択してください',
+    I_DELETE_TAG: '選択したタグを本当に削除しますか',
 }
