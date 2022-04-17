@@ -1,7 +1,7 @@
 <template>
     <main-layout>
         <template #content>
-            <form @submit.prevent="submitKeyword">
+            <form @submit.prevent="submitKeyword(keywordUrl)">
                 <RoundSearch v-model="formKeyword.keyword" placeholder="全体検索"/>
             </form>
             <admin-register-modal v-if="canCreate" :authorities="authorities" :departments="departments"></admin-register-modal>
@@ -12,76 +12,78 @@
                         <tr class="base-th-tr-search">
                             <th colspan="5" class="p-1 table-cell">
                                 <div class="flex items-center flex-col-reverse md:justify-between md:flex-row md:mr-6">
-                                <square-search v-model="tableKeyword" placeholder="テーブル内検索"/>
-                                <p class="text-center">職員一覧</p>
+                                    <square-search v-model="tableKeyword" placeholder="テーブル内検索"/>
+                                    <p class="text-center">職員一覧</p>
                                 </div>
                             </th>
                         </tr>
                         <tr class="base-th-tr">
                             <th v-if="canDelete" class="base-th-th">
-                                <form @submit.prevent="submitDelete(formDelete.checked)">
+                                <form @submit.prevent="submitDelete(deleteUrl, I_SELECT_ADMIN, I_DELETE_ADMIN)">
                                     <div class="flex items-center">
-                                        <checkbox v-model="allChecked" :checked="allChecked" />
+                                        <checkbox v-model="allChecked" :checked="allChecked"/>
                                         <button type="submit" :class="{ 'opacity-25': formDelete.processing }" :disabled="formDelete.processing">
-                                            <Fa :icon="faTrashAlt" class="ml-3 admin-hover" size="lg" />
+                                            <Fa :icon="faTrashAlt" class="ml-3 admin-hover" size="lg"/>
                                         </button>
                                     </div>
                                 </form>
                             </th>
-                            <th class="base-th-th" >
+                            <th class="base-th-th">
                                 <div class="flex items-center">
                                     <p class="mr-2">職員番号</p>
                                     <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortStaffUp" :class="{ 'admin-text-active': sortStatus.staffUp }"/>
                                     <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortStaffDown" :class="{ 'admin-text-active': sortStatus.staffDown }"/>
                                 </div>
                             </th>
-                            <th class="base-th-th" >
+                            <th class="base-th-th">
                                 <div class="flex items-center">
                                     <p class="mr-2">氏名</p>
-                                        <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortNameUp" :class="{ 'admin-text-active': sortStatus.nameUp }"/>
-                                        <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortNameDown" :class="{ 'admin-text-active': sortStatus.nameDown }"/>
+                                    <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortKanaNameUp" :class="{ 'admin-text-active': sortStatus.nameUp }"/>
+                                    <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortKanaNameDown" :class="{ 'admin-text-active': sortStatus.nameDown }"/>
                                 </div>
                             </th>
-                            <th class="base-th-th" >
+                            <th class="base-th-th">
                                 <div class="flex items-center">
                                     <p class="mr-2">部署</p>
                                     <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortDepartmentUp" :class="{ 'admin-text-active': sortStatus.departmentUp }"/>
                                     <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortDepartmentDown" :class="{ 'admin-text-active': sortStatus.departmentDown }"/>
                                 </div>
                             </th>
-                            <th class="base-th-th" >
+                            <th class="base-th-th">
                                 <div class="flex items-center">
                                     <p class="mr-2">権限</p>
                                     <Fa :icon="faCaretSquareUp" class="mr-1 admin-hover" @click="sortAuthorityUp" :class="{ 'admin-text-active': sortStatus.authorityUp }"/>
                                     <Fa :icon="faCaretSquareDown" class="admin-hover" @click="sortAuthorityDown" :class="{ 'admin-text-active': sortStatus.authorityDown }"/>
                                 </div>
                             </th>
-                            <th class="base-th-th" >
+                            <th class="base-th-th">
                                 <p class="text-center">編集</p>
                             </th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(admin, index) in searchAdmins" :key="index"
+                        <tr v-for="(searchedTableContent, index) in searchedTableContents" :key="index"
                             class="base-tb-tr">
                             <td v-if="canDelete" class="base-tb-td">
-                                <checkbox :value="admin.id" v-model:checked="formDelete.checked"/>
+                                <checkbox :value="searchedTableContent.id" v-model:checked="formDelete.checked"/>
                             </td>
                             <td class="base-tb-td">
-                                <p class="">{{ admin.staff_number }}</p>
+                                <p class="">{{ searchedTableContent.staff_number }}</p>
                             </td>
                             <td class="base-tb-td">
-                                <p class="">{{ admin.last_name }}{{ admin.first_name }}</p>
+                                <p class="">{{ searchedTableContent.last_name }}{{ searchedTableContent.first_name }}</p>
                             </td>
                             <td class="base-tb-td">
-                                <p class="">{{ admin.department_name }}</p>
+                                <p class="">{{ searchedTableContent.department_name }}</p>
                             </td>
                             <td class="base-tb-td">
-                                <p class="">{{ admin.authority_name }}</p>
+                                <p class="">{{ searchedTableContent.authority_name }}</p>
                             </td>
                             <td class="base-tb-td">
                                 <div class="flex justify-center">
-                                    <Link :href="route('admin.edit', admin.id)" as="button" methods="get"><Fa :icon="faEdit" class="admin-hover"/></Link>
+                                    <Link :href="route('admin.edit', searchedTableContent.id)" as="button" methods="get">
+                                        <Fa :icon="faEdit" class="admin-hover"/>
+                                    </Link>
                                 </div>
                             </td>
                         </tr>
@@ -90,13 +92,12 @@
                     </table>
                 </div>
 
-                <Pagination :paginations="paginations"/>
+                <Pagination :paginations="links"/>
 
             </div>
         </template>
     </main-layout>
 </template>
-
 
 
 <script>
@@ -105,17 +106,19 @@ import Header from "@/Layouts/Admins/Header";
 import AdminRegisterModal from "@/Layouts/Admins/AdminRegisterModal";
 import AdminAuthenticated from "@/Layouts/AdminAuthenticated";
 import Pagination from "@/Components/Paginations/Pagination";
-import {ref, reactive, computed, watch} from "vue";
+import { ref, reactive, computed, toRefs } from "vue";
 import RoundSearch from "@/Components/Forms/RoundSearch";
 import SquareSearch from "@/Components/Forms/SquareSearch";
-import {useForm, Link} from "@inertiajs/inertia-vue3"
+import { Link } from "@inertiajs/inertia-vue3"
 import FlashMessage from "@/Components/Messages/FlashMessage";
 import Checkbox from "@/Components/Forms/Checkbox";
 import Fa from "vue-fa";
 import { faTrashAlt, faCaretSquareUp, faCaretSquareDown } from "@fortawesome/free-solid-svg-icons";
 import MainLayout from "@/Layouts/Admins/MainLayout";
 import useTableAction from "@/Composables/useTableAction"
-import {faEdit} from "@fortawesome/free-regular-svg-icons";
+import { faEdit } from "@fortawesome/free-regular-svg-icons";
+import useCommonAction from '@/Composables/useCommonAction'
+import { messageConst } from '@/Consts/messageConst'
 
 export default {
     name: "Index",
@@ -146,70 +149,32 @@ export default {
     },
 
     setup(props) {
-        const sideBarLists = props.sideBarLists
-        const authorities = props.authorities
-        const departments = props.departments
         const keyword = props.keyword
         const NO_RESULTS = -1
-        const NO_VALUE = 0
-        let admins = props.admins['data']
-        let paginations = props.admins['links']
+        const { data, links } = toRefs(props.admins)
+        const { I_SELECT_ADMIN, I_DELETE_ADMIN } = messageConst
+
 
         //テーブル内検索
         let tableKeyword = ref('')
 
-        const searchAdmins = computed(() => {
-            let filteredAdmins = reactive([])
+        const searchedTableContents = computed(() => {
+            let filteredTableContents = reactive([])
 
-            for (const i in admins) {
-                let admin = admins[i]
+            for (const i in data.value) {
+                let searchedTableContent = data.value[i]
                 if (
-                    admin.last_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
-                    admin.first_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
-                    admin.staff_number.indexOf(tableKeyword.value) !== NO_RESULTS ||
-                    admin.department_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
-                    admin.authority_name.indexOf(tableKeyword.value) !== NO_RESULTS
+                    searchedTableContent.last_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
+                    searchedTableContent.first_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
+                    searchedTableContent.staff_number.indexOf(tableKeyword.value) !== NO_RESULTS ||
+                    searchedTableContent.department_name.indexOf(tableKeyword.value) !== NO_RESULTS ||
+                    searchedTableContent.authority_name.indexOf(tableKeyword.value) !== NO_RESULTS
                 ) {
-                    filteredAdmins.push(admin)
+                    filteredTableContents.push(searchedTableContent)
                 }
             }
-            return filteredAdmins
+            return filteredTableContents
         })
-
-        //キーワード検索
-        const formKeyword = useForm({
-            keyword: '',
-        })
-
-        const submitKeyword = () => {
-            formKeyword.get(route('admin.index'), {
-                onSuccess: () => {
-                    formKeyword.reset()
-                }
-            })
-        }
-
-
-        //選択削除
-        const formDelete = useForm({
-            checked: [],
-            page: null,
-            keyword: keyword
-        })
-
-        //選択削除後の画面遷移先の設定
-
-
-        //選択削除のデータ送信
-        const submitDelete = () => {
-            if(formDelete.checked.length === NO_VALUE ) {
-               return confirm('削除するユーザーを選択してください')
-            }
-            getAfterDeletePageParam()
-            formDelete.post(route('admin.delete'),{
-                onBefore: () => confirm('選択したユーザーを本当に削除しますか？')
-            })
-        }
 
         //ソート
         let sortStatus = reactive({
@@ -234,189 +199,40 @@ export default {
             sortStatus.authorityDown = false
         }
 
-        const sortStaffUp = () => {
-            if(sortStatus.staffUp) {
-                sortDefault()
-                sortStatus.staffUp = false
-                return
-            }
+        //送信先
+        const keywordUrl = route('admin.index')
+        const deleteUrl = route('admin.delete')
 
-            searchAdmins.value.sort((a, b) => {
-                if(a.staff_number > b.staff_number) {
-                    return 1
-                } else if (a.staff_number < b.staff_number){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-
-            resetSortStatus()
-            sortStatus.staffUp = true
-        }
-
-        const sortStaffDown = () => {
-            if(sortStatus.staffDown) {
-                sortDefault()
-                sortStatus.staffDown = false
-                return
-            }
-
-            searchAdmins.value.sort((a, b) => {
-                if(a.staff_number < b.staff_number) {
-                    return 1
-                } else if (a.staff_number > b.staff_number){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-            resetSortStatus()
-            sortStatus.staffDown = true
-        }
-
-        const sortNameUp = () => {
-            if(sortStatus.nameUp) {
-                sortDefault()
-                sortStatus.nameUp = false
-                return
-            }
-
-            searchAdmins.value.sort((a, b) => {
-                if(a.name_kana > b.name_kana) {
-                    return 1
-                } else if (a.name_kana < b.name_kana){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-
-            resetSortStatus()
-            sortStatus.nameUp = true
-        }
-
-        const sortNameDown = () => {
-            if(sortStatus.nameDown) {
-                sortDefault()
-                sortStatus.nameDown = false
-                return
-            }
-
-            searchAdmins.value.sort((a, b) => {
-                if(a.name_kana < b.name_kana) {
-                    return 1
-                } else if (a.name_kana > b.name_kana){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-            resetSortStatus()
-            sortStatus.nameDown = true
-        }
-
-        const sortDepartmentUp = () => {
-            if(sortStatus.departmentUp) {
-                sortDefault()
-                sortStatus.departmentUp = false
-                return
-            }
-
-            searchAdmins.value.sort((a, b) => {
-                if(a.department_name > b.department_name) {
-                    return 1
-                } else if (a.department_name < b.department_name){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-
-            resetSortStatus()
-            sortStatus.departmentUp = true
-        }
-
-        const sortDepartmentDown = () => {
-            if(sortStatus.departmentDown) {
-                sortDefault()
-                sortStatus.departmentDown = false
-                return
-            }
-
-            searchAdmins.value.sort((a, b) => {
-                if(a.department_name < b.department_name) {
-                    return 1
-                } else if (a.department_name > b.department_name){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-            resetSortStatus()
-            sortStatus.departmentDown = true
-        }
-
-        const sortAuthorityUp = () => {
-            if(sortStatus.authorityUp) {
-                sortDefault()
-                sortStatus.authorityUp = false
-                return
-            }
-
-            searchAdmins.value.sort((a, b) => {
-                if(a.authority_name > b.authority_name) {
-                    return 1
-                } else if (a.authority_name < b.authority_name){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-
-            resetSortStatus()
-            sortStatus.authorityUp = true
-        }
-
-        const sortAuthorityDown = () => {
-            if(sortStatus.authorityDown) {
-                sortDefault()
-                sortStatus.authorityDown = false
-                return
-            }
-
-            searchAdmins.value.sort((a, b) => {
-                if(a.authority_name < b.authority_name) {
-                    return 1
-                } else if (a.authority_name > b.authority_name){
-                    return -1
-                } else {
-                    return 0
-                }
-            })
-            resetSortStatus()
-            sortStatus.authorityDown = true
-        }
-
-        const { allChecked, sortDefault ,getAfterDeletePageParam } = useTableAction(formDelete, searchAdmins, paginations, admins)
+        const {
+            allChecked,
+            submitDelete,
+            formDelete,
+            formKeyword,
+            submitKeyword,
+            sortStaffUp,
+            sortStaffDown,
+            sortDepartmentUp,
+            sortDepartmentDown,
+            sortAuthorityUp,
+            sortAuthorityDown,
+            sortKanaNameUp,
+            sortKanaNameDown,
+        } = useTableAction(keyword, searchedTableContents, links, data, sortStatus, resetSortStatus)
 
         return {
-            sideBarLists,
-            paginations,
+            links,
             tableKeyword,
-            searchAdmins,
             formKeyword,
             submitKeyword,
             faTrashAlt,
             formDelete,
             submitDelete,
-            getAfterDeletePageParam,
             allChecked,
             faCaretSquareUp,
             faCaretSquareDown,
             sortStatus,
-            sortNameUp,
-            sortNameDown,
+            sortKanaNameUp,
+            sortKanaNameDown,
             sortStaffUp,
             sortStaffDown,
             sortDepartmentUp,
@@ -424,6 +240,11 @@ export default {
             sortAuthorityUp,
             sortAuthorityDown,
             faEdit,
+            deleteUrl,
+            keywordUrl,
+            I_DELETE_ADMIN,
+            I_SELECT_ADMIN,
+            searchedTableContents,
         }
     },
 

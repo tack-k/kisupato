@@ -150,6 +150,110 @@ export default function useTableAction(keyword, searchedTableContents, paginatio
         sortStatus.updatedAtDown = true
     }
 
+    //氏名カナ昇順にソート
+    const sortKanaNameUp = () => {
+        if (sortStatus.nameUp) {
+            sortDefault()
+            sortStatus.nameUp = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortUp(a.name_kana, b.name_kana))
+        resetSortStatus()
+        sortStatus.nameUp = true
+    }
+
+    //氏名カナ降順にソート
+    const sortKanaNameDown = () => {
+        if (sortStatus.nameDown) {
+            sortDefault()
+            sortStatus.nameDown = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortDown(a.name_kana, b.name_kana))
+        resetSortStatus()
+        sortStatus.nameDown = true
+    }
+
+    //職員番号昇順にソート
+    const sortStaffUp = () => {
+        if (sortStatus.staffUp) {
+            sortDefault()
+            sortStatus.staffUp = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortUp(a.staff_number, b.staff_number))
+        resetSortStatus()
+        sortStatus.staffUp = true
+    }
+
+    //職員番号降順にソート
+    const sortStaffDown = () => {
+        if (sortStatus.staffDown) {
+            sortDefault()
+            sortStatus.staffDown = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortDown(a.staff_number, b.staff_number))
+        resetSortStatus()
+        sortStatus.staffDown = true
+    }
+
+    //部署名昇順にソート
+    const sortDepartmentUp = () => {
+        if (sortStatus.departmentUp) {
+            sortDefault()
+            sortStatus.departmentUp = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortUp(a.department_name, b.department_name))
+        resetSortStatus()
+        sortStatus.departmentUp = true
+    }
+
+    //部署名降順にソート
+    const sortDepartmentDown = () => {
+        if (sortStatus.departmentDown) {
+            sortDefault()
+            sortStatus.departmentDown = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortDown(a.department_name, b.department_name))
+        resetSortStatus()
+        sortStatus.departmentDown = true
+    }
+
+    //権限名昇順にソート
+    const sortAuthorityUp = () => {
+        if (sortStatus.authorityUp) {
+            sortDefault()
+            sortStatus.authorityUp = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortUp(a.authority_name, b.authority_name))
+        resetSortStatus()
+        sortStatus.authorityUp = true
+    }
+
+    //権限名降順にソート
+    const sortAuthorityDown = () => {
+        if (sortStatus.authorityDown) {
+            sortDefault()
+            sortStatus.authorityDown = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortDown(a.authority_name, b.authority_name))
+        resetSortStatus()
+        sortStatus.authorityDown = true
+    }
+
 
 
     //キーワード検索
@@ -195,5 +299,13 @@ export default function useTableAction(keyword, searchedTableContents, paginatio
         sortCreatedAtDown,
         sortUpdatedAtUp,
         sortUpdatedAtDown,
+        sortStaffUp,
+        sortStaffDown,
+        sortDepartmentUp,
+        sortDepartmentDown,
+        sortAuthorityUp,
+        sortAuthorityDown,
+        sortKanaNameUp,
+        sortKanaNameDown
     }
 }
