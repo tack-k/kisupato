@@ -29,10 +29,10 @@
 
                         <div class="flex items-center justify-center p-6 border-t border-solid border-blueGray-200 rounded-b">
                             <div class="mr-6">
-                                <Link :href="route('admin.department.index')" class="admin-outline-btn">戻る</Link>
+                                <Link :href="route('admin.information_site.index')" class="admin-outline-btn">戻る</Link>
                             </div>
                             <regular-button :class="{ 'opacity-25': form.processing }"
-                                            :disabled="form.processing">変更する
+                                            :disabled="form.processing">登録する
                             </regular-button>
                         </div>
                     </form>

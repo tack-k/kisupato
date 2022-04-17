@@ -62,22 +62,21 @@ Route::get('/dashboard', function () {
 //ユーザー認証なし
 Route::get('/', [TopController::class, 'index'])->name('home');
 
-Route::group(['prefix' => 'contact', 'as' => 'contact.'], function() {
+Route::group(['prefix' => 'contact', 'as' => 'contact.'], function () {
     Route::get('/create', [UserContactController::class, 'create'])->name('create');
     Route::post('/confirm', [UserContactController::class, 'confirm'])->name('confirm');
     Route::post('/finish', [UserContactController::class, 'finish'])->name('finish');
 });
 
-Route::group(['prefix' => 'resource', 'as' => 'resource.'], function() {
+Route::group(['prefix' => 'resource', 'as' => 'resource.'], function () {
     Route::get('/', [ResourceController::class, 'index'])->name('index');
     Route::post('/card', [ResourceController::class, 'card'])->name('card');
     Route::get('/show/{id}', [ResourceController::class, 'show'])->name('show');
 });
 
 
-
 //ユーザー:認証なし（認証時リダイレクト）
-Route::group(['middleware' => 'guest'], function() {
+Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [UserController::class, 'create'])->name('create');
     Route::post('/register', [UserController::class, 'store'])->name('store');
 });
@@ -91,28 +90,28 @@ Route::group(['middleware' => 'auth:user'], function () {
         Route::post('/store', [UserChatroomController::class, 'store'])->name('store');
         Route::post('/update', [UserChatroomController::class, 'update'])->name('update');
     });
-    Route::group(['prefix' => 'message', 'as' => 'message.'], function() {
-       Route::post('store', [UserMessagesController::class, 'update'])->name('update');
+    Route::group(['prefix' => 'message', 'as' => 'message.'], function () {
+        Route::post('store', [UserMessagesController::class, 'update'])->name('update');
     });
-    Route::group(['prefix' => 'favorite', 'as' => 'favorite.'], function() {
-       Route::post('/switch', [FavoritesController::class, 'switch'])->name('switch');
-       Route::get('/', [FavoritesController::class, 'index'])->name('index');
-       Route::post('/delete', [FavoritesController::class, 'delete'])->name('delete');
+    Route::group(['prefix' => 'favorite', 'as' => 'favorite.'], function () {
+        Route::post('/switch', [FavoritesController::class, 'switch'])->name('switch');
+        Route::get('/', [FavoritesController::class, 'index'])->name('index');
+        Route::post('/delete', [FavoritesController::class, 'delete'])->name('delete');
     });
-    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function() {
-       Route::get('input', [UserProfilesController::class, 'input'])->name('input');
-       Route::get('show', [UserProfilesController::class, 'show'])->name('show');
-       Route::post('/update', [UserProfilesController::class, 'update'])->name('update');
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        Route::get('input', [UserProfilesController::class, 'input'])->name('input');
+        Route::get('show', [UserProfilesController::class, 'show'])->name('show');
+        Route::post('/update', [UserProfilesController::class, 'update'])->name('update');
     });
-    Route::group(['prefix' => 'account', 'as' => 'account.'], function() {
-       Route::get('/show', [UserController::class, 'show'])->name('show');
-       Route::get('/edit', [UserController::class, 'edit'])->name('edit');
-       Route::post('/update', [UserController::class, 'update'])->name('update');
+    Route::group(['prefix' => 'account', 'as' => 'account.'], function () {
+        Route::get('/show', [UserController::class, 'show'])->name('show');
+        Route::get('/edit', [UserController::class, 'edit'])->name('edit');
+        Route::post('/update', [UserController::class, 'update'])->name('update');
     });
-    Route::group(['prefix' => 'review', 'as' => 'review.'], function() {
-       Route::get('/yet', [ExpertReviewsController::class, 'yet'])->name('yet');
-       Route::post('/store', [ExpertReviewsController::class, 'store'])->name('store');
-       Route::get('/', [ExpertReviewsController::class, 'index'])->name('index');
+    Route::group(['prefix' => 'review', 'as' => 'review.'], function () {
+        Route::get('/yet', [ExpertReviewsController::class, 'yet'])->name('yet');
+        Route::post('/store', [ExpertReviewsController::class, 'store'])->name('store');
+        Route::get('/', [ExpertReviewsController::class, 'index'])->name('index');
     });
 });
 
@@ -133,20 +132,20 @@ Route::group(['prefix' => 'expert', 'as' => 'expert.', 'middleware' => 'auth:exp
     Route::get('/profile/input', [ExpertProfileController::class, 'input'])->name('profile.input');
     Route::post('/profile/input', [ExpertProfileController::class, 'update'])->name('profile.update');
     Route::post('profile/status', [ExpertProfileController::class, 'status'])->name('profile.status');
-    Route::group(['prefix' => 'account', 'as' => 'account.'], function() {
-       Route::get('/show', [ExpertController::class, 'show'])->name('show');
-       Route::get('/edit', [ExpertController::class, 'edit'])->name('edit');
-       Route::post('/update', [ExpertController::class, 'update'])->name('update');
+    Route::group(['prefix' => 'account', 'as' => 'account.'], function () {
+        Route::get('/show', [ExpertController::class, 'show'])->name('show');
+        Route::get('/edit', [ExpertController::class, 'edit'])->name('edit');
+        Route::post('/update', [ExpertController::class, 'update'])->name('update');
     });
-    Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function() {
+    Route::group(['prefix' => 'chatroom', 'as' => 'chatroom.'], function () {
         Route::get('/', [ExpertChatroomController::class, 'index'])->name('index');
         Route::get('/show/{chatroom_id}', [ExpertChatroomController::class, 'show'])->name('show');
         Route::post('/update', [ExpertChatroomController::class, 'update'])->name('update');
     });
-    Route::group(['prefix' => 'message', 'as' => 'message.'], function() {
+    Route::group(['prefix' => 'message', 'as' => 'message.'], function () {
         Route::post('store', [ExpertMessagesController::class, 'update'])->name('update');
     });
-    Route::group(['prefix' => 'review', 'as' => 'review.'], function() {
+    Route::group(['prefix' => 'review', 'as' => 'review.'], function () {
         Route::get('/yet', [UserReviewsController::class, 'yet'])->name('yet');
         Route::post('/store', [UserReviewsController::class, 'store'])->name('store');
         Route::get('/', [UserReviewsController::class, 'index'])->name('index');
@@ -173,7 +172,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
     Route::post('/user_contact_title/delete', [UserContactTitleController::class, 'delete'])->name('user_contact_title.delete');
     Route::resource('expert_contact_title', ExpertContactTitleController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
     Route::post('/expert_contact_title/delete', [ExpertContactTitleController::class, 'delete'])->name('expert_contact_title.delete');
-    Route::group(['prefix' => 'information_site', 'as' => 'information_site.'], function() {
-       Route::resource('/', InformationSitesController::class)->only(['create', 'update']);
+    Route::group(['prefix' => 'information_site', 'as' => 'information_site.'], function () {
+        Route::resource('/', InformationSitesController::class)->only(['index', 'create', 'update']);
+        Route::post('/delete', [InformationSitesController::class, 'delete'])->name('delete');
     });
 });

@@ -254,7 +254,86 @@ export default function useTableAction(keyword, searchedTableContents, paginatio
         sortStatus.authorityDown = true
     }
 
+    //タイトル昇順にソート
+    const sortTitleUp = () => {
+        if (sortStatus.titleUp) {
+            sortDefault()
+            sortStatus.titleUp = false
+            return
+        }
 
+        searchedTableContents.value.sort((a, b) => sortUp(a.title, b.title))
+        resetSortStatus()
+        sortStatus.titleUp = true
+    }
+
+    //タイトル降順にソート
+    const sortTitleDown = () => {
+        if (sortStatus.titleDown) {
+            sortDefault()
+            sortStatus.titleDown = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortDown(a.title, b.title))
+
+        resetSortStatus()
+        sortStatus.titleDown = true
+    }
+
+    //ステータス昇順にソート
+    const sortStatusUp = () => {
+        if (sortStatus.statusUp) {
+            sortDefault()
+            sortStatus.statusUp = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortUp(a.status, b.status))
+        resetSortStatus()
+        sortStatus.statusUp = true
+    }
+
+    //ステータス降順にソート
+    const sortStatusDown = () => {
+        if (sortStatus.statusDown) {
+            sortDefault()
+            sortStatus.statusDown = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortDown(a.status, b.status))
+
+        resetSortStatus()
+        sortStatus.statusDown = true
+    }
+
+    //予約日時昇順にソート
+    const sortReservedAtUp = () => {
+        if (sortStatus.reservedAtUp) {
+            sortDefault()
+            sortStatus.reservedAtUp = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortUp(a.reserved_at, b.reserved_at))
+        resetSortStatus()
+        sortStatus.reservedAtUp = true
+    }
+
+    //予約日時降順にソート
+    const sortReservedAtDown = () => {
+        if (sortStatus.reservedAtDown) {
+            sortDefault()
+            sortStatus.reservedAtDown = false
+            return
+        }
+
+        searchedTableContents.value.sort((a, b) => sortDown(a.reserved_at, b.reserved_at))
+
+        resetSortStatus()
+        sortStatus.reservedAtDown = true
+    }
 
     //キーワード検索
     const formKeyword = useForm({
@@ -306,6 +385,12 @@ export default function useTableAction(keyword, searchedTableContents, paginatio
         sortAuthorityUp,
         sortAuthorityDown,
         sortKanaNameUp,
-        sortKanaNameDown
+        sortKanaNameDown,
+        sortTitleUp,
+        sortTitleDown,
+        sortStatusUp,
+        sortStatusDown,
+        sortReservedAtUp,
+        sortReservedAtDown,
     }
 }

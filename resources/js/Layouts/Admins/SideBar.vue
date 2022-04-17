@@ -151,7 +151,7 @@ export default {
                     },
                     "information_site": {
                         "title": "サイトからのお知らせ",
-                        "link" : "admin.index"
+                        "link" : "admin.information_site.index"
                     },
                 },
             }
