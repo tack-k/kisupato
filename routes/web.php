@@ -172,8 +172,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
     Route::post('/user_contact_title/delete', [UserContactTitleController::class, 'delete'])->name('user_contact_title.delete');
     Route::resource('expert_contact_title', ExpertContactTitleController::class)->only(['index', 'store', 'edit', 'update'])->middleware('auth:admin');
     Route::post('/expert_contact_title/delete', [ExpertContactTitleController::class, 'delete'])->name('expert_contact_title.delete');
+    Route::resource('/information_site', InformationSitesController::class)->only(['index', 'create', 'edit']);
     Route::group(['prefix' => 'information_site', 'as' => 'information_site.'], function () {
-        Route::resource('/', InformationSitesController::class)->only(['index', 'create', 'update']);
         Route::post('/delete', [InformationSitesController::class, 'delete'])->name('delete');
+        Route::post('/update', [InformationSitesController::class, 'update'])->name('update');
     });
 });

@@ -37,4 +37,9 @@ class InformationSite extends Model {
         }
     }
 
+    public function scopeGetInformationSite($query, $informationSiteId) {
+        $query->select('id', 'title', 'description', 'reserved_at', 'status')
+            ->where('id', $informationSiteId);
+    }
+
 }

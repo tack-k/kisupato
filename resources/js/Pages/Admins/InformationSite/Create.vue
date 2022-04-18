@@ -22,7 +22,7 @@
                             </div>
                             <div v-if="isShowReserveForm" class="mb-4">
                                 <label-required for="reserve" value="予約日時"/>
-                                <Input id="reserve" type="datetime-local" class="mt-1 w-1/2 max-w-6xl"
+                                <Input id="reserve" type="datetime-local" class="mt-1 w-full max-w-6xl"
                                        v-model="form.reserved_at" autofocus/>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
 <script>
 import MainLayout from "@/Layouts/Admins/MainLayout";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
-import { ref, watch } from "vue";
+import { ref, toRefs, watch } from "vue";
 import ValidationFlameErrors from "@/Components/Validations/ValidationFlameErrors";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import RegularButton from "@/Components/Buttons/RegularButton";
@@ -70,8 +70,14 @@ export default {
         Input,
         Link,
     },
-    setup() {
-
+    props: {
+        informationSite: {
+            default: null,
+            type: Object,
+        }
+    },
+    setup(props) {
+        const { informationSite } = toRefs(props)
         const options = informationSiteStatusOptions;
         const IS_RESERVE = '2';
 
@@ -81,15 +87,14 @@ export default {
         const currentDateTime = date.toISOString().slice(0, -8)
 
         const form = useForm({
-            //ToDo:データ取得後にidの設定を分岐
-            id: null,
-            title: '',
-            description: '',
-            status: '',
-            reserved_at: '',
+            id: informationSite.value?.id ?? null,
+            title: informationSite.value?.title ?? null,
+            description: informationSite.value?.description ?? null,
+            status: informationSite.value?.status ?? null,
+            reserved_at: informationSite.value?.reserved_at == null ? null : new Date(informationSite.value?.reserved_at).toISOString().slice(0, -8),
         });
 
-        const isShowReserveForm = ref(false);
+        const isShowReserveForm = form.reserved_at !== null ? ref(true) : ref(false);
 
         watch(() => form.status, () => {
             if (form.status === IS_RESERVE) {
@@ -103,7 +108,7 @@ export default {
         })
 
         const submit = () => {
-            form.put(route('admin.information_site.update'), {
+            form.post(route('admin.information_site.update'), {
                 onSuccess: () => {
                     form.reset()
                 }

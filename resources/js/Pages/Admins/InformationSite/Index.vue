@@ -74,9 +74,9 @@
 
                             <td class="base-tb-td">
                                 <div class="flex justify-center">
-                                    <!--                                    <Link :href="route('admin.information_site.edit', {'id': searchedTableContent.id})" as="button" methods="get">-->
-                                    <!--                                        <Fa :icon="faEdit" class="admin-hover"/>-->
-                                    <!--                                    </Link>-->
+                                    <Link :href="route('admin.information_site.edit', {'id': searchedTableContent.id})" as="button" methods="get">
+                                        <Fa :icon="faEdit" class="admin-hover"/>
+                                    </Link>
                                 </div>
                             </td>
                         </tr>

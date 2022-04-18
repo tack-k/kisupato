@@ -43,4 +43,12 @@ class InformationSitesController extends Controller {
         return redirect()->route('admin.information_site.index');
     }
 
+    public function edit($informationSiteId) {
+
+        $informationSite = InformationSite::getInformationSite($informationSiteId)->first();
+        return Inertia::render('Admins/InformationSite/Edit', [
+           'informationSite' => $informationSite,
+        ]);
+    }
+
 }
