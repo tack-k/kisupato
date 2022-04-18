@@ -114,4 +114,12 @@ class CommonService {
     public function getUserId() {
         return Auth::id();
     }
+
+    /**
+     * 職員のidを取得する
+     * @return int|string|null
+     */
+    public function getAdminId() {
+        return Auth::guard('admin')->id();
+    }
 }

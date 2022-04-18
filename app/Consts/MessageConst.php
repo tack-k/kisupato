@@ -53,7 +53,7 @@ class MessageConst
     //インフォメーションメッセージ
     public const I_00001 = "を作成しました";
     public const I_00002 = "を変更しました";
-    public const I_00003 = "を削除しました";
+    public const I_DELETED = "を削除しました";
     public const I_00004 = "を公開しました";
     public const I_00005 = "を非公開にしました";
     public const I_01001 = "ご登録いただいたメールアドレスにアカウント発行のメールを送信しました";

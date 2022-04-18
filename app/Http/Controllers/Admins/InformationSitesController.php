@@ -6,16 +6,22 @@ use App\Consts\MessageConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InformationSiteRequest;
 use App\Models\Admins\InformationSite;
+use App\Services\CommonService;
 use App\Services\InformationSiteService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class InformationSitesController extends Controller {
 
     protected $_service;
+    protected $_commonService;
+
 
     public function __construct() {
         $this->_service = new InformationSiteService();
+        $this->_commonService = new CommonService();
+
     }
 
     public function index(Request $request) {
@@ -49,6 +55,23 @@ class InformationSitesController extends Controller {
         return Inertia::render('Admins/InformationSite/Edit', [
            'informationSite' => $informationSite,
         ]);
+    }
+
+    public function delete(Request $request) {
+
+        $ids = $request->input('checked');
+        $page = $request->input('page');
+        $keyword = $request->input('keyword');
+
+        $adminId = $this->_commonService->getAdminId();
+
+        DB::transaction(function() use ($ids, $adminId) {
+            InformationSite::whereIn('id', $ids)->update(['deleted_by' => MessageConst::ADMIN_BY . $adminId]);
+            InformationSite::destroy($ids);
+            session()->flash('message', MessageConst::INFORMATION_SITE . MessageConst::I_DELETED);
+        });
+
+        return Inertia::location(route('admin.information_site.index', ['page' => $page, 'keyword' => $keyword]));
     }
 
 }
