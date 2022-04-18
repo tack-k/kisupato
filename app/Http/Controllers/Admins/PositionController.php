@@ -117,7 +117,7 @@ class PositionController extends Controller
                 Position::whereIn('id', $ids)->update(['deleted_by' => MessageConst::ADMIN_BY . $loginAdminId]);
                 Position::destroy($ids);
             }, 5);
-            session()->flash('message', MessageConst::POSITION . MessageConst::I_00003);
+            session()->flash('message', MessageConst::POSITION . MessageConst::I_DELETED);
         } catch (\Throwable $e) {
             report($e);
             session()->flash('message', MessageConst::POSITION . MessageConst::E_00003);

@@ -117,7 +117,7 @@ class ExpertContactTitleController extends Controller
                 ExpertContactTitle::whereIn('id', $ids)->update(['deleted_by' => MessageConst::ADMIN_BY . $loginAdminId]);
                 ExpertContactTitle::destroy($ids);
             }, 5);
-            session()->flash('message', MessageConst::EXPERT_CONTACT_TITLE . MessageConst::I_00003);
+            session()->flash('message', MessageConst::EXPERT_CONTACT_TITLE . MessageConst::I_DELETED);
         } catch (\Throwable $e) {
             report($e);
             session()->flash('message', MessageConst::EXPERT_CONTACT_TITLE . MessageConst::E_00003);

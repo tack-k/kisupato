@@ -167,7 +167,7 @@ class AdminController extends Controller
             $page = $request->page;
             $keyword = $request->keyword;
             Admin::destroy($ids);
-            session()->flash('message', MessageConst::ADMIN . MessageConst::I_00003);
+            session()->flash('message', MessageConst::ADMIN . MessageConst::I_DELETED);
         } catch (Throwable $e) {
             report($e);
             session()->flash('message', MessageConst::ADMIN . MessageConst::E_00003);

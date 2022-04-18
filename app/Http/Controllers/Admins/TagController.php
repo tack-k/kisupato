@@ -117,7 +117,7 @@ class TagController extends Controller
                 Tag::whereIn('id', $ids)->update(['deleted_by' => MessageConst::ADMIN_BY . $loginAdminId]);
                 Tag::destroy($ids);
             }, 5);
-            session()->flash('message', MessageConst::TAG . MessageConst::I_00003);
+            session()->flash('message', MessageConst::TAG . MessageConst::I_DELETED);
         } catch (\Throwable $e) {
             report($e);
             session()->flash('message', MessageConst::TAG . MessageConst::E_00003);

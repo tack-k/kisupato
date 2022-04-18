@@ -112,7 +112,7 @@ class DepartmentController extends Controller
         try {
             Department::whereIn('id', $ids)->update(['deleted_by' => MessageConst::ADMIN_BY . $loginAdminId]);
             Department::destroy($ids);
-            session()->flash('message', MessageConst::DEPARTMENT . MessageConst::I_00003);
+            session()->flash('message', MessageConst::DEPARTMENT . MessageConst::I_DELETED);
         } catch (\Throwable $e) {
             report($e);
             session()->flash('message', MessageConst::DEPARTMENT . MessageConst::E_00003);
