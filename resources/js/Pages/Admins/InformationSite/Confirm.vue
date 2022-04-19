@@ -27,7 +27,7 @@
                         <div class="mr-6">
                             <Link :href="url" class="admin-outline-btn">戻る</Link>
                         </div>
-                        <regular-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">登録する</regular-button>
+                        <regular-button @click="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">登録する</regular-button>
                     </div>
                 </div>
             </div>
@@ -81,6 +81,13 @@ export default {
         const url = link.value === 'create' ? route('admin.information_site.create') : route('admin.information_site.edit', { id: informationSite.value.id });
         const isShowReserveForm = informationSite.value.reserved_at !== null ? ref(true) : ref(false);
 
+        const submit = () => {
+            form.post(route('admin.information_site.finish'), {
+                onSuccess: () => {
+                    form.reset()
+                }
+            })
+        }
 
         const { formatDateTime } = useCommonAction();
 
@@ -90,6 +97,7 @@ export default {
             isShowReserveForm,
             formatDateTime,
             form,
+            submit,
         }
     }
 }

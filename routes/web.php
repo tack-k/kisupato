@@ -175,7 +175,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
     Route::resource('/information_site', InformationSitesController::class)->only(['index', 'create', 'edit']);
     Route::group(['prefix' => 'information_site', 'as' => 'information_site.'], function () {
         Route::post('/delete', [InformationSitesController::class, 'delete'])->name('delete');
-        Route::post('/update', [InformationSitesController::class, 'update'])->name('update');
         Route::post('/confirm', [InformationSitesController::class, 'confirm'])->name('confirm');
+        Route::post('/finish', [InformationSitesController::class, 'finish'])->name('finish');
     });
 });
