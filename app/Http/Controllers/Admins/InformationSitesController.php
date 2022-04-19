@@ -80,4 +80,20 @@ class InformationSitesController extends Controller {
         return Inertia::location(route('admin.information_site.index', ['page' => $page, 'keyword' => $keyword]));
     }
 
+    public function confirm(InformationSiteRequest $request) {
+
+        $informationSite = $request->all();
+        $referer = $request->header('referer');
+        $link = strpos($referer, 'create') !== false ? 'create' : 'edit';
+
+        $informationSite['status_name'] = $this->_service->formatInformationSiteStatus($informationSite['status']);
+
+        session(['informationSiteInput' => $informationSite]);
+
+        return Inertia::render('Admins/InformationSite/Confirm', [
+           'informationSite' => $informationSite,
+            'link' => $link,
+        ]);
+    }
+
 }

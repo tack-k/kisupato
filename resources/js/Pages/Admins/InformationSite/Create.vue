@@ -4,7 +4,7 @@
             <div class="container mx-auto pt-4 py-16 admin-bg-white">
                 <div class="w-3/4 py-10 flex flex-col mx-auto">
                     <ValidationFlameErrors/>
-                    <h2 class="base-font-m mb-10 text-center">サイトからのお知らせ作成</h2>
+                    <h2 class="base-font-m mb-10 text-center">サイトからのお知らせ入力</h2>
                     <form @submit.prevent="submit()">
                         <div class="mt-4">
                             <div class="mb-4">
@@ -32,7 +32,7 @@
                                 <Link :href="route('admin.information_site.index')" class="admin-outline-btn">戻る</Link>
                             </div>
                             <regular-button :class="{ 'opacity-25': form.processing }"
-                                            :disabled="form.processing">登録する
+                                            :disabled="form.processing">確認する
                             </regular-button>
                         </div>
                     </form>
@@ -108,7 +108,7 @@ export default {
         })
 
         const submit = () => {
-            form.post(route('admin.information_site.update'), {
+            form.post(route('admin.information_site.confirm'), {
                 onSuccess: () => {
                     form.reset()
                 }
