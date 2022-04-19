@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admins\InformationSite;
 use App\Models\Admins\Tag;
 use App\Models\Experts\ExpertProfile;
 use App\Services\ExpertProfileService;
@@ -46,10 +47,13 @@ class TopController extends Controller {
             $profile->activity_title = $formatProfile['activity_title'];
         }
 
+        $informationSites = InformationSite::getPublicInformationSites()->take(3)->get();
+
         return Inertia::render('Users/Top/Index', [
             'areas' => $formatAreaData,
             'tags' => $tags,
             'profiles' => $profiles,
+            'informationSites' => $informationSites,
         ]);
     }
 }

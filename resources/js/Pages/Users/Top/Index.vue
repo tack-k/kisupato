@@ -44,20 +44,20 @@
             <div class="w-full bg-white p-12 pt-40">
                 <div class="flex justify-center items-center flex-col mb-40">
                     <p class="pl-4 mb-6">お知らせ</p>
-                    <ul v-for="value in 3" :key="value" class="flex flex-col sm:flex-row w-full hover:cursor-pointer hover:text-blue-300 mb-4">
-                        <li class="">2022/01/01</li>
-                        <li class="sm:ml-8">サービス一時停止のお知らせ</li>
-                        <li class="sm:ml-8 truncate">2022年3月1日（日）の午前１時から午前３時までの間はサービスを停止いたします。ご不便をおかけ・・・</li>
+                    <ul v-for="informationSite in informationSites" :key="value" class="flex flex-col sm:flex-row w-full hover:cursor-pointer hover:text-blue-300 mb-4">
+                        <li class="">{{ formatDate(informationSite.posted_at) }}</li>
+                        <li class="sm:ml-8">{{ informationSite.title }}</li>
+                        <li class="sm:ml-8 truncate">{{ informationSite.description }}</li>
                     </ul>
-<!--                    <table class="table-auto">-->
-<!--                        <tbody>-->
-<!--                        <tr v-for="value in 3" :key="value" class="user-hover">-->
-<!--                            <td class="px-4 py-0.5">2022/01/01</td>-->
-<!--                            <td class="px-4 py-0.5">サービス一時停止のお知らせ</td>-->
-<!--                            <td class="px-4 py-0.5">日曜日の午前１時から午前３時までの間はサービスを停止いたします。ご不便をおかけ・・・</td>-->
-<!--                        </tr>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
+                    <!--                    <table class="table-auto">-->
+                    <!--                        <tbody>-->
+                    <!--                        <tr v-for="value in 3" :key="value" class="user-hover">-->
+                    <!--                            <td class="px-4 py-0.5">2022/01/01</td>-->
+                    <!--                            <td class="px-4 py-0.5">サービス一時停止のお知らせ</td>-->
+                    <!--                            <td class="px-4 py-0.5">日曜日の午前１時から午前３時までの間はサービスを停止いたします。ご不便をおかけ・・・</td>-->
+                    <!--                        </tr>-->
+                    <!--                        </tbody>-->
+                    <!--                    </table>-->
                 </div>
 
                 <div class="mb-40">
@@ -97,6 +97,7 @@ import { directive } from "vue3-click-away";
 import { commonConst } from "@/Consts/commonConst"
 import VerticalCard from "@/Components/Cards/VerticalCard";
 import { useFavoriteAction } from '@/Composables/useFavoriteAction'
+import useCommonAction from '@/Composables/useCommonAction'
 
 export default {
     name: "Index",
@@ -112,6 +113,7 @@ export default {
         areas: Object,
         tags: Array,
         profiles: Object,
+        informationSites: Object,
     },
     directives: {
         ClickAway: directive
@@ -119,7 +121,7 @@ export default {
     setup(props) {
         const { MAX_PROFILE_COUNT_TOP } = commonConst;
         const NO_RESULTS = -1
-        const { areas, tags, profiles } = toRefs(props);
+        const { areas, tags, profiles, informationSites } = toRefs(props);
 
         const form = useForm({
             checked: null,
@@ -196,7 +198,7 @@ export default {
         const buttonText = ref('もっと見る');
         let extraProfiles = ref([]);
         const isShowExtraProfiles = ref(false);
-        if(profiles.value.length > MAX_PROFILE_COUNT_TOP) {
+        if (profiles.value.length > MAX_PROFILE_COUNT_TOP) {
             extraProfiles = profiles.value.splice(MAX_PROFILE_COUNT_TOP);
         }
 
@@ -213,6 +215,9 @@ export default {
         const submitSearch = () => {
             form.get(route('resource.index'), form)
         }
+
+        //日付のフォーマット
+        const { formatDate } = useCommonAction();
 
         return {
             form,
@@ -237,6 +242,8 @@ export default {
             toggleExtraProfiles,
             buttonText,
             submitSearch,
+            informationSites,
+            formatDate,
         }
     }
 }
