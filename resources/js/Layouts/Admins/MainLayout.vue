@@ -7,7 +7,7 @@
             <ValidationFlameErrors v-if="hasChecked"/>
             <FlashMessage />
 
-            <div class="container mx-auto shadow p-8">
+            <div class="container mx-auto shadow p-8 bg-white">
 
                 <slot name="content" />
 
