@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admins;
 
+use App\Consts\AdminConst;
 use App\Consts\MessageConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InformationSiteRequest;
 use App\Models\Admins\InformationSite;
 use App\Services\CommonService;
 use App\Services\InformationSiteService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -42,6 +44,10 @@ class InformationSitesController extends Controller {
 
     public function update(InformationSiteRequest $request) {
         $params = $request->all();
+
+        if($params['status'] === AdminConst::INFORMATION_SITE_PUBLIC) {
+            $params['posted_at'] = Carbon::now();
+        }
 
         InformationSite::updateOrCreate(['id' => $params['id']], $params);
         session()->flash('message', MessageConst::INFORMATION_SITE . MessageConst::I_REGISTER);
