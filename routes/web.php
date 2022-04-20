@@ -13,6 +13,7 @@ use \App\Http\Controllers\Users\UserContactController;
 use \App\Http\Controllers\Users\FavoritesController;
 use \App\Http\Controllers\Users\UserProfilesController;
 use \App\Http\Controllers\Users\ExpertReviewsController;
+use \App\Http\Controllers\Users\InformationController;
 use \App\Http\Controllers\Admins\AdminController;
 use \App\Http\Controllers\Admins\DepartmentController;
 use \App\Http\Controllers\Admins\PositionController;
@@ -72,6 +73,9 @@ Route::group(['prefix' => 'resource', 'as' => 'resource.'], function () {
     Route::get('/', [ResourceController::class, 'index'])->name('index');
     Route::post('/card', [ResourceController::class, 'card'])->name('card');
     Route::get('/show/{id}', [ResourceController::class, 'show'])->name('show');
+});
+Route::group(['prefix' => 'information', 'as' => 'information.'], function() {
+   Route::get('/', [InformationController::class, 'index'])->name('index');
 });
 
 
