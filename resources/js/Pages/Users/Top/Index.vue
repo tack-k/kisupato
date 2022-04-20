@@ -49,15 +49,9 @@
                         <li class="sm:ml-8">{{ informationSite.title }}</li>
                         <li class="sm:ml-8 truncate">{{ informationSite.description }}</li>
                     </ul>
-                    <!--                    <table class="table-auto">-->
-                    <!--                        <tbody>-->
-                    <!--                        <tr v-for="value in 3" :key="value" class="user-hover">-->
-                    <!--                            <td class="px-4 py-0.5">2022/01/01</td>-->
-                    <!--                            <td class="px-4 py-0.5">サービス一時停止のお知らせ</td>-->
-                    <!--                            <td class="px-4 py-0.5">日曜日の午前１時から午前３時までの間はサービスを停止いたします。ご不便をおかけ・・・</td>-->
-                    <!--                        </tr>-->
-                    <!--                        </tbody>-->
-                    <!--                    </table>-->
+                    <div class="text-right w-full">
+                        <Link :href="route('information.index')" class="hover:cursor-pointer hover:text-blue-300">サイトからのお知らせ一覧</Link>
+                    </div>
                 </div>
 
                 <div class="mb-40">
