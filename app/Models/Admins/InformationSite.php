@@ -45,7 +45,12 @@ class InformationSite extends Model {
     public function scopeGetPublicInformationSites($query) {
        return $query->select('id', 'title', 'description', 'reserved_at', 'status', 'posted_at')
             ->where('status', '0')
-            ->orderBy('created_at', 'desc');
+            ->orderBy('posted_at', 'desc');
+    }
+
+    public function scopeGetReservedInformationSites($query) {
+        return $query->select('id', 'title', 'description', 'reserved_at', 'status', 'posted_at')
+            ->where('status', '2');
     }
 
 }
