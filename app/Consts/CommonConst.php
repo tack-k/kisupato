@@ -57,6 +57,10 @@ class CommonConst {
     //レビュー一覧のコメント内容の文字制限数
     public const MAX_REVIEW_COUNT = 60;
 
+    //レビューの公開状況
+    public const REVIEW_PUBLIC = '0';
+    public const REVIEW_PRIVATE = '1';
+
     //セッションキー
     public const SK_INFORMATION_SITE = 'information_site_input'; //サイトからのお知らせ入力
 
