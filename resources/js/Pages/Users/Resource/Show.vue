@@ -3,7 +3,7 @@
         <template #content>
             <div class="max-w-screen-lg sm:px-8 my-0 mx-auto">
             <section class="section-common">
-                    <div class="mt-10">
+                    <div class="py-10">
                         <SearchInput/>
                     </div>
                     <h1 class="base-font-l base-font-bold my-20 text-center">{{ profile.activity_title }}</h1>

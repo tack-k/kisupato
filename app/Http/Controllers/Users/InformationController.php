@@ -15,4 +15,12 @@ class InformationController extends Controller {
             'informationSites' => $informationSites,
         ]);
     }
+
+    public function show($informationSiteId) {
+        $informationSite = InformationSite::getInformationSite($informationSiteId)->first();
+
+        return Inertia::render('Users/Information/Show', [
+           'informationSite' => $informationSite,
+        ]);
+    }
 }

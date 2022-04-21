@@ -76,6 +76,7 @@ Route::group(['prefix' => 'resource', 'as' => 'resource.'], function () {
 });
 Route::group(['prefix' => 'information', 'as' => 'information.'], function() {
    Route::get('/', [InformationController::class, 'index'])->name('index');
+   Route::get('/show/{information_site_id}', [InformationController::class, 'show'])->name('show');
 });
 
 

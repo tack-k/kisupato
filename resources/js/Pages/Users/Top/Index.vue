@@ -44,13 +44,14 @@
             <div class="w-full bg-white p-12 pt-40">
                 <div class="flex justify-center items-center flex-col mb-40">
                     <p class="pl-4 mb-6">お知らせ</p>
-                    <ul v-for="informationSite in informationSites" :key="value" class="flex flex-col sm:flex-row w-full hover:cursor-pointer hover:text-blue-300 mb-4">
-                        <li class="">{{ formatDate(informationSite.posted_at) }}</li>
-                        <li class="sm:ml-8">{{ informationSite.title }}</li>
-                        <li class="sm:ml-8 truncate">{{ informationSite.description }}</li>
+                    <ul v-for="informationSite in informationSites" :key="value" class="w-full hover:cursor-pointer hover:text-blue-300 mb-4">
+                        <Link :href="route('information.show', {information_site_id: informationSite.id})" class="flex flex-col sm:flex-row w-full ">
+                            <li class="w-32">{{ formatDate(informationSite.posted_at) }}</li>
+                            <li class="sm:ml-8 truncate">{{ informationSite.title }}</li>
+                        </Link>
                     </ul>
                     <div class="text-right w-full">
-                        <Link :href="route('information.index')" class="hover:cursor-pointer hover:text-blue-300">サイトからのお知らせ一覧</Link>
+                        <Link :href="route('information.index')" class="text-sm hover:cursor-pointer hover:text-blue-300">サイトからのお知らせ一覧</Link>
                     </div>
                 </div>
 
