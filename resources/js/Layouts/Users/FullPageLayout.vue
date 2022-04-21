@@ -1,6 +1,6 @@
 <template>
     <Header/>
-    <div class="w-full">
+    <div class="w-full bg-white">
         <flash-message/>
         <slot name="content"/>
     </div>
