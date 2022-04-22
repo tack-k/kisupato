@@ -2,14 +2,14 @@
     <full-page-layout>
         <template #content>
             <div class="max-w-screen-lg sm:px-8 my-0 mx-auto">
-            <section class="section-common">
+                <section class="section-common">
                     <div class="py-10">
                         <SearchInput/>
                     </div>
                     <h1 class="base-font-l base-font-bold my-20 text-center">{{ profile.activity_title }}</h1>
                 </section>
             </div>
-                <ImageCarousel :activityImages="profile.activity_images"/>
+            <ImageCarousel :activityImages="profile.activity_images"/>
             <div class="max-w-screen-lg sm:px-8 my-0 mx-auto">
                 <section class="section-common">
                     <div class="flex max-w-screen-lg flex-col sm:flex-row my-0 mx-auto items-center :items-start mt-8">
@@ -50,7 +50,7 @@
                         <h2 class="section-title">レビュー</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-x-10 xl-grid-cols-4 gap-y-10 gap-x-6 ">
                             <template v-for="(review, index) in reviews" :key="index">
-                                <ReviewCard :review="review"/>
+                                <ReviewCard :review="review" :displayProfilePath="setDisplayedProfilePath(review.profile_image)"/>
                             </template>
                         </div>
                         <div class="text-right mt-5">
@@ -62,9 +62,9 @@
                 <section class="section-common px-4 sm:px-0">
                     <h2 class="section-title">この人材をチェックした人におすすめ</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
-<!--                        <template v-for="(profile, key) in profiles" :key="key">-->
-<!--                            <VerticalCard :profile="profile"/>-->
-<!--                        </template>-->
+                        <!--                        <template v-for="(profile, key) in profiles" :key="key">-->
+                        <!--                            <VerticalCard :profile="profile"/>-->
+                        <!--                        </template>-->
                     </div>
                 </section>
 
@@ -83,6 +83,7 @@ import ReviewCard from "@/Components/Cards/ReviewCard";
 import { toRefs } from "vue";
 import { commonConst } from "@/Consts/commonConst";
 import { useForm } from "@inertiajs/inertia-vue3"
+import useCommonAction from '@/Composables/useCommonAction'
 
 export default {
     name: "Show",
@@ -95,12 +96,14 @@ export default {
         const { profile, reviews } = toRefs(props)
         const { PROFILE_PATH, ACTIVITY_PATH } = commonConst;
         const form = useForm({
-           'expert_id': profile.value.expert_id
+            'expert_id': profile.value.expert_id
         });
 
         const submit = () => {
             form.post(route('chatroom.store'))
         }
+
+        const { setDisplayedProfilePath } = useCommonAction();
 
         return {
             profile,
@@ -109,6 +112,7 @@ export default {
             form,
             submit,
             reviews,
+            setDisplayedProfilePath,
         }
     }
 }

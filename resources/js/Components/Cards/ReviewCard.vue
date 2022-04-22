@@ -1,10 +1,10 @@
 <template>
     <div class="container shadow-lg rounded-lg max-w-md hover:shadow-2xl transition duration-300 p-4 sm:p-8 mb-4">
         <div class="flex items-center mb-5">
-            <div class="grow-0">
+            <div class="grow-0 min-w-fit">
                 <img :src="displayProfilePath + review.profile_image" alt="" class="rounded-full w-20 h-20">
             </div>
-            <div class="grow break-words px-5">
+            <div class="grow break-all px-5">
                 <p class="mb-2">{{ review.nickname }}</p>
                 <p class="mb-2">{{ review.created_date }}</p>
                 <p>
@@ -81,5 +81,9 @@ export default {
     overflow: hidden;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+}
+
+.min-w-fit {
+    min-width: fit-content;
 }
 </style>
