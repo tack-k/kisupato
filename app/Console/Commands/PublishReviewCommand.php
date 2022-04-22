@@ -45,5 +45,42 @@ class PublishReviewCommand extends Command {
                 ExpertReview::upsert($expertReviews, ['id', 'chatroom_id'], ['status']);
             });
         }
+
+        //指定期間経過後、レビューがある場合は公開する
+        $expertReviews = ExpertReview::getExpertReviewsPassedTerm()->get();
+
+        if($expertReviews->isNotEmpty()) {
+            $expertReviewParams = [];
+            foreach ($expertReviews as $expertReview) {
+                $expertReviewParams[] = [
+                    'id' => $expertReview['id'],
+                    'chatroom_id' => $expertReview['chatroom_id'],
+                    'expert_id' => $expertReview['expert_id'],
+                    'user_id' => $expertReview['user_id'],
+                    'status' => CommonConst::REVIEW_PUBLIC,
+                    'evaluation' => $expertReview['evaluation'],
+                ];
+            }
+
+            ExpertReview::upsert($expertReviewParams, ['id', 'chatroom_id'], ['status']);
+        }
+
+        $userReviews = UserReview::getUserReviewsPassedTerm()->get();
+
+        if($userReviews->isNotEmpty()) {
+            $userReviewParams = [];
+            foreach ($userReviews as $userReview) {
+                $userReviewParams[] = [
+                    'id' => $userReview['id'],
+                    'chatroom_id' => $userReview['chatroom_id'],
+                    'expert_id' => $userReview['expert_id'],
+                    'user_id' => $userReview['user_id'],
+                    'status' => CommonConst::REVIEW_PUBLIC,
+                    'evaluation' => $userReview['evaluation'],
+                ];
+            }
+
+             UserReview::upsert($userReviewParams, ['id', 'chatroom_id'], ['status']);
+        }
     }
 }

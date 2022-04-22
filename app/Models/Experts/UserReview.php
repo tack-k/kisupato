@@ -50,4 +50,13 @@ class UserReview extends Model {
             ->where('er.status', CommonConst::REVIEW_PRIVATE);
     }
 
+    public function scopeGetUserReviewsPassedTerm($query) {
+        $reviewTerm = CommonConst::REVIEW_TERM;
+
+        $query->select('user_reviews.id', 'user_reviews.chatroom_id', 'user_reviews.user_id', 'user_reviews.user_id', 'user_reviews.evaluation', 'user_reviews.status')
+            ->leftJoin('expert_reviews as er', 'er.chatroom_id', '=', 'user_reviews.chatroom_id')
+            ->whereNull('er.id')
+            ->whereRaw("date_format(user_reviews.created_at, '%Y-%m-%d') < any (select date_add(date_format(now(), '%Y-%m-%d'), interval - {$reviewTerm} day))");
+    }
+
 }
