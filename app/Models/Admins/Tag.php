@@ -51,4 +51,9 @@ class Tag extends Model
         return $this->belongsToMany(ExpertProfile::class, 'expert_profiles_tags')
             ->withTimestamps();
     }
+
+    public function mailMagazines() {
+        return $this->belongsToMany(MailMagazine::class, 'mail_magazine_tags')
+            ->withTimestamps();
+    }
 }

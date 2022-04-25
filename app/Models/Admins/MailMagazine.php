@@ -20,4 +20,13 @@ class MailMagazine extends Model {
         'reserved_at',
     ];
 
+    public function tags() {
+        return $this->belongsToMany(Tag::class, 'mail_magazines_tags')
+            ->withTimestamps();
+    }
+
+    public function positions() {
+        return $this->belongsToMany(Position::class. 'mail_magazine_positions')
+            ->withTimestamps();
+    }
 }

@@ -46,4 +46,9 @@ class Position extends Model
         return $this->belongsToMany(ExpertProfile::class, 'expert_profiles_positions')
             ->withTimestamps();
     }
+    
+    public function mailMagazines() {
+        return $this->belongsToMany(MailMagazine::class, 'mail_magazine_positions')
+            ->withTimestamps();
+    }
 }
