@@ -171,4 +171,10 @@ return [
         'current_password' => '現在のパスワード',
     ],
 
+    'values' => [
+        'reserved_at' => [
+            'now' => '現在時刻'
+        ],
+    ],
+
 ];

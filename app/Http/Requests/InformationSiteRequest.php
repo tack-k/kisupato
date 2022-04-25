@@ -10,8 +10,7 @@ class InformationSiteRequest extends FormRequest {
             'title' => 'required|string|max:50',
             'description' => 'required|string',
             'status' => 'required|between:0,2',
-            'reserved_at' => 'required_if:status,2',
-        ];
+            'reserved_at' => 'exclude_unless:status,2|required|after:now|date'        ];
     }
 
     public function attributes()
@@ -30,7 +29,7 @@ class InformationSiteRequest extends FormRequest {
        $validator->setValueNames([
            'status' => [
                '2' => '投稿予定'
-           ]
+           ],
        ]);
 
        return $validator;
