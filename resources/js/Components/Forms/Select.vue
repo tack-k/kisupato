@@ -1,6 +1,6 @@
 <template>
     <select v-model="modelValue" class="base-form rounded-sm" @change="updateValue" >
-        <option v-for="(option, index) in options" :value="option.id" :selected="modelValue === '2'" :key="index" >{{ option.name }}</option>
+        <option v-for="(option, index) in options" :value="option.id" :selected="modelValue === option.id" :disabled="option.id === ''" :class="{'bg-gray-200': option.id === ''}" :key="index" >{{ option.name }}</option>
     </select>
 </template>
 
