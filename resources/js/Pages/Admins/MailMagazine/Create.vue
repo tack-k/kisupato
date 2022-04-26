@@ -13,8 +13,10 @@
                                     <Radio :options="mailMagazineTagOptions" v-model="form.radio"/>
                                     <div class="flex mt-4">
                                         <regular-button :type="'button'" @click="onClickTagModal">タグから選択</regular-button>
+                                        <regular-button :type="'button'" @click="onClickPositionModal" class="ml-4">肩書から選択</regular-button>
                                     </div>
-                                    <MailMagazineTagModal v-model:checked="form.checked_tags" :tags="tags" :showModal="showModalTag" @emitShowModal="handleShowModal"/>
+                                    <MailMagazineTagModal v-model:checked="form.checked_tags" :tags="tags" :showModal="showModalTag" @emitShowModal="handleShowTagModal"/>
+                                    <MailMagazinePositionModal v-model:checked="form.checked_positions" :positions="positions" :showModal="showModalPosition" @emitShowModal="handleShowPositionModal"/>
                                 </div>
                             </div>
                             <div class="mb-4">
@@ -68,10 +70,12 @@ import { mailMagazineStatusOptions, mailMagazineTagOptions } from '@/Consts/comm
 import DoubleButton from '@/Layouts/Common/DoubleButton'
 import Radio from '@/Components/Forms/Radio'
 import MailMagazineTagModal from '@/Layouts/Admins/MailMagazineTagModal'
+import MailMagazinePositionModal from '@/Layouts/Admins/MailMagazinePositionModal'
 
 export default {
     name: "Create",
     components: {
+        MailMagazinePositionModal,
         MailMagazineTagModal,
         Radio,
         DoubleButton,
@@ -87,6 +91,7 @@ export default {
     },
     props: {
         tags: Array,
+        positions: Array,
     },
     setup() {
         const options = mailMagazineStatusOptions;
@@ -102,6 +107,7 @@ export default {
             id: null,
             radio: null,
             checked_tags: null,
+            checked_positions: null,
             title: null,
             description: null,
             status: '',
@@ -132,9 +138,18 @@ export default {
         const showModalTag = ref(false)
         const onClickTagModal = () => showModalTag.value = true
 
-        const handleShowModal = (data) => {
+        const handleShowTagModal = (data) => {
             showModalTag.value = data
         }
+
+        const showModalPosition = ref(false)
+
+        const handleShowPositionModal = (data) => {
+            showModalPosition.value = data
+        }
+
+        const onClickPositionModal = () => showModalPosition.value = true
+
 
         return {
             form,
@@ -145,7 +160,10 @@ export default {
             mailMagazineTagOptions,
             onClickTagModal,
             showModalTag,
-            handleShowModal
+            handleShowTagModal,
+            handleShowPositionModal,
+            onClickPositionModal,
+            showModalPosition,
         }
     },
 }
