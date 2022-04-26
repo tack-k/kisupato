@@ -21,6 +21,7 @@ use \App\Http\Controllers\Admins\TagController;
 use \App\Http\Controllers\Admins\UserContactTitleController;
 use \App\Http\Controllers\Admins\ExpertContactTitleController;
 use \App\Http\Controllers\Admins\InformationSitesController;
+use \App\Http\Controllers\Admins\MailMagazinesController;
 use \App\Http\Controllers\Experts\ExpertController;
 use \App\Http\Controllers\Experts\HomeController;
 use \App\Http\Controllers\Experts\MyPageController;
@@ -182,5 +183,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
         Route::post('/delete', [InformationSitesController::class, 'delete'])->name('delete');
         Route::post('/confirm', [InformationSitesController::class, 'confirm'])->name('confirm');
         Route::post('/finish', [InformationSitesController::class, 'finish'])->name('finish');
+    });
+    Route::group(['prefix' => 'mail_magazine', 'as' => 'mail_magazine.'], function() {
+       Route::get('/create', [MailMagazinesController::class, 'create'])->name('create');
+       Route::post('/update', [MailMagazinesController::class, 'update'])->name('update');
     });
 });

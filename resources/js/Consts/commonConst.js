@@ -54,3 +54,13 @@ export const informationSiteStatusOptions = [
     {id: 2, name: '投稿予約'}
 ]
 
+export const mailMagazineStatusOptions = [
+    {id: 0, name: '送信予約'},
+    {id: 1, name: '今すぐ送信'},
+]
+
+export const mailMagazineTagOptions = [
+    { value: '0', name: '全員送信' },
+    { value: '1', name: '選択送信' },
+]
+
