@@ -1,8 +1,4 @@
 <template>
-    <!--    <div>-->
-    <!--        <div class="flex justify-end mt-8">-->
-    <!--            <regular-button :type="'button'" @click="toggleModal">タグから選択する</regular-button>-->
-    <!--        </div>-->
     <div v-if="showModal" @click.self="toggleModal"
          class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
         <div class="relative w-auto my-6 mx-auto max-w-3xl">
@@ -47,7 +43,6 @@
         </div>
     </div>
     <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
-    <!--    </div>-->
 </template>
 
 <script>
