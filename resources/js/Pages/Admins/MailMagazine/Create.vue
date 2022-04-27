@@ -10,8 +10,8 @@
                             <div class="mb-4">
                                 <label-required for="title" value="宛先"/>
                                 <div class="flex flex-col">
-                                    <Radio :options="mailMagazineTagOptions" v-model="form.radio"/>
-                                    <div class="flex mt-4">
+                                    <Radio :options="mailMagazineTagOptions" v-model="form.target"/>
+                                    <div v-if="isShowSelectButton" class="flex mt-4">
                                         <regular-button :type="'button'" @click="onClickTagModal">タグから選択</regular-button>
                                         <regular-button :type="'button'" @click="onClickPositionModal" class="ml-4">肩書から選択</regular-button>
                                     </div>
@@ -66,7 +66,7 @@ import LabelRequired from "@/Components/Labels/LabelRequired";
 import Input from "@/Components/Forms/Input";
 import TextArea from '@/Components/Forms/TextArea'
 import Select from '@/Components/Forms/Select'
-import { mailMagazineStatusOptions, mailMagazineTagOptions } from '@/Consts/commonConst'
+import { commonConst, mailMagazineStatusOptions, mailMagazineTagOptions } from '@/Consts/commonConst'
 import DoubleButton from '@/Layouts/Common/DoubleButton'
 import Radio from '@/Components/Forms/Radio'
 import MailMagazineTagModal from '@/Layouts/Admins/MailMagazineTagModal'
@@ -95,8 +95,7 @@ export default {
     },
     setup() {
         const options = mailMagazineStatusOptions;
-
-        const IS_RESERVE = '0';
+        const { TARGET_SELECT, RESERVED } = commonConst;
 
         //投稿予約の初期値のため、現在日時を取得
         const date = new Date();
@@ -105,7 +104,7 @@ export default {
 
         const form = useForm({
             id: null,
-            radio: null,
+            target: null,
             checked_tags: null,
             checked_positions: null,
             title: null,
@@ -117,7 +116,7 @@ export default {
         const isShowReserveForm = form.reserved_at !== null ? ref(true) : ref(false);
 
         watch(() => form.status, () => {
-            if (form.status === IS_RESERVE) {
+            if (form.status === RESERVED) {
                 isShowReserveForm.value = true
                 form.reserved_at = currentDateTime
             } else {
@@ -150,6 +149,18 @@ export default {
 
         const onClickPositionModal = () => showModalPosition.value = true
 
+        const isShowSelectButton = ref(false);
+
+        watch(() => form.target, () => {
+            if (form.target === TARGET_SELECT) {
+                isShowSelectButton.value = true
+            } else {
+                isShowSelectButton.value = false
+                form.checked_tags = []
+                form.checked_positions = []
+            }
+        })
+
 
         return {
             form,
@@ -164,6 +175,7 @@ export default {
             handleShowPositionModal,
             onClickPositionModal,
             showModalPosition,
+            isShowSelectButton,
         }
     },
 }

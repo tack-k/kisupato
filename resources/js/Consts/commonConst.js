@@ -36,6 +36,14 @@ export const commonConst = {
     //レビューコメントの表示文字上限数
     MAX_REVIEW_COUNT: 100,
 
+    //メルマガ送信の宛先
+    TARGET_ALL: '0',
+    TARGET_SELECT: '1',
+
+    //メルマガの送信ステータス
+    RESERVED: '0', //予約送信
+
+
 }
 
 export const userReviewTabs = {

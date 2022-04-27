@@ -26,7 +26,7 @@
                         <ul class="ml-4 flex items-center flex-wrap">
                             <li v-for="(tag, key) in tags" :key="key" class="mr-3 mb-1">
                                 <label class="flex items-center">
-                                    <Checkbox v-model:checked="checked" :value="tag.id"/>
+                                    <Checkbox v-model:checked="checkedTag" :value="tag.id"/>
                                     <span class="ml-2">{{ tag.name }}</span>
                                 </label>
                             </li>
@@ -79,39 +79,46 @@ export default {
         'emitShowModal',
     ],
     setup(props, { emit }) {
-        const { showModal, tags } = toRefs(props)
+        const { showModal, tags, checked } = toRefs(props)
         const toggleModal = () => {
             emit('emitShowModal', !showModal.value)
-            // showModal.value = !showModal.value
+            checkedTag.value = []
         }
 
-        const checked = ref([]);
+         const checkedTag = ref([]);
 
         const emitChecked = () => {
-            emit('update:checked', checked.value)
-            toggleModal()
+            emit('update:checked', checkedTag.value)
+            emit('emitShowModal', !showModal.value)
         }
 
         const allChecked = computed({
             get: () => {
-                return checked.value.length === tags.value.length
+                return checkedTag.value?.length === tags.value.length
             },
             set: val => {
                 if (val) {
                     const newTags = tags.value.map(tag => tag.id)
-                    checked.value = newTags
+                    checkedTag.value = newTags
                 } else {
-                    checked.value = []
+                    checkedTag.value = []
                 }
             }
         })
+
+        watch(checked, () => {
+            if(checked.value?.length === 0) {
+                checkedTag.value = []
+            }
+        })
+
 
         return {
             showModal,
             toggleModal,
             faWindowClose,
             emitChecked,
-            checked,
+            checkedTag,
             allChecked,
         }
     },
