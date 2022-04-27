@@ -13,6 +13,8 @@ class CreateMailMagazinesTable extends Migration {
             $table->string('status', 1);
             $table->dateTimeTz('posted_at')->nullable();
             $table->dateTimeTz('reserved_at')->nullable();
+            $table->string('target', 1);
+            $table->unsignedBigInteger('sent_mail_count');
             $table->dateTimeTz('created_at')->nullable();
             $table->string('created_by')->nullable();
             $table->dateTimeTz('updated_at')->nullable();
