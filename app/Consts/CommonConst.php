@@ -64,4 +64,8 @@ class CommonConst {
     //セッションキー
     public const SK_INFORMATION_SITE = 'information_site_input'; //サイトからのお知らせ入力
 
+    //メルマガ送信の宛先
+    public const TARGET_ALL = '0';
+    public const TARGET_SELECT = '1';
+
 }
