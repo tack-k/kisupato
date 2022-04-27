@@ -10,7 +10,7 @@
                             <div class="mb-4">
                                 <label-required for="title" value="宛先"/>
                                 <div class="flex flex-col">
-                                    <Radio :options="mailMagazineTagOptions" v-model="form.target"/>
+                                    <Radio :options="mailMagazineTagOptions" v-model="form.target" :checked="decideInitChecked"/>
                                     <div v-if="isShowSelectButton" class="flex mt-4">
                                         <regular-button :type="'button'" @click="onClickTagModal">タグから選択<span>{{ tagSelectedText }}</span></regular-button>
                                         <regular-button :type="'button'" @click="onClickPositionModal" class="ml-4">肩書から選択<span>{{ positionSelectedText }}</span></regular-button>
@@ -95,7 +95,7 @@ export default {
     },
     setup() {
         const options = mailMagazineStatusOptions;
-        const { TARGET_SELECT, RESERVED } = commonConst;
+        const { TARGET_SELECT, RESERVED, TARGET_ALL } = commonConst;
 
         //投稿予約の初期値のため、現在日時を取得
         const date = new Date();
@@ -171,6 +171,9 @@ export default {
             positionSelectedText.value = form.checked_positions.length === 0 ? '【未選択】' : '【選択中】';
         })
 
+        const decideInitChecked = value => value === TARGET_ALL;
+
+
 
         return {
             form,
@@ -188,6 +191,7 @@ export default {
             isShowSelectButton,
             tagSelectedText,
             positionSelectedText,
+            decideInitChecked,
         }
     },
 }
