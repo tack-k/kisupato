@@ -26,7 +26,7 @@
                         <ul class="ml-4 flex items-center flex-wrap">
                             <li v-for="(position, key) in positions" :key="key" class="mr-3 mb-1">
                                 <label class="flex items-center">
-                                    <Checkbox v-model:checked="checked" :value="position.id"/>
+                                    <Checkbox v-model:checked="checkedPosition" :value="position.id"/>
                                     <span class="ml-2">{{ position.name }}</span>
                                 </label>
                             </li>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { ref, toRefs, computed } from "vue";
+import { ref, toRefs, computed, watch } from "vue";
 import OutlineButton from "@/Components/Buttons/OutlineButton";
 import RegularButton from "@/Components/Buttons/RegularButton";
 import LabelRequired from "@/Components/Labels/LabelRequired";
@@ -78,29 +78,37 @@ export default {
         'emitShowModal',
     ],
     setup(props, { emit }) {
-        const { showModal, positions } = toRefs(props)
+        const { showModal, positions, checked } = toRefs(props)
         const toggleModal = () => {
             emit('emitShowModal', !showModal.value)
+            checkedPosition.value = checked.value
         }
 
-        const checked = ref([]);
+        const checkedPosition = ref([]);
 
         const emitChecked = () => {
-            emit('update:checked', checked.value)
-            toggleModal()
+            emit('update:checked', checkedPosition.value)
+            emit('emitShowModal', !showModal.value)
         }
 
         const allChecked = computed({
             get: () => {
-                return checked.value.length === positions.value.length
+                return checkedPosition.value?.length === positions.value.length
             },
             set: val => {
                 if (val) {
                     const newPositions = positions.value.map(position => position.id)
-                    checked.value = newPositions
+                    checkedPosition.value = newPositions
                 } else {
-                    checked.value = []
+                    checkedPosition.value = []
                 }
+            }
+        })
+
+        //全員送信選択時に、チェックボックスをリセットする
+        watch(checked, () => {
+            if(checked.value?.length === 0) {
+                checkedPosition.value = []
             }
         })
 
@@ -109,7 +117,7 @@ export default {
             toggleModal,
             faWindowClose,
             emitChecked,
-            checked,
+            checkedPosition,
             allChecked,
         }
     },

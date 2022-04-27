@@ -105,8 +105,8 @@ export default {
         const form = useForm({
             id: null,
             target: null,
-            checked_tags: null,
-            checked_positions: null,
+            checked_tags: [],
+            checked_positions: [],
             title: null,
             description: null,
             status: '',

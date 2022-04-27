@@ -82,7 +82,7 @@ export default {
         const { showModal, tags, checked } = toRefs(props)
         const toggleModal = () => {
             emit('emitShowModal', !showModal.value)
-            checkedTag.value = []
+            checkedTag.value = checked.value
         }
 
          const checkedTag = ref([]);
@@ -106,6 +106,7 @@ export default {
             }
         })
 
+        //全員送信選択時に、チェックボックスをリセットする
         watch(checked, () => {
             if(checked.value?.length === 0) {
                 checkedTag.value = []
