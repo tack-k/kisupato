@@ -12,8 +12,8 @@
                                 <div class="flex flex-col">
                                     <Radio :options="mailMagazineTagOptions" v-model="form.target"/>
                                     <div v-if="isShowSelectButton" class="flex mt-4">
-                                        <regular-button :type="'button'" @click="onClickTagModal">タグから選択</regular-button>
-                                        <regular-button :type="'button'" @click="onClickPositionModal" class="ml-4">肩書から選択</regular-button>
+                                        <regular-button :type="'button'" @click="onClickTagModal">タグから選択<span>{{ tagSelectedText }}</span></regular-button>
+                                        <regular-button :type="'button'" @click="onClickPositionModal" class="ml-4">肩書から選択<span>{{ positionSelectedText }}</span></regular-button>
                                     </div>
                                     <MailMagazineTagModal v-model:checked="form.checked_tags" :tags="tags" :showModal="showModalTag" @emitShowModal="handleShowTagModal"/>
                                     <MailMagazinePositionModal v-model:checked="form.checked_positions" :positions="positions" :showModal="showModalPosition" @emitShowModal="handleShowPositionModal"/>
@@ -161,6 +161,16 @@ export default {
             }
         })
 
+        const tagSelectedText = ref('【未選択】')
+        watch(() => form.checked_tags, () => {
+            tagSelectedText.value = form.checked_tags.length === 0 ? '【未選択】' : '【選択中】';
+        })
+
+        const positionSelectedText = ref('【未選択】')
+        watch(() => form.checked_positions, () => {
+            positionSelectedText.value = form.checked_positions.length === 0 ? '【未選択】' : '【選択中】';
+        })
+
 
         return {
             form,
@@ -176,6 +186,8 @@ export default {
             onClickPositionModal,
             showModalPosition,
             isShowSelectButton,
+            tagSelectedText,
+            positionSelectedText,
         }
     },
 }
