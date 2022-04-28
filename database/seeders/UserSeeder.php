@@ -31,6 +31,7 @@ class UserSeeder extends Seeder {
                 'gender' => '0',
                 'birthday' => '20000101',
                 'password' => Hash::make('1111aaaa'),
+                'mail_magazine_flag' => '1',
                 'created_at' => Carbon::now(),
                 'created_by' => 'seeder',
                 'updated_at' => Carbon::now(),
@@ -38,6 +39,9 @@ class UserSeeder extends Seeder {
             ]
         ]);
 
-        User::factory()->count(CommonConst::USER_COUNT)->create();
+        User::factory()->state(new Sequence(
+          ['mail_magazine_flag' => '0'],
+          ['mail_magazine_flag' => '1'],
+        ))->count(CommonConst::USER_COUNT)->create();
     }
 }

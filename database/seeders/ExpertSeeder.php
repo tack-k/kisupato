@@ -36,6 +36,7 @@ class ExpertSeeder extends Seeder
                 'gender' => '0',
                 'birthday' => '20000101',
                 'password' => Hash::make('1111aaaa'),
+                'mail_magazine_flag' => '1',
                 'created_at' => Carbon::now(),
                 'created_by' => 'seeder',
                 'updated_at' => Carbon::now(),
@@ -43,6 +44,9 @@ class ExpertSeeder extends Seeder
             ]
         ]);
 
-        Expert::factory()->count(CommonConst::EXPERT_COUNT)->create();
+        Expert::factory()->state(new Sequence(
+            ['mail_magazine_flag' => '0'],
+            ['mail_magazine_flag' => '1'],
+        ))->count(CommonConst::EXPERT_COUNT)->create();
     }
 }
