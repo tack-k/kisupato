@@ -115,8 +115,8 @@ export default {
 
         const form = useForm({
             id: null,
-            send_user: null,
-            send_expert: null,
+            send_user: false,
+            send_expert: false,
             target_user: null,
             target_expert: null,
             checked_tags: [],
