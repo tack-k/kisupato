@@ -9,8 +9,17 @@
                         <div class="mt-4">
                             <div class="mb-4">
                                 <label-required for="title" value="宛先"/>
-                                <div class="flex flex-col">
-                                    <Radio :options="mailMagazineTagOptions" v-model="form.target" :checked="decideInitChecked"/>
+                                <div class="flex items-center">
+                                    <Checkbox v-model:checked="form.send_user"/> <span class="ml-2">ユーザに送信</span>
+                                    <Checkbox v-model:checked="form.send_expert" class="ml-2"/> <span class="ml-2">専門人材に送信</span>
+                                </div>
+                                <div v-if="isShowSendUser" class="flex flex-col mt-2 ml-4">
+                                    <p class="my-2 base-font-bold">ユーザーの送信設定</p>
+                                    <Radio :options="mailUserTagOptions" v-model="form.target_user" :checked="decideInitChecked" :name="'user'"/>
+                                </div>
+                                <div v-if="isShowSendExpert" class="flex flex-col mt-2 ml-4">
+                                    <p class="my-2 base-font-bold">専門人材の送信設定</p>
+                                    <Radio :options="mailExpertTagOptions" v-model="form.target_expert" :checked="decideInitChecked" :name="'expert'"/>
                                     <div v-if="isShowSelectButton" class="flex mt-4">
                                         <regular-button :type="'button'" @click="onClickTagModal">タグから選択<span>{{ tagSelectedText }}</span></regular-button>
                                         <regular-button :type="'button'" @click="onClickPositionModal" class="ml-4">肩書から選択<span>{{ positionSelectedText }}</span></regular-button>
@@ -66,15 +75,17 @@ import LabelRequired from "@/Components/Labels/LabelRequired";
 import Input from "@/Components/Forms/Input";
 import TextArea from '@/Components/Forms/TextArea'
 import Select from '@/Components/Forms/Select'
-import { commonConst, mailMagazineStatusOptions, mailMagazineTagOptions } from '@/Consts/commonConst'
+import { commonConst, mailMagazineStatusOptions, mailExpertTagOptions, mailUserTagOptions } from '@/Consts/commonConst'
 import DoubleButton from '@/Layouts/Common/DoubleButton'
 import Radio from '@/Components/Forms/Radio'
 import MailMagazineTagModal from '@/Layouts/Admins/MailMagazineTagModal'
 import MailMagazinePositionModal from '@/Layouts/Admins/MailMagazinePositionModal'
+import Checkbox from '@/Components/Forms/Checkbox'
 
 export default {
     name: "Create",
     components: {
+        Checkbox,
         MailMagazinePositionModal,
         MailMagazineTagModal,
         Radio,
@@ -95,7 +106,7 @@ export default {
     },
     setup() {
         const options = mailMagazineStatusOptions;
-        const { TARGET_SELECT, RESERVED, TARGET_ALL } = commonConst;
+        const { TARGET_SELECT, RESERVED, TARGET_RECEIVED } = commonConst;
 
         //投稿予約の初期値のため、現在日時を取得
         const date = new Date();
@@ -104,7 +115,10 @@ export default {
 
         const form = useForm({
             id: null,
-            target: null,
+            send_user: null,
+            send_expert: null,
+            target_user: null,
+            target_expert: null,
             checked_tags: [],
             checked_positions: [],
             title: null,
@@ -150,14 +164,17 @@ export default {
         const onClickPositionModal = () => showModalPosition.value = true
 
         const isShowSelectButton = ref(false);
+        const resetExpertCheckedForm = () => {
+            form.checked_tags = []
+            form.checked_positions = []
+        }
 
-        watch(() => form.target, () => {
-            if (form.target === TARGET_SELECT) {
+        watch(() => form.target_expert, () => {
+            if (form.target_expert === TARGET_SELECT) {
                 isShowSelectButton.value = true
             } else {
                 isShowSelectButton.value = false
-                form.checked_tags = []
-                form.checked_positions = []
+                resetExpertCheckedForm()
             }
         })
 
@@ -171,7 +188,32 @@ export default {
             positionSelectedText.value = form.checked_positions.length === 0 ? '【未選択】' : '【選択中】';
         })
 
-        const decideInitChecked = value => value === TARGET_ALL;
+        const decideInitChecked = value => value === TARGET_RECEIVED;
+
+        const isShowSendUser = ref(false)
+
+        watch(() => form.send_user, () => {
+            isShowSendUser.value = form.send_user
+            if(form.send_user) {
+                form.target_user = TARGET_RECEIVED
+            }
+            if(!form.send_user) {
+                form.target_user = null
+            }
+        })
+
+        const isShowSendExpert = ref(false)
+
+        watch(() => form.send_expert, () => {
+            isShowSendExpert.value = form.send_expert
+            if(form.send_expert) {
+                form.target_expert = TARGET_RECEIVED
+            }
+            if(!form.send_expert) {
+                form.target_expert = null
+                resetExpertCheckedForm()
+            }
+        })
 
 
 
@@ -181,7 +223,7 @@ export default {
             currentDateTime,
             isShowReserveForm,
             submit,
-            mailMagazineTagOptions,
+            mailExpertTagOptions,
             onClickTagModal,
             showModalTag,
             handleShowTagModal,
@@ -192,6 +234,9 @@ export default {
             tagSelectedText,
             positionSelectedText,
             decideInitChecked,
+            isShowSendUser,
+            isShowSendExpert,
+            mailUserTagOptions,
         }
     },
 }

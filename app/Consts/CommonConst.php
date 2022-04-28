@@ -65,7 +65,8 @@ class CommonConst {
     public const SK_INFORMATION_SITE = 'information_site_input'; //サイトからのお知らせ入力
 
     //メルマガ送信の宛先
-    public const TARGET_ALL = '0';
-    public const TARGET_SELECT = '1';
+    public const TARGET_ALL = '0'; //未受信選択者含むすべて
+    public const TARGET_RECEIVED = '1'; //受信選択者すべて
+    public const TARGET_SELECT = '2';
 
 }

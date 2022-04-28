@@ -37,8 +37,9 @@ export const commonConst = {
     MAX_REVIEW_COUNT: 100,
 
     //メルマガ送信の宛先
-    TARGET_ALL: '0',
-    TARGET_SELECT: '1',
+    TARGET_ALL: '0', //未受信選択者含むすべて
+    TARGET_RECEIVED: '1', //受信選択者すべて
+    TARGET_SELECT: '2',
 
     //メルマガの送信ステータス
     RESERVED: '0', //予約送信
@@ -67,8 +68,14 @@ export const mailMagazineStatusOptions = [
     {id: 1, name: '今すぐ送信'},
 ]
 
-export const mailMagazineTagOptions = [
-    { value: '0', name: '全員送信' },
-    { value: '1', name: '選択送信' },
+export const mailUserTagOptions = [
+    { value: commonConst.TARGET_RECEIVED, name: '受信設定者送信' },
+    { value: commonConst.TARGET_ALL, name: '全員送信' },
+]
+
+export const mailExpertTagOptions = [
+    { value: commonConst.TARGET_RECEIVED, name: '受信設定者送信' },
+    { value: commonConst.TARGET_ALL, name: '全員送信' },
+    { value: commonConst.TARGET_SELECT, name: '選択送信' },
 ]
 

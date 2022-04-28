@@ -1,7 +1,7 @@
 <template>
     <div class="inline-flex items-center">
         <template v-for="(option, key) in options" :key="key">
-            <input :value="option.value" @change="updateValue" type="radio" name="radio" class="form-radio h-5 w-5 text-gray-600" :id="option.value" :checked="checked(option.value)"><label :for="option.value" class="ml-2 mr-4 text-gray-700">{{ option.name }}</label>
+            <input :value="option.value" @change="updateValue" type="radio" :name="name" class="form-radio h-5 w-5 text-gray-600" :id="option.value" :checked="checked(option.value)"><label :for="option.value" class="ml-2 mr-4 text-gray-700">{{ option.name }}</label>
         </template>
     </div>
 </template>
@@ -17,7 +17,8 @@ export default {
         checked: {
             type: Function,
             default: null,
-        }
+        },
+        name: String,
     },
     setup(props, { emit }) {
         const { options } = toRefs(props);
