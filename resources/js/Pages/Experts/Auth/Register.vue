@@ -83,6 +83,13 @@
             <label-required for="password_confirmation" value="パスワード（確認）" />
             <breeze-input id="password_confirmation" type="password" class="mt-1 block w-full" placeholder="もう一度入力してください" v-model="form.password_confirmation" autocomplete="new-password" />
         </div>
+
+        <div class="mt-4">
+            <label-required for="mail_magazine" value="メールマガジン送信可否" />
+            <div>
+                <Radio v-model="form.mail_magazine_flag" :options="mailReceivedOptions" :name="'mail-magazine'" :checked="setInitMailSetting"/>
+            </div>
+        </div>
         <div class="flex items-center justify-end mt-4">
             <inertia-link :href="route('expert.login')" class="underline text-sm text-gray-600 hover:text-gray-900">
                 登録済みの場合はこちら
@@ -103,12 +110,16 @@
     import BreezeValidationErrors from '@/Components/Validations/ValidationErrors'
     import BreezeCheckbox from '@/Components/Forms/Checkbox'
     import LabelRequired from "@/Components/Labels/LabelRequired";
+    import Radio from '@/Components/Forms/Radio'
+    import { mailReceivedOptions, commonConst } from '@/Consts/commonConst';
+    import { useForm } from '@inertiajs/inertia-vue3'
 
 
     export default {
         layout: BreezeGuestLayout,
 
         components: {
+            Radio,
             LabelRequired,
             BreezeButton,
             BreezeInput,
@@ -116,42 +127,44 @@
             BreezeValidationErrors,
             BreezeCheckbox,
         },
+        setup() {
+            const { MAIL_RECEIVED } = commonConst
 
-        data() {
-            return {
-                form: this.$inertia.form({
-                    last_name_kana: '',
-                    first_name_kana: '',
-                    last_name: '',
-                    first_name: '',
-                    tel: '',
-                    postal_code: '',
-                    region: '',
-                    city: '',
-                    street: '',
-                    building: '',
-                    gender: '',
-                    birthday: '',
-                    email: '',
-                    password: '',
-                    password_confirmation: '',
-                    terms: false,
+            const form = useForm({
+                last_name_kana: '',
+                first_name_kana: '',
+                last_name: '',
+                first_name: '',
+                tel: '',
+                postal_code: '',
+                region: '',
+                city: '',
+                street: '',
+                building: '',
+                gender: '',
+                birthday: '',
+                email: '',
+                password: '',
+                password_confirmation: '',
+                terms: false,
+                mail_magazine_flag: MAIL_RECEIVED,
+            });
+
+            const submit = () => {
+                form.post(route('expert.store'), {
+                    onFinish: () => form.reset('password', 'password_confirmation'),
                 })
             }
-        },
 
-        provide() {
+            const setInitMailSetting = value => value === MAIL_RECEIVED
+
             return {
-
+                mailReceivedOptions,
+                submit,
+                setInitMailSetting,
+                form,
             }
+
         },
-
-        methods: {
-            submit() {
-                this.form.post(this.route('expert.store'), {
-                    onFinish: () => this.form.reset('password', 'password_confirmation'),
-                })
-            }
-        }
     }
 </script>

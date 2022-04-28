@@ -45,6 +45,7 @@ class UserRequest extends FormRequest
             'gender' => 'required|integer|numeric|digits_between:0,2',
             'birthday' => 'required|date|before_or_equal:today',
             'password' => ['required', 'confirmed', Password::defaults()],
+            'mail_magazine_flag' => 'required|string|in:0,1',
         ];
     }
 
@@ -59,6 +60,7 @@ class UserRequest extends FormRequest
     {
         return [
             'nickname' => 'ニックネーム',
+            'mail_magazine_flag' => 'メール送信可否'
         ];
     }
 

@@ -28,6 +28,7 @@ class Expert extends Authenticatable
         'gender',
         'birthday',
         'password',
+        'mail_magazine_flag',
         'created_by',
         'updated_by',
         'deleted_by',

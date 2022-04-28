@@ -44,6 +44,11 @@ export const commonConst = {
     //メルマガの送信ステータス
     RESERVED: '0', //予約送信
 
+    //メルマガ送信可否
+    MAIL_NOT_RECEIVED: '0',
+    MAIL_RECEIVED: '1',
+
+
 
 }
 
@@ -77,5 +82,10 @@ export const mailExpertTagOptions = [
     { value: commonConst.TARGET_RECEIVED, name: '受信設定者送信' },
     { value: commonConst.TARGET_ALL, name: '全員送信' },
     { value: commonConst.TARGET_SELECT, name: '選択送信' },
+]
+
+export const mailReceivedOptions = [
+    { value: commonConst.MAIL_RECEIVED, name: '受信する' },
+    { value: commonConst.MAIL_NOT_RECEIVED, name: '受信しない' },
 ]
 

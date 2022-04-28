@@ -42,22 +42,9 @@ class ExpertController extends Controller
      */
     public function store(ExpertRequest $request)
     {
-        $expert = Expert::create([
-            'last_name' => $request->last_name,
-            'first_name' => $request->last_name_kana,
-            'last_name_kana' => $request->last_name_kana,
-            'first_name_kana' => $request->first_name_kana,
-            'email' => $request->email,
-            'tel' => $request->tel,
-            'postal_code' => $request->postal_code,
-            'region' => $request->region,
-            'city' => $request->city,
-            'street' => $request->street,
-            'building' => $request->building,
-            'gender' => $request->gender,
-            'birthday' => $request->birthday,
-            'password' => Hash::make($request->password),
-        ]);
+        $params = $request->validated();
+        $params['password'] = Hash::make($request->password);
+        $expert = Expert::create($params);
 
         event(new Registered($expert));
 
